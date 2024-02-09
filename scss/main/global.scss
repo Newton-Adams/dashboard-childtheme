@@ -1,0 +1,14 @@
+body {
+    display: flex;
+    flex-wrap: wrap;
+    #page {
+        order: 3;
+        max-width: calc(100vw - 380px);
+        margin: 0 0 0 auto;
+        width: 100vw;
+    }
+    .site-footer {
+        order: 4;
+        width: 100vw;
+    }
+}

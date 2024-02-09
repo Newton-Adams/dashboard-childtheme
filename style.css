@@ -1,0 +1,10 @@
+/*!
+Theme Name:   Workshop Pro
+ Theme URI:    https://generatepress.com
+ Description:  Default GeneratePress child theme
+ Author:       Webworx Design
+ Author URI:   https://webworxdesign.co.za/
+ Template:     generatepress
+ Version:      0.1
+*/ol,ul{margin:0 0 1.5em 1.5em}@media (max-width:781px){.has-large-font-size{font-size:18px!important}}#masthead{height:100vh;max-width:380px;position:fixed;left:0;top:0}#masthead,#masthead .inside-header{flex-wrap:wrap}.top-bar{width:100vw;max-width:calc(100vw - 380px);margin:0 0 0 auto}body{display:flex;flex-wrap:wrap}body #page{order:3;max-width:calc(100vw - 380px);margin:0 0 0 auto;width:100vw}body .site-footer{order:4;width:100vw}
+/*# sourceMappingURL=style.css.map */

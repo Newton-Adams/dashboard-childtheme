@@ -1,0 +1,16 @@
+#masthead {
+    height: 100vh;
+    max-width: 380px;
+    flex-wrap: wrap;
+    position: fixed;
+    left: 0;
+    top: 0;
+    .inside-header {
+        flex-wrap: wrap;
+    }
+}
+.top-bar {
+    width: 100vw;
+    max-width: calc(100vw - 380px);
+    margin: 0 0 0 auto;
+}
