@@ -1,14 +1,27 @@
 body {
     display: flex;
     flex-wrap: wrap;
+    &.menu-closed {
+        #page, .site-footer {
+            max-width: calc(100vw - 90px);
+        }
+        .site-footer {
+            order: 4;
+            width: 100vw;
+        }
+    }
     #page {
         order: 3;
-        max-width: calc(100vw - 380px);
+        max-width: calc(100vw - 250px);
         margin: 0 0 0 auto;
         width: 100vw;
+        transition: max-width 0.3s ease-in-out;
     }
     .site-footer {
         order: 4;
+        max-width: calc(100vw - 250px);
         width: 100vw;
+        margin-left: auto;
+        transition: max-width 0.3s ease-in-out;
     }
 }

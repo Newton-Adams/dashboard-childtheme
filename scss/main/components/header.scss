@@ -1,16 +1,115 @@
 #masthead {
     height: 100vh;
-    max-width: 380px;
+    max-width: 250px;
     flex-wrap: wrap;
     position: fixed;
     left: 0;
     top: 0;
+    padding-top: 100px;
+    overflow: hidden;
+    transition: max-width 0.3s ease-in-out;
+    #burger-menu svg {
+        cursor: pointer;
+    }
     .inside-header {
         flex-wrap: wrap;
+        padding: 0 25px;
+        #site-navigation {
+            margin-left: 0;
+            #primary-menu {
+                #menu-main-menu {
+                    flex-wrap: nowrap;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    a {
+                        padding: 0;
+                        display: flex;
+                        align-items: center;
+                        span {
+                            opacity: 1;
+                            transition: opacity 0.2s ease-in-out, font-size 0.2s ease-in-out;                                
+                        }
+                        svg {
+                            margin-right: 20px;
+                            transition: margin-right 0.3s ease-in-out;
+                        }
+                        &:hover {
+                            svg {
+                                path {
+                                    fill: var(--accent);
+                                }
+                            }
+                        }
+                    }
+                    .current-menu-item  {
+                        a {
+                            svg {
+                                path {
+                                    fill: var(--accent);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .site-branding-container {
+            flex-wrap: wrap;
+            .site-branding {
+                a {
+                    opacity: 1;
+                    transition: all 0.2s ease-in-out;
+                }
+            }
+            #burger-menu {
+                width: 100%;
+            }
+        }
     }
 }
+body.menu-closed {
+    #masthead {
+        max-width: 90px;
+        .inside-header {
+            #primary-menu {
+                #menu-main-menu {
+                    a {
+                        span {
+                            opacity: 0!important;
+                            font-size: 0rem;
+                            transition: opacity 0.2s ease-in-out, font-size 0.3s ease-in-out 0.2s;
+                        }
+                        svg {
+                            margin-right: 0px!important;                            
+                        }
+                    }
+                }
+            }
+            .site-branding-container {
+                .site-branding {
+                    a {
+                        opacity: 0;
+                        font-size: 0;
+                    }
+                }
+            }
+        }
+    }
+    .top-bar {
+        max-width: calc(100vw - 90px);
+    }
+}
+
+
 .top-bar {
     width: 100vw;
-    max-width: calc(100vw - 380px);
+    max-width: calc(100vw - 250px);
     margin: 0 0 0 auto;
+    transition: max-width 0.3s ease-in-out;
+    .inside-top-bar {
+        margin: 0;
+        .widget:nth-child(2n+1) {
+            order: unset;
+        }
+    }
 }

@@ -29,5 +29,10 @@ jQuery(document).ready(function ($) {
             $('#select-customer').html(response)
         }
     });
+
+    //Burger menu
+    $(document).on('click','#burger-menu svg',function() {
+        $('body').toggleClass('menu-closed')
+    })
     
 })
