@@ -85,12 +85,12 @@ function new_account_checklist_callback() {
    //Checks
    $create_account = "checked";
    $has_job = wp_count_posts( 'jobs' )->publish > 0 ? "checked" : "";
-   $has_logo = get_custom_logo();
+   $has_logo = !empty(get_custom_logo()) ? "checked" : "";
    $completed_count = !empty($has_job) + !empty($create_account) + !empty($has_logo);
    ob_start();
       echo '<div class="checklist-outer" >
-               <div class="title-and-count" ><h6>Get started checklist</h6> <div class="fraction">'.$completed_count.'/7</div></div>
-               <p>'.(round(100 / $completed_count)).'%</p>
+               <div class="title-and-count" ><p>Get started checklist</p> <div class="fraction">'.$completed_count.'/7</div></div>
+               <p>'.(Round($completed_count / 7 * 100)).'%</p>
                <div id="checklist-percentage" >';
                for ($i=0; $i < 6 ; $i++) { 
                   echo '<span class="'. ($completed_count > $i ? 'active' : ' ') . ($completed_count - 1 == $i ? ' final' : ' ') .'" ></span>';
@@ -105,11 +105,31 @@ function new_account_checklist_callback() {
             </label>
             <label for="has-logo" >
                Add your company logo
-               <input type="checkbox" name="has-logo" >
+               <input type="checkbox" id="has-logo" name="has-logo" '.$has_logo.' >
+            </label>
+            <label for="has-customers-csv" >
+               Import customers
+               <input type="checkbox" id="has-customers-csv" name="has-customers-csv" >
             </label>
             <label for="has-job" >
                Create your first job
-               <input type="checkbox" id="has-jobs" name="has-jobs" '.$has_job.' >
+               <input type="checkbox" id="has-job" name="has-job" '.$has_job.' >
+            </label>
+            <label for="has-quote" >
+               Create a quote
+               <input type="checkbox" id="has-quote" name="has-quote" >
+            </label>
+            <label for="has-vehicle" >
+               Add a vehicle
+               <input type="checkbox" id="has-vehicle" name="has-vehicle" >
+            </label>
+            <label for="has-customers" >
+               Add a new customer
+               <input type="checkbox" id="has-customers" name="has-customers" >
+            </label>s
+            <label for="watch-intro" >
+               Watch the intro video
+               <input type="checkbox" id="watch-intro" name="watch-intro" >
             </label>
          </form>
       ';

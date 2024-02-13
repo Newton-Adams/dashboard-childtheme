@@ -1,13 +1,28 @@
 .checklist-outer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     .title-and-count {
         display: grid;
         grid-template-columns: 70% 30%;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+        p {
+            transition: font-size 0.3s ease-in-out;            
+        }
+    }
+    p {
+        width: 100%;
+        text-align: center;
     }
 }
 #account-checklist {
     display: flex;
     flex-direction: column;
     order: 4;
+    overflow: hidden;
+    max-height: 800px;
+    transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out, font-size 0.3s ease-in-out;
     label {
         display: flex;
         flex-direction: row-reverse;
@@ -22,6 +37,7 @@
     grid-template-columns: repeat(6,1fr);
     width: 100%;
     height: 12px;
+    max-width: 250px;
     border-radius: 2em;
     overflow: hidden;
     background-color: #EDF2F7;
@@ -31,6 +47,31 @@
             &.final {
                 border-top-right-radius: 2em;
                 border-bottom-right-radius: 2em;
+            }
+        }
+    }
+}
+.menu-closed {
+    .title-and-count {
+        opacity: 0;
+        p {
+            font-size: 0!important;
+        }
+    }
+    #account-checklist {
+        display: none;
+    }
+    #checklist-percentage {
+        grid-template-columns: repeat(1,1fr);
+        max-width: 12px;
+        height: 100px;
+        border-radius: 2em;
+        .active {
+            &:not(.final) {
+                border-radius: 0;
+            }
+            &.final {
+                border-radius: 0 0 2em 2em;
             }
         }
     }
