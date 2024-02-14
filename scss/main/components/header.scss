@@ -5,17 +5,23 @@
     position: fixed;
     left: 0;
     top: 0;
-    padding-top: 100px;
+    padding-top: 20px;
     overflow: hidden;
+    border: 1px solid var(--borders);
     transition: max-width 0.3s ease-in-out;
     #burger-menu svg {
         cursor: pointer;
+        margin-bottom: 14px;
     }
     .inside-header {
         flex-wrap: wrap;
         padding: 0 25px;
         #site-navigation {
             margin-left: 0;
+            margin-bottom: 30px;
+            width: 100%;
+            border-bottom: 1px solid var(--borders);
+            padding-bottom: 30px;
             #primary-menu {
                 #menu-main-menu {
                     flex-wrap: nowrap;
@@ -25,6 +31,7 @@
                         padding: 0;
                         display: flex;
                         align-items: center;
+                        line-height: 34px;
                         span {
                             opacity: 1;
                             transition: opacity 0.2s ease-in-out, font-size 0.2s ease-in-out;                                
@@ -55,6 +62,7 @@
         }
         .site-branding-container {
             flex-wrap: wrap;
+            margin-bottom: 24px;
             .site-branding {
                 a {
                     opacity: 1;
@@ -94,22 +102,5 @@ body.menu-closed {
                 }
             }
         }
-    }
-    .top-bar {
-        max-width: calc(100vw - 90px);
-    }
-}
-
-
-.top-bar {
-    width: 100vw;
-    max-width: calc(100vw - 250px);
-    margin: 0 0 0 auto;
-    transition: max-width 0.3s ease-in-out;
-    .inside-top-bar {
-        margin: 0;
-        .widget:nth-child(2n+1) {
-            order: unset;
-        }
-    }
+    }   
 }
