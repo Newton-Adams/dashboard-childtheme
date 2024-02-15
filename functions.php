@@ -12,3 +12,13 @@ add_filter( 'the_title', function( $title, $item_id ) {
     }
     return $title;
 }, 10, 2 );
+
+//Wrap Header Content
+add_action('generate_after_header_content','header_content_wrap_before',10);
+function header_content_wrap_before() {
+    echo '<div class="header-scroll-content" >';
+}
+add_action('generate_after_header_content','header_content_wrap_after',100);
+function header_content_wrap_after() {
+    echo '</div>';
+}

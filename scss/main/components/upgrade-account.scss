@@ -1,0 +1,32 @@
+.upgrade-account {
+    position: absolute;
+    bottom: 60px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-end;
+    order: 5;
+    min-height: 85px;
+    background: radial-gradient(circle at top, #009026 0,#0e4f1f 200%);
+    border-radius: 24px;
+    position: relative;
+    width: 100vw;
+    max-width: 228px;
+    margin: 0 -15px;
+    p {
+        margin-bottom: 0;
+        color: var(--text-light);
+        font-size: 1rem;
+        margin-bottom: 17px;
+    }
+    img {
+        width: 100%;
+        height: 100%;
+        max-width: 70px;
+        max-height: 70px;
+        border-radius: 50%;
+        border: 4px solid var(--text-light);
+        position: absolute;
+        top: -30px;
+    }
+}

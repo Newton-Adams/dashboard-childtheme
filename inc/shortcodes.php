@@ -89,6 +89,11 @@ function new_account_checklist_callback() {
    $completed_count = !empty($has_job) + !empty($create_account) + !empty($has_logo);
    ob_start();
       echo '<div class="checklist-outer" >
+               <div class="checklist-icon">
+                  <svg width="7" height="6" viewBox="0 0 7 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <path fill-rule="evenodd" clip-rule="evenodd" d="M5.57021 0.632554C5.79903 0.403732 6.17003 0.403732 6.39885 0.632554C6.62487 0.858571 6.62764 1.22329 6.40717 1.45271L3.28826 5.35135C3.28375 5.35698 3.27894 5.36235 3.27385 5.36744C3.04503 5.59627 2.67403 5.59627 2.44521 5.36744L0.377672 3.29991C0.148849 3.07109 0.148849 2.70009 0.377672 2.47127C0.606495 2.24244 0.97749 2.24244 1.20631 2.47127L2.84187 4.10683L5.55467 0.650082C5.55949 0.643934 5.56468 0.638081 5.57021 0.632554Z" fill="white"/>
+                  </svg>
+               </div>
                <div class="title-and-count" ><p>Get started checklist</p> <div class="fraction">'.$completed_count.'/7</div></div>
                <p class="percentage" >'.(Round($completed_count / 7 * 100)).'%</p>
                <div class="checklist-progress-bar" >';
@@ -99,38 +104,38 @@ function new_account_checklist_callback() {
             </div>';
       echo '
          <form id="account-checklist" >
-            <label for="has-account" >
-               Create an account
-               <input type="checkbox" id="has-jobs" name="has-account" checked="true" >
-            </label>
-            <label for="has-logo" >
-               Add your company logo
+            <div class="checklist-item" >
+               <input type="checkbox" id="has-account" name="has-account" checked="true" >
+               <label for="has-account" >Create an account</label>
+            </div>
+            <div class="checklist-item" >
                <input type="checkbox" id="has-logo" name="has-logo" '.$has_logo.' >
-            </label>
-            <label for="has-customers-csv" >
-               Import customers
+               <label for="has-logo" >Add your company logo</label>
+            </div>
+            <div class="checklist-item" >
                <input type="checkbox" id="has-customers-csv" name="has-customers-csv" >
-            </label>
-            <label for="has-job" >
-               Create your first job
+               <label for="has-customers-csv" >Import customers</label>
+            </div>
+            <div class="checklist-item" >
                <input type="checkbox" id="has-job" name="has-job" '.$has_job.' >
-            </label>
-            <label for="has-quote" >
-               Create a quote
+               <label for="has-job" >Create your first job</label>
+            </div>
+            <div class="checklist-item" >
                <input type="checkbox" id="has-quote" name="has-quote" >
-            </label>
-            <label for="has-vehicle" >
-               Add a vehicle
+               <label for="has-quote" >Create a quote</label>
+            </div>
+            <div class="checklist-item" >
                <input type="checkbox" id="has-vehicle" name="has-vehicle" >
-            </label>
-            <label for="has-customers" >
-               Add a new customer
+               <label for="has-vehicle" >Add a vehicle</label>
+            </div>
+            <div class="checklist-item" >
                <input type="checkbox" id="has-customers" name="has-customers" >
-            </label>s
-            <label for="watch-intro" >
-               Watch the intro video
+               <label for="has-customers" >Add a new customer</label>s
+            </div>
+            <div class="checklist-item" >
                <input type="checkbox" id="watch-intro" name="watch-intro" >
-            </label>
+               <label for="watch-intro" >Watch the intro video</label>
+            </div>
          </form>
       ';
    return ob_get_clean();

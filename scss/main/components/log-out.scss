@@ -1,0 +1,19 @@
+.log-out-link {
+    display: flex;
+    position: absolute;
+    bottom: 18px;
+    text-decoration: none;
+    p {
+        font-size: 0.875rem;
+        margin-left: 14px;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+    }
+}
+.menu-closed {
+    .log-out-link {
+        p {
+            opacity: 0;
+        }
+    }
+}

@@ -2,16 +2,43 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-bottom: 24px;
+    width: 100%;
+    .checklist-icon {
+        opacity: 0;
+        background-color: transparent;
+        width: 0px;
+        height: 0px;
+        border-radius: 50%;
+        display: grid;
+        place-content: center;
+        transition: opacity 0.2s ease-in-out 0.1s, background-color 0.2s ease-in-out 0.2s;
+    }
+    .percentage {
+        font-size: 0.688rem;
+        width: 100%;
+        overflow: hidden;
+        color: var(--accent);
+        opacity: 1;
+        font-weight: 700;    
+        margin: 0 auto 8px 0;
+        transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
     .title-and-count {
         display: flex;
-        opacity: 1;
-        transition: opacity 0.3s ease-in-out;
+        position: relative;
+        width: 100%;
+        color: var(--heading);
+        font-weight: 500;    
+        margin-bottom: 1px;
         p {
-            transition: font-size 0.3s ease-in-out;        
-            width: 70%;    
+            margin: 0;
+            font-size: .875rem;
+            opacity: 1;
+            white-space: nowrap;
+            transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out;    
         }
         .fraction {
-            width: auto;
             background-color: var(--accent-2);
             border-radius: 2em;
             height: 20px;
@@ -21,39 +48,26 @@
             padding: 0px 10px;
             display: flex;
             align-items: center;
+            color: var(--accent);
+            font-weight: 700;
+            position: absolute;
+            right: 0;
+            top: 0;
         }
     }
     p {
         width: 100%;
-        text-align: center;
     }
-}
-#account-checklist {
-    display: flex;
-    flex-direction: column;
-    order: 4;
-    overflow: hidden;
-    max-height: 800px;
-    transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out, font-size 0.3s ease-in-out;
-    label {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: flex-end;
-        input {
-            pointer-events: none;
-        }
-    }
-}
-.checklist-outer {
     .checklist-progress-bar {
         display: grid;
         grid-template-columns: repeat(6,1fr);
         width: 100%;
         height: 12px;
-        max-width: 250px;
         border-radius: 2em;
         overflow: hidden;
-        background-color: #EDF2F7;
+        background-color: var(--borders);
+        margin-right: auto;
+        transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out;
         span {
             &.active {
                 background-color: var(--accent);
@@ -65,33 +79,82 @@
         }
     }
 }
-.menu-closed {
-    .title-and-count {
-        p {
-            font-size: 0!important;
+#account-checklist {
+    display: flex;
+    flex-direction: column;
+    order: 4;
+    overflow: hidden;
+    max-height: 800px;
+    opacity: 1;
+    white-space: nowrap;
+    transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out 0s;
+    margin-bottom: 50px;
+    .checklist-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        position: relative;
+        label {
+            pointer-events: none;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            &:before {
+                content: "";
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                border: 1px solid var(--heading);
+                position: absolute;
+                left: 0;
+            }
         }
-    }
-    #account-checklist {
-        display: none;
-    }
-    .checklist-outer {
-        .percentage {
-            display: none;
-        }
-        .checklist-progress-bar {
-            grid-template-columns: repeat(1,1fr);
-            max-width: 12px;
-            height: 100px;
-            border-radius: 2em;
-            display: none;  
-            .active {
-                &:not(.final) {
-                    border-radius: 0;
-                }
-                &.final {
-                    border-radius: 0 0 2em 2em;
+        input {
+            pointer-events: none;
+            margin-right: 10px;
+            opacity: 0;
+            &:checked {
+                ~ label {
+                    color: var(--accent);
+                    &:before {
+                        background-color: var(--accent);
+                        background-image: url("data:image/svg+xml,%3Csvg width='7' height='6' viewBox='0 0 7 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M5.57021 0.632554C5.79903 0.403732 6.17003 0.403732 6.39885 0.632554C6.62487 0.858571 6.62764 1.22329 6.40717 1.45271L3.28826 5.35135C3.28375 5.35698 3.27894 5.36235 3.27385 5.36744C3.04503 5.59627 2.67403 5.59627 2.44521 5.36744L0.377672 3.29991C0.148849 3.07109 0.148849 2.70009 0.377672 2.47127C0.606495 2.24244 0.97749 2.24244 1.20631 2.47127L2.84187 4.10683L5.55467 0.650082C5.55949 0.643934 5.56468 0.638081 5.57021 0.632554Z' fill='white'/%3E%3C/svg%3E");
+                        background-position: center;
+                        background-size: 8px;
+                        background-repeat: no-repeat;
+                        border: none;
+                    }
                 }
             }
+        }
+    }
+}
+.menu-closed {
+    #account-checklist {
+        opacity: 0;
+        max-height: 0;
+        transition: opacity 0.3s ease-in-out, max-height 0s ease-in-out 0.3s;
+    }
+    .checklist-outer {
+        .checklist-icon {
+            opacity: 1;  
+            width: 18px;
+            height: 18px;
+            background-color: var(--accent);       
+            margin-bottom: 6px;
+        }
+        .title-and-count {
+            > p {
+                opacity: 0;
+                width: 0%;
+            }
+        }
+        .percentage {
+            width: 0%;
+            opacity: 0;
+        }
+        .checklist-progress-bar {
+            opacity: 0;
         }
     }
 }
