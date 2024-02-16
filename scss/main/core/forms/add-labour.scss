@@ -1,0 +1,28 @@
+#job-fields {
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        .input-label-wrapper{
+            width: 100%;
+            &#labour-name-wrapper {
+                max-width: 270px;
+            }
+            &#description-wrapper {
+                max-width: 540px;
+            }
+            &#unit-price-wrapper {
+                max-width: 140px;
+            }
+            &#quantity-wrapper {
+                max-width: 65px;
+            }
+            &#vat-wrapper {
+                max-width: 101px;
+            }
+            &#line-total-wrapper {
+                max-width: 118px;
+            }
+        }
+    }
+}

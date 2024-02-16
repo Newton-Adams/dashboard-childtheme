@@ -12,13 +12,13 @@
         border-radius: 50%;
         display: grid;
         place-content: center;
-        transition: opacity 0.2s ease-in-out 0.1s, background-color 0.2s ease-in-out 0.2s;
+        transition: opacity 0.2s ease-in-out 0.3s, background-color 0.2s ease-in-out 0.3s, height 0.2s ease-in-out 0.3s, margin-bottom 0.2s ease-in-out 0s;
     }
     .percentage {
         font-size: 0.688rem;
         width: 100%;
         overflow: hidden;
-        color: var(--accent);
+        color: var(--accent-1);
         opacity: 1;
         font-weight: 700;    
         margin: 0 auto 8px 0;
@@ -48,7 +48,7 @@
             padding: 0px 10px;
             display: flex;
             align-items: center;
-            color: var(--accent);
+            color: var(--accent-1);
             font-weight: 700;
             position: absolute;
             right: 0;
@@ -70,7 +70,7 @@
         transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out;
         span {
             &.active {
-                background-color: var(--accent);
+                background-color: var(--accent-1);
                 &.final {
                     border-top-right-radius: 2em;
                     border-bottom-right-radius: 2em;
@@ -88,7 +88,6 @@
     opacity: 1;
     white-space: nowrap;
     transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out 0s;
-    margin-bottom: 50px;
     .checklist-item {
         display: flex;
         align-items: center;
@@ -115,9 +114,9 @@
             opacity: 0;
             &:checked {
                 ~ label {
-                    color: var(--accent);
+                    color: var(--accent-1);
                     &:before {
-                        background-color: var(--accent);
+                        background-color: var(--accent-1);
                         background-image: url("data:image/svg+xml,%3Csvg width='7' height='6' viewBox='0 0 7 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M5.57021 0.632554C5.79903 0.403732 6.17003 0.403732 6.39885 0.632554C6.62487 0.858571 6.62764 1.22329 6.40717 1.45271L3.28826 5.35135C3.28375 5.35698 3.27894 5.36235 3.27385 5.36744C3.04503 5.59627 2.67403 5.59627 2.44521 5.36744L0.377672 3.29991C0.148849 3.07109 0.148849 2.70009 0.377672 2.47127C0.606495 2.24244 0.97749 2.24244 1.20631 2.47127L2.84187 4.10683L5.55467 0.650082C5.55949 0.643934 5.56468 0.638081 5.57021 0.632554Z' fill='white'/%3E%3C/svg%3E");
                         background-position: center;
                         background-size: 8px;
@@ -140,8 +139,9 @@
             opacity: 1;  
             width: 18px;
             height: 18px;
-            background-color: var(--accent);       
+            background-color: var(--accent-1);       
             margin-bottom: 6px;
+            transition: opacity 0.2s ease-in-out 0.3s, background-color 0.2s ease-in-out 0.3s, height 0.2s ease-in-out 0.3s, margin-bottom 0.2s ease-in-out 0.3s;
         }
         .title-and-count {
             > p {

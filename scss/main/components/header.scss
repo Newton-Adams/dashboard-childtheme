@@ -30,10 +30,14 @@
                 width: 100%;
             }
         }
-        .header-scroll-content {
+        .header-scroll-content-outer {
             width: 100%;
-            height: calc(100% - 170px);
+            height: calc(100% - 127px);
             position: relative;
+            .header-scroll-content {
+                overflow-y: auto;
+                height: calc(100% - 180px);
+            }
             .menu-main-menu-container {
                 margin-left: 0;
                 margin-bottom: 30px;
@@ -48,7 +52,7 @@
                         position: relative;
                         .current-menu-item {
                             a {
-                                color: var(--accent);
+                                color: var(--accent-1);
                             }
                         }
                         a {
@@ -60,7 +64,7 @@
                             color: var(--text-1);
                             span {
                                 opacity: 1;
-                                transition: opacity 0.2s ease-in-out, font-size 0.2s ease-in-out;                                
+                                transition: opacity 0.2s ease-in-out;                                
                             }
                             svg {
                                 margin-right: 20px;
@@ -69,10 +73,10 @@
                                 height: 14px;
                             }
                             &:hover {
-                                color: var(--accent);
+                                color: var(--accent-1);
                                 svg {
                                     path {
-                                        fill: var(--accent);
+                                        fill: var(--accent-1);
                                     }
                                 }
                             }
@@ -91,20 +95,18 @@ body.menu-closed {
                 .site-branding {
                     a {
                         opacity: 0;
-                        font-size: 0;
                     }
                 }
             }
         }
-        .header-scroll-content {
+        .header-scroll-content-outer{
             .menu-main-menu-container {
                 ul {
                     li {
                         a {
                             span {
                                 opacity: 0!important;
-                                font-size: 0rem;
-                                transition: opacity 0.2s ease-in-out, font-size 0.3s ease-in-out 0.2s;
+                                transition: opacity 0.2s ease-in-out;
                             }
                             svg {
                                 margin-right: 0px!important;                            
@@ -115,4 +117,11 @@ body.menu-closed {
             }
         }
     }   
+}
+@media screen and (max-width:768px) {
+    #masthead {
+        .inside-header {
+            flex-direction: unset;
+        }
+    }
 }

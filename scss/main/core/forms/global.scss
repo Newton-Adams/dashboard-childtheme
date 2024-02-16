@@ -1,0 +1,42 @@
+.forms-container {
+    max-width: 1920px;
+    margin: 0 auto 32px 0;
+    padding: 28px;
+    background-color: var(--background-secondary);
+    border-radius: 16px;
+    box-shadow: 0px 0px 1px 0px var(--container-shadow);
+    form {
+        display: flex;
+        flex-direction: column;
+        .form-row {
+            input {
+                width: 100%;
+            }
+            div {                
+                &.delete-row {
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    background-color: transparent;
+                    padding: 0;
+                }
+            }
+        }
+    }
+    .add-row-button-outer {
+        order: 1;
+        button {
+            padding: 0;
+            &.add-row-button {
+                background-color: transparent;
+                cursor: pointer;
+                span {
+                    color: var(--accent-1);
+                }
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}

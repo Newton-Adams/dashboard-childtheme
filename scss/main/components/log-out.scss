@@ -1,19 +1,22 @@
 .log-out-link {
     display: flex;
     position: absolute;
-    bottom: 18px;
+    bottom: 14px;
     text-decoration: none;
     p {
         font-size: 0.875rem;
-        margin-left: 14px;
+        margin: 0 0 0 14px;
         opacity: 1;
-        transition: opacity 0.3s ease-in-out;
+        white-space: nowrap;
+        transition: all 0.3s ease-in-out;
     }
 }
 .menu-closed {
     .log-out-link {
         p {
             opacity: 0;
+            width: 0;
+            height: 0;
         }
     }
 }

@@ -1,7 +1,7 @@
 
 :root {
     //Main
-    --accent: #009026;
+    --accent-1: #009026;
     --accent-2: #EDFFEB;
     --heading: #27272E;
     --text-1: #425466;
@@ -10,6 +10,7 @@
     --background-primary: #F7FAFC;
     --background-secondary: #ffffff;
     --borders: #EDF2F7;
+
     //Extras
     --active: #68DBF2;
     --complete: #2ECF88;
@@ -17,4 +18,7 @@
     --drafts: #FAB592;
     --invoice: #FE6F7E;
     --quotes: #4CAFD0;
+
+    //Shadow
+    --container-shadow: rgba(50, 50, 71, 0.15);
 }
