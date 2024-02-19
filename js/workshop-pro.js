@@ -21,30 +21,31 @@ jQuery(document).ready(function ($) {
     //Forms
     //Add Job Form Row
     $(document).on('click','.add-row-button',function(e) {
+        const rowCount = $('#job-fields').children().length
         const jobRow = `<div class="form-row" >
-                            <div class="input-label-wrapper" id="labour-name-wrapper" >
-                                <label for="labour-name" >Labour Name</label>
-                                <input type="text" id="labour-name" name="labour-name" >
+                            <div class="input-label-wrapper labour-name-wrapper" >
+                                <label for="labour-name-${rowCount}" >Labour Name</label>
+                                <input type="text" id="labour-name-${rowCount}" name="labour-name-${rowCount}" >
                             </div>
-                                <div class="input-label-wrapper" id="description-wrapper" >
-                                <label for="description" >Description</label>
-                            <input type="text" id="description" name="description" >
+                                <div class="input-label-wrapper description-wrapper" >
+                                <label for="description-${rowCount}" >Description</label>
+                            <input type="text" id="description-${rowCount}" name="description-${rowCount}" >
                             </div>
-                                <div class="input-label-wrapper" id="unit-price-wrapper" >
-                                <label for="unit-price" >Unit price</label>
-                            <input type="text" id="unit-price" name="unit-price" >
+                                <div class="input-label-wrapper unit-price-wrapper" >
+                                <label for="unit-price-${rowCount}" >Unit price </label>
+                            <input type="text" id="unit-price-${rowCount}" name="unit-price-${rowCount}" >
                             </div>
-                                <div class="input-label-wrapper" id="quantity-wrapper" >
-                                <label for="qty" >Quantity</label>
-                            <input type="text" id="qty" name="qty" >
+                                <div class="input-label-wrapper quantity-wrapper" >
+                                <label for="qty-${rowCount}" >Quantity</label>
+                            <input type="text" id="qty-${rowCount}" name="qty-${rowCount}" >
                             </div>
-                                <div class="input-label-wrapper" id="vat-wrapper" >
-                                <label for="vat" >Vat</label>
-                            <input type="text" id="vat" name="vat" >
+                                <div class="input-label-wrapper vat-wrapper" >
+                                <label for="vat-${rowCount}" >Vat </label>
+                            <input type="text" id="vat-${rowCount}" name="vat-${rowCount}" >
                             </div>
-                                <div class="input-label-wrapper" id="line-total-wrapper" >
-                                <label for="line-total" >Line Total</label>
-                            <input type="text" id="line-total" name="line-total" >
+                                <div class="input-label-wrapper line-total-wrapper" >
+                                <label for="line-total-${rowCount}" >Line Total </label>
+                            <input type="text" id="line-total-${rowCount}" name="line-total-${rowCount}" >
                             </div>
                             <div class="delete-row" >
                                 <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +57,8 @@ jQuery(document).ready(function ($) {
                             </div>
                         </div>`
 
-        $('#job-fields').prepend(jobRow)
+        $('#job-fields').append(jobRow)
+        $(document).on('change','.quantity-wrapper input, .unit-price-wrapper input, .vat-wrapper input',calculateLineTotal)
     })
 
     //Delete Form Row
@@ -65,11 +67,25 @@ jQuery(document).ready(function ($) {
     })
     
     //Calculate Line Total
-    $(document).on('change','#quantity-wrapper #qty, #unit-price-wrapper #unit-price, #vat-wrapper #vat',function() {
-        const quantity = Number($(this).closest('.form-row').find('#qty').val())
-        const unitPrice = Number($(this).closest('.form-row').find('#unit-price').val())
+    $(document).on('change','.quantity-wrapper input, .unit-price-wrapper input, .vat-wrapper input',calculateLineTotal)
+    function calculateLineTotal() {
+        const quantity = Number($(this).closest('.form-row').find('.quantity-wrapper input').val().replace(',','.'))
+        const unitPrice = Number($(this).closest('.form-row').find('.unit-price-wrapper input').val().replace(',','.'))
         const vat = quantity * unitPrice / 100 * 14
-        // $('#vat').val( (quantity * unitPrice) + vat )
-        $('#line-total').val( (quantity * unitPrice) + vat )
-    })
+        $(this).closest('.form-row').find('.vat-wrapper input').val( vat.toFixed(2) )
+        $(this).closest('.form-row').find('.line-total-wrapper input').val( (quantity * unitPrice).toFixed(2) )
+
+        //Update Subtotals & Totals
+        let lineSubtotal = 0
+        let vatSubtotal = 0
+        $(this).closest('form').find('.form-row').each(function(index,ele) {
+            const lineTotal = $(ele).find('.line-total-wrapper input').val()
+            const vat = $(ele).find('.vat-wrapper input').val()
+            lineSubtotal += Number(lineTotal)
+            vatSubtotal += Number(vat)
+        })
+        $(this).closest('.jobs-container').find('.sub-total-outer .sub-total .value').text(`R${lineSubtotal.toFixed(2)}`)
+        $(this).closest('.jobs-container').find('.sub-total-outer .vat .value').text(`R${vatSubtotal.toFixed(2)}`)
+        $(this).closest('.jobs-container').find('.sub-total-outer .total .value').text(`R${(lineSubtotal + vatSubtotal).toFixed(2)}`)
+    }
 })

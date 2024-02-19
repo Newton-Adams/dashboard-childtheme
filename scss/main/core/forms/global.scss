@@ -25,13 +25,18 @@
     }
     .add-row-button-outer {
         order: 1;
+        padding-bottom: 28px;
         button {
             padding: 0;
             &.add-row-button {
+                display: flex;
+                align-items: center;
                 background-color: transparent;
                 cursor: pointer;
                 span {
                     color: var(--accent-1);
+                    font-size: 0.75rem;
+                    margin-left: 4px;
                 }
                 &:hover {
                     background-color: transparent;

@@ -4,12 +4,13 @@ add_shortcode('post_form','save_form_callback');
 function save_form_callback() {
    //Get file Parts
     $labour_row = file_get_contents( get_stylesheet_directory() . "/inc/templates/labour-row.php");
+    $subtotal = file_get_contents( get_stylesheet_directory() . "/inc/templates/subtotal.php");
 
     ob_start();
     echo '<div class="forms-container" >
-            <form id="job-fields" >
+            <div class="jobs-container" >               
+               '.$labour_row.'
                <div class="add-row-button-outer" >
-                  '.$labour_row.'
                   <button class="add-row-button" type="button" >
                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z" fill="#009026"/>
@@ -18,7 +19,8 @@ function save_form_callback() {
                      <span>Add Labour Row</span>
                   </button>
                </div>
-            </form>
+               '.$subtotal.'
+            </div>
          </div>
          <div class="forms-container" >
             <button id="save-post" >Save</button>
@@ -141,7 +143,7 @@ function new_account_checklist_callback() {
             </div>
             <div class="checklist-item" >
                <input type="checkbox" id="has-customers" name="has-customers" >
-               <label for="has-customers" >Add a new customer</label>s
+               <label for="has-customers" >Add a new customer</label>
             </div>
             <div class="checklist-item" >
                <input type="checkbox" id="watch-intro" name="watch-intro" >
