@@ -1,12 +1,20 @@
-<form id="job-fields" >
+<form id="parts-fields" >
     <div class="form-row" >
-        <div class="input-label-wrapper labour-name-wrapper" >
-            <label for="labour-name" >Labour Name</label>
-            <input type="text" id="labour-name" name="labour-name" >
+        <div class="input-label-wrapper part-name-wrapper" >
+            <label for="part-name" >Part Name</label>
+            <input type="text" id="part-name" name="part-name" >
         </div>
-        <div class="input-label-wrapper description-wrapper" >
-            <label for="description" >Description</label>
-            <input type="text" id="description" name="description" >
+        <div class="input-label-wrapper warranty-wrapper" >
+            <label for="warranty" >Warranty</label>
+            <input type="text" id="warranty" name="warranty" >
+        </div>
+        <div class="input-label-wrapper cost-price-wrapper" >
+            <label for="cost-price" >Cost Price</label>
+            <input type="text" id="cost-price" name="cost-price" >
+        </div>
+        <div class="input-label-wrapper markup-wrapper" >
+            <label for="markup" >Markup (%)</label>
+            <input type="text" id="markup" name="markup" >
         </div>
         <div class="input-label-wrapper unit-price-wrapper" >
             <label for="unit-price" >Unit price</label>
