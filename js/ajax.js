@@ -3,32 +3,53 @@
 jQuery(document).ready(function ($) {
 
     $(document).on('click','#save-post',function() {
-        // const formaData = $('.forms-container > form').serializeArray()
-        const form = document.getElementById("job-fields");
-        // const submitter = document.querySelector("#save-post");
-        const formData = new FormData(form);
+
+        //Job related posts & title
+        const jobNumber = $('input#job-number').val();
+
+        //Labour fields
+        const jobFieldForm = document.getElementById("job-fields");
+        const formData = new FormData(jobFieldForm);
+      
+        let rowArray = []
+        let keyAndValue = {}
         let sortedFormData = {}
         let i = 0
-        for (const pair of formData.entries()) {
-            if(i < 7) {
-                // const keyValue = { pair[0] : pair[1] }
-                sortedFormData[`row-${i}`] = keyValue
-                console.log(pair[0], pair[1]);
-            }
-            i++
+        let rowNum = 0
+        for (const pair of formData.entries()) {                
+            if(i < 6) {
+                keyAndValue = {}
+                const pairkey = pair[0]
+                const pairValue = pair[1]
+                console.log(i, ':', pairValue);
+                if (keyAndValue[pairkey] === undefined) {
+                    keyAndValue[pairkey] = "";
+                }
+                keyAndValue[pairkey] += pairValue
+                rowArray.push(keyAndValue)
+                i++
+                if(i === 6) {
+                    i = 0
+                    sortedFormData[`row-${rowNum}`] = rowArray
+                    rowArray = []
+                    rowNum++
+                }
+            } 
         }
-        console.log('Test',sortedFormData);
-        // $.ajax({
-        //     type: "POST",
-        //     url: workshop_pro_obj.ajaxurl,
-        //     data: {
-        //         'action': 'post_ajax_form',
-        //         'form_data': formaData,
-        //     },
-        //     success: function (response) {	
-        //         $('form[name="job-fields"]').find('input').val('')	
-        //     }
-        // });
+        
+        $.ajax({
+            type: "POST",
+            url: workshop_pro_obj.ajaxurl,
+            data: {
+                'action': 'post_jobs',
+                'form_data': sortedFormData,
+                'job_number': jobNumber
+            },
+            success: function (response) {	
+                console.log(response);
+                // $('form[name="job-fields"]').find('input').val('')	
+            }
+        });
     })
 
     //Fetch jobs and append in drop down

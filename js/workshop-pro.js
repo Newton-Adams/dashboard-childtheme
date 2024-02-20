@@ -61,9 +61,12 @@ jQuery(document).ready(function ($) {
         $(document).on('change','.quantity-wrapper input, .unit-price-wrapper input, .vat-wrapper input',calculateLineTotal)
     })
 
-    //Delete Form Row
+    //Delete form row & trigger input change to update calculations
     $(document).on('click','.delete-row',function(e) {
+        const form = $(this).closest('form')
         $(this).closest('.form-row').remove()
+        const value = form.find('.form-row:first-child .quantity-wrapper input').val()
+        form.find('.form-row:first-child .quantity-wrapper input').change()      
     })
     
     //Calculate Line Total
