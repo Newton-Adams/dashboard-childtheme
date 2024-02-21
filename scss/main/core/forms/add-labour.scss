@@ -1,15 +1,13 @@
 #job-fields {
     .form-row {
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
         .input-label-wrapper{
             width: 100%;
             &.labour-name-wrapper {
-                max-width: 270px;
+                max-width: 300px;
             }
             &.description-wrapper {
-                max-width: 540px;
+                max-width: 650px;
             }
             &.unit-price-wrapper {
                 max-width: 140px;
@@ -18,10 +16,13 @@
                 max-width: 65px;
             }
             &.vat-wrapper {
-                max-width: 101px;
+                max-width: 160px;
             }
             &.line-total-wrapper {
-                max-width: 118px;
+                max-width: 160px;
+            }
+            &.input-label-wrapper.delete-row {
+                max-width: 14px;
             }
         }
     }

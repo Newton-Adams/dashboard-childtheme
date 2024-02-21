@@ -2,16 +2,16 @@ form {
     .form-row {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 20px;
-    }
-    .input-label-wrapper {
-        display: block; 
-        width: 100%; 
-        label {
-            font-size: 14px; 
-            font-weight: 500; 
-            line-height: normal; 
-            margin-bottom: 8px; 
+        margin: 0 -10px 20px;
+        .input-label-wrapper {
+            display: block; 
+            margin: 0 10px;
+            label {
+                font-size: 14px; 
+                font-weight: 500; 
+                line-height: normal; 
+                margin-bottom: 8px; 
+            }
         }
     }
     input[type="text"], input[type="email"], input[type="url"], input[type="password"], input[type="search"], input[type="tel"], input[type="number"], select {

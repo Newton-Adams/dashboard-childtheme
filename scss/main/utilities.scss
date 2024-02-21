@@ -179,9 +179,15 @@ body {
     }
 
 
-    // Max Widths
-    .w-100 {
+    //Max Widths
+    .fw-100 {
         width: 100%;
+    }
+    .fw-50 {
+        width: calc(50% - 20px);
+    }
+    .fw-33 {
+        width: calc(100% / 3 - 20px);
     }
     @each $max_width_abbr, $max_width_name in (
         "150" : "150px",

@@ -1,11 +1,4 @@
 <?php
-//Save form shortcode
-add_shortcode('post_form','save_form_callback');
-function save_form_callback() {
-    ob_start();
-      include( get_stylesheet_directory() . "/inc/page-templates/new-job.php");   
-    return ob_get_clean();
-}
 
 //Top Page Title
 add_shortcode('page_title','page_title_callback');
