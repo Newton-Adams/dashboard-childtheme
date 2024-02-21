@@ -1,13 +1,6 @@
 .um-page {
     &.um-page-login, &.um-page-register {
-        background: linear-gradient(
-            to right, 
-            var(--background-secondary) 0%, 
-            var(--background-secondary) 50%, 
-            var(--background-primary) 50%, 
-            var(--background-primary) 100%
-        );
-        .container {
+        @media (min-width: 782px) {
             background: linear-gradient(
                 to right, 
                 var(--background-secondary) 0%, 
@@ -15,12 +8,120 @@
                 var(--background-primary) 50%, 
                 var(--background-primary) 100%
             );
+            .container {
+                background: linear-gradient(
+                    to right, 
+                    var(--background-secondary) 0%, 
+                    var(--background-secondary) 50%, 
+                    var(--background-primary) 50%, 
+                    var(--background-primary) 100%
+                );
+            }
+        }
+        @media (max-width: 781px) {
+            background: var(--background-secondary);
+            .container {
+                background: var(--background-secondary);
+            }
         }
     }
     .um {
         // Login Page
         &.um-login {
             max-width: 100% !important;
+            margin-bottom: 0px !important;
+            .um-col-alt {
+                .um-field-c {
+                    margin-bottom: 15px;
+                }
+                .um-half {
+                    width: 100%;
+                    margin-bottom: 15px;
+                    &.um-right {
+                        position: relative;
+                        &::before {
+                            content: "don’t have an account?";
+                            display: block;
+                            max-width: 140px;
+                            font-size: 10px;
+                            font-weight: 400; 
+                            text-align: center;
+                            color: var(--text-muted); 
+                            background-color: var(--background-primary);
+                            margin: 0 auto 15px;
+                            position: relative;
+                            z-index: 2;
+                        }
+                        &::after {
+                            content: "";
+                            display: block;
+                            width: 100%;
+                            height: 1px;
+                            background-color: var(--input-border-color);
+                            position: absolute;
+                            top: 12px;
+                            left: 0;
+                            z-index: 1;
+                        }
+                    }
+                }
+            }
+            .um-col-alt-b {
+                padding-top: 0px;
+                .um-link-alt {
+                    color: var(--text-muted) !important;
+                    font-size: 16px;
+                    font-weight: 700 !important;
+                    line-height: 14px !important;
+                }
+            }
+        }
+        .um-form {
+            form {
+                .um-field-label {
+                    label {
+                        font-size: 14px !important;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: normal !important;
+                    }
+                }
+                input[type=password], input[type=search], input[type=tel], input[type=text], textarea {
+                    background: var(--background-secondary);
+                    border-radius: 6px; 
+                    box-shadow: var(--input-shadow); 
+                    padding: 16px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    line-height: 13px;
+                }
+                .um-button { 
+                    background: var(--accent-1);
+                    border: 1px solid var(--accent-1);
+                    color: var(--background-secondary);
+                    padding: 16px 24px;
+                    border-radius: 8px !important;
+                    font-size: 16px; 
+                    font-weight: 700 !important;
+                    line-height: 14px !important;
+                    &:hover, &:focus, &:active {
+                        background: var(--accent-1-dark);
+                        border: 1px solid var(--accent-1-dark);
+                        color: var(--background-secondary);
+                    }
+                    &.um-alt {
+                        background: var(--background-primary);
+                        border: 1px solid var(--accent-1) !important;
+                        color: var(--accent-1);
+                        box-shadow: none;
+                        &:hover, &:focus, &:active {
+                            background: var(--accent-1);
+                            border: 1px solid var(--accent-1) !important;
+                            color: var(--background-primary);
+                        }
+                    }
+                }
+            }
         }
     
         // Register Page 
@@ -47,6 +148,23 @@
         //     }
         // }
     }
+    .slider-column {
+        position: relative;
+        @media (max-width: 781px) {
+            padding-top: 40px; 
+            padding-bottom: 40px;
+            &::before {
+                content: "";
+                display: block;
+                width: 100vw;
+                height: 100%;
+                background-color: var(--background-primary);
+                position: absolute;
+                top: 0;
+                left: -30px;
+            }
+        }
+    }
 }
 
 .login-wrapper {
@@ -58,5 +176,5 @@
     padding: 40px;
     margin: 0 0 30px;
     margin: 0 auto;
-    box-shadow: 0px 3px 8px -1px rgba(50, 50, 71, 0.05), 0px 0px 1px 0px rgba(12, 26, 75, 0.24);
+    box-shadow: var(--input-shadow);
 }
