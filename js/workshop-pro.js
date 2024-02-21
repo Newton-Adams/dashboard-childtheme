@@ -141,4 +141,14 @@ jQuery(document).ready(function ($) {
         $(this).closest('.forms-container').find('.sub-total-outer .vat .value').text(`R${vatSubtotal.toFixed(2)}`)
         $(this).closest('.forms-container').find('.sub-total-outer .total .value').text(`R${(lineSubtotal + vatSubtotal).toFixed(2)}`)
     }
+
+    if ($(".onboarding-aside-slider").length) {
+		$(".onboarding-aside-slider").slick({
+			infinite: true,
+			slidesToShow: 1,
+			slidesToScroll: 1,
+            dots: true,
+            arrows: false
+		});
+	}
 })

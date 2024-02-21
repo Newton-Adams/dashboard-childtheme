@@ -1,0 +1,56 @@
+.onboarding-aside-slider {
+    img {
+        display: block;
+        max-width: 648px; 
+        width: 100%;
+        height: auto;
+        margin: 0 auto 100px;
+        @media (max-width: 781px) {
+            margin-bottom: 50px;
+        }
+    }
+    p {
+        display: block; 
+        max-width: 408px;
+        width: 100%; 
+        margin: 0 auto 100px;
+        @media (max-width: 781px) {
+            margin-bottom: 50px;
+        }
+    }
+    .slick-dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        bottom: -19px;
+        li {
+            margin: 0 12px;
+            width: unset;
+            height: unset;
+            button {    
+                display: block;
+                content: "";
+                max-width: 100%;
+                width: 120px;
+                height: 9.693px;
+                background-color: var(--background-secondary);
+                border-radius: 0;   
+                &:before {
+                    display: none;
+                }   
+                @media (max-width: 991px) {
+                    width: 60px;
+                }                       
+            } 
+            &.slick-active {
+                button {
+                    background-color: var(--accent-1);
+                    &:before {
+                        display: none;
+                    }   
+                }                
+            }
+        }
+               
+    }
+}
