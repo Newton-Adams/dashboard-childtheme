@@ -1,0 +1,50 @@
+.um-page {
+    &.um-page-login, &.um-page-register {
+        background: linear-gradient(
+            to right, 
+            var(--background-secondary) 0%, 
+            var(--background-secondary) 50%, 
+            var(--background-primary) 50%, 
+            var(--background-primary) 100%
+        );
+        .container {
+            background: linear-gradient(
+                to right, 
+                var(--background-secondary) 0%, 
+                var(--background-secondary) 50%, 
+                var(--background-primary) 50%, 
+                var(--background-primary) 100%
+            );
+        }
+    }
+    .um {
+        // Login Page
+        &.um-login {
+            max-width: 100% !important;
+        }
+    
+        // Register Page 
+        &.um-page-register {
+            max-width: 100% !important;
+        }
+        .um-form {
+            .um-row {
+                display: flex;
+                flex-wrap: wrap;
+                margin-right: -25px;
+                margin-left: -25px;
+        
+                [class^='um-col-'] {
+                    position: relative;
+                    width: 100%;
+                    min-height: 1px;
+                    padding-right: 25px;
+                    padding-left: 25px;
+                    flex-grow: 1;
+                    flex-basis: 0;
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+.get-started-guide {
+    .card {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        .info-header {
+            display: flex;
+            align-items: flex-start;
+            .icon-col {
+                margin-right: 16px;
+            }
+            .step-text-col {
+                display: block;
+            }
+            .add-business-btn {
+                display: block;
+                margin: auto 0 auto auto; 
+                padding: 10px;
+                cursor: pointer;
+            }
+        }
+        #add-business-form {
+            display: block; 
+            max-width: 730px; 
+            margin: 0 auto;
+        }
+    }
+}
