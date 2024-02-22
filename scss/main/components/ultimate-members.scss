@@ -1,4 +1,7 @@
 .um-page {
+    h2 {
+        font-weight: 500;
+    }
     &.um-page-login, &.um-page-register {
         @media (min-width: 782px) {
             background: linear-gradient(
@@ -26,55 +29,54 @@
         }
     }
     .um {
-        // Login Page
-        &.um-login {
-            max-width: 100% !important;
-            margin-bottom: 0px !important;
-            .um-col-alt {
-                .um-field-c {
-                    margin-bottom: 15px;
-                }
-                .um-half {
-                    width: 100%;
-                    margin-bottom: 15px;
-                    &.um-right {
+        .um-col-alt {
+            .um-field-c {
+                margin-bottom: 15px;
+            }
+            .um-half {
+                width: 100%;
+                margin-bottom: 15px;
+                &.um-right {
+                    position: relative;
+                    &::before {
+                        content: "";
+                        display: block;
+                        max-width: 140px;
+                        font-size: 10px;
+                        font-weight: 400; 
+                        text-align: center;
+                        color: var(--text-muted); 
+                        background-color: var(--background-primary);
+                        margin: 0 auto 15px;
                         position: relative;
-                        &::before {
-                            content: "don’t have an account?";
-                            display: block;
-                            max-width: 140px;
-                            font-size: 10px;
-                            font-weight: 400; 
-                            text-align: center;
-                            color: var(--text-muted); 
-                            background-color: var(--background-primary);
-                            margin: 0 auto 15px;
-                            position: relative;
-                            z-index: 2;
-                        }
-                        &::after {
-                            content: "";
-                            display: block;
-                            width: 100%;
-                            height: 1px;
-                            background-color: var(--input-border-color);
-                            position: absolute;
-                            top: 12px;
-                            left: 0;
-                            z-index: 1;
-                        }
+                        z-index: 2;
+                    }
+                    &::after {
+                        content: "";
+                        display: block;
+                        width: 100%;
+                        height: 1px;
+                        background-color: var(--input-border-color);
+                        position: absolute;
+                        top: 12px;
+                        left: 0;
+                        z-index: 1;
                     }
                 }
             }
-            .um-col-alt-b {
-                padding-top: 0px;
-                .um-link-alt {
-                    color: var(--text-muted) !important;
-                    font-size: 16px;
-                    font-weight: 700 !important;
-                    line-height: 14px !important;
-                }
+        }
+        .um-col-alt-b {
+            padding-top: 0px;
+            .um-link-alt {
+                color: var(--text-muted) !important;
+                font-size: 16px;
+                font-weight: 700 !important;
+                line-height: 14px !important;
             }
+        }
+        .um-field-block {
+            color: var(--body);
+            font-size: 16px;
         }
         .um-form {
             form {
@@ -87,13 +89,24 @@
                     }
                 }
                 input[type=password], input[type=search], input[type=tel], input[type=text], textarea {
-                    background: var(--background-secondary);
-                    border-radius: 6px; 
-                    box-shadow: var(--input-shadow); 
-                    padding: 16px;
-                    font-size: 13px;
-                    font-weight: 500;
-                    line-height: 13px;
+                    background: var(--background-secondary) !important;
+                    border-radius: 6px !important; 
+                    border: none !important;
+                    box-shadow: var(--input-shadow) !important; 
+                    padding: 16px !important;
+                    font-size: 13px !important;
+                    font-weight: 500 !important;
+                    line-height: 13px !important;
+                }
+                .um-field-checkbox {
+                    font-size: 12px;
+                    font-weight: 400;
+                    line-height: 20px;
+                    color: var(--text-body-light);
+                    a {
+                        text-decoration: none;
+                        font-weight: 700;
+                    }
                 }
                 .um-button { 
                     background: var(--accent-1);
@@ -123,11 +136,6 @@
                 }
             }
         }
-    
-        // Register Page 
-        &.um-page-register {
-            max-width: 100% !important;
-        }
         // .um-form {
         //     .um-row {
         //         display: flex;
@@ -148,6 +156,60 @@
         //     }
         // }
     }
+        
+    // Login Page
+    &.um-page-login {
+        max-width: 100% !important;
+        margin-bottom: 0px !important;
+        .um-col-alt {
+            .um-half {
+                &.um-right {
+                    &::before {
+                        content: "don’t have an account?";
+                    }
+                }
+            }
+        }
+    }
+
+    // Register Page 
+    &.um-page-register {
+        max-width: 100% !important;
+        .um-col-alt {
+            .um-half {
+                &.um-right {
+                    &::before {
+                        content: "already have an account?";
+                    }
+                }
+            }
+        }
+        .um-toggle-gdpr {
+            display: none !important;
+        }
+    }
+
+    // Password Reset 
+    &.um-page-password-reset {
+        background: var(--background-secondary);
+        .container {
+            background: var(--background-secondary);
+        }
+        .login-wrapper {
+            max-width: 424px;
+        }
+        .um-button {
+            width: 100% !important;
+            min-width: 100% !important;
+        }
+        .um-col-alt-b {
+            padding-top: 10px;
+        }
+        .um-um_password_id {
+            margin-bottom: 0 !important;
+        }
+    }
+
     .slider-column {
         position: relative;
         @media (max-width: 781px) {

@@ -22,7 +22,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        bottom: -19px;
+        bottom: -20px;
+        left: 0;
         li {
             margin: 0 12px;
             width: unset;
@@ -32,10 +33,10 @@
                 content: "";
                 max-width: 100%;
                 width: 120px;
-                height: 9.693px;
+                height: 10px;
                 background-color: var(--background-secondary);
                 border-radius: 0;   
-                &:before {
+                &::before {
                     display: none;
                 }   
                 @media (max-width: 991px) {

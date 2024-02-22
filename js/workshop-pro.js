@@ -143,7 +143,7 @@ jQuery(document).ready(function ($) {
     }
 
     if ($(".onboarding-aside-slider").length) {
-		$(".onboarding-aside-slider").slick({
+		$(".onboarding-aside-slider .wp-block-group__inner-container").slick({
 			infinite: true,
 			slidesToShow: 1,
 			slidesToScroll: 1,
@@ -151,4 +151,12 @@ jQuery(document).ready(function ($) {
             arrows: false
 		});
 	}
+
+    if( $(".um-field-type_terms_conditions").length ) {
+        $(".um-field-type_terms_conditions").find(".um-field-checkbox-option").each(function() {
+            $(this).addClass("custom-checkbox");
+            $(this).html('By creating an account means you agree to the <a href="/terms-and-conditions" target="_blank">Terms and Conditions</a>, and our <a href="/privacy-policy" target="_blank">Privacy Policy</a>');
+        } );
+
+    }
 })
