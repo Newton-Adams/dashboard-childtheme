@@ -151,12 +151,62 @@ jQuery(document).ready(function ($) {
             arrows: false
 		});
 	}
+    
+    $(document).on('change','#csvFile', function(e){
+        console.log('changed');
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(e){
+            var contents = e.target.result;
+            var rows = contents.split('\n');
+            var data = [];
 
+            for (var i = 0; i < rows.length; i++) {
+                const columns = rows[i].split(',')
+                if(columns.length === 2) { 
+                    i != 0 && data.push(columns)                    
+                } else {
+                    $('#csvData .csv-table').html('<h5>Your CSV format does not look right, stop messing with it you donkey...</h5>')
+                    return 
+                }   
+            }
+
+            
+            //Create winow object
+            window.customerCsv = data
+            
+            // Example: Display CSV data in a table
+            var table = '<table border="1">';
+            for (var i = 0; i < 11; i++) {
+                table += '<tr>';
+                for (var j = 0; j < data[i].length; j++) {
+                    table += '<td>' + data[i][j] + '</td>';
+                }
+                table += '</tr>';
+            }
+            table += `<tr><td colspan="2" >And ${data.length} more rows... </td></tr></table>`;
+            $('#csvData .csv-table').html(table);
+            
+            //Create progress bar
+            let progresSegments = []
+            for (let i = 0; i < (rows.length / 20); i++) {
+                progresSegments += `<span class="segment" ></span>`
+            }
+       
+            $('#csvData .csv-table').append(`<p>Customers upload progress <span class="loading-elipses" style="opacity:0;" ><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span></span> <span class="bar" ><span class="segment" ></span></span></p>`)
+            $('#csvData button').removeAttr('disabled')
+        };
+
+        reader.readAsText(file);
+    });
+    
+    //Ts&Cs Checkbox
     if( $(".um-field-type_terms_conditions").length ) {
         $(".um-field-type_terms_conditions").find(".um-field-checkbox-option").each(function() {
             $(this).addClass("custom-checkbox");
             $(this).html('By creating an account means you agree to the <a href="/terms-and-conditions" target="_blank">Terms and Conditions</a>, and our <a href="/privacy-policy" target="_blank">Privacy Policy</a>');
         } );
-
     }
+
 })

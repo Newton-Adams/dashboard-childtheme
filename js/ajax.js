@@ -148,4 +148,54 @@ jQuery(document).ready(function ($) {
             }
         });
     })
+
+    
+    $(document).on('click','#csvData button',function() {  
+
+       let csvChunks = []
+       const chunkCount = Math.ceil(window.customerCsv.length / 20)
+       let completedChunks = 0
+       let row = 0
+        
+       function insertPosts() {
+            $('.loading-elipses').addClass('active')
+            for (let i = 0; i < 20; i++) {                
+                csvChunks.push(window.customerCsv[row])
+                i++   
+                row++
+                $(`.bar > .segment:nth-child(${completedChunks + 1})`).addClass('loading')
+                if(i === 19) {
+                    $.ajax({
+                        type: "POST",
+                        url: workshop_pro_obj.ajaxurl,
+                        data: {
+                            'action': 'insert_csv_customers',
+                            'csv-customer-data': csvChunks,
+                        },
+                        success: function (response) {
+                            i = 0
+                            completedChunks++
+                            $(`.bar > .segment`).css('max-width',`${(100 / chunkCount) * completedChunks}%`)
+                            console.log((100 / chunkCount) * (completedChunks));
+                            
+                            if(completedChunks < chunkCount) {
+                                insertPosts()
+                            } else {
+                                setTimeout(() => {
+                                    $('#csvData').fadeOut(300,function(){
+                                        $('.loading-elipses').removeClass('active')
+                                        $(this).html('<p>Customers upload progress: <strong>Complete!</strong></p>').fadeIn()
+                                    })
+                                    window.customerCsv = undefined
+                                    delete(window.customerCsv)	
+                                }, 3000); 
+                            }                            
+                        }
+                    });
+                }         
+            }
+        }
+        insertPosts()
+        
+    })
 })

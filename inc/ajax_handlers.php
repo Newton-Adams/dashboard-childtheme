@@ -43,7 +43,7 @@ add_action('wp_ajax_post_customers', 'handle_customer_ajax_form');
 add_action('wp_ajax_nopriv_post_customers', 'handle_customer_ajax_form');
 function handle_customer_ajax_form() {   
     
-    //Cuatomer Name
+    //Customer Name
     isset($_POST['customer-name']) && $customer_name = strip_tags($_POST['customer-name']);
 
     //Details Data
@@ -76,3 +76,39 @@ function handle_customer_ajax_form() {
     if(wp_doing_ajax()) die();
 }
 
+
+//Save & update customer posts
+add_action('wp_ajax_insert_csv_customers', 'insert_csv_customers');
+add_action('wp_ajax_nopriv_insert_csv_customers', 'insert_csv_customers');
+function insert_csv_customers() {   
+    
+    //Customer Name
+    isset($_POST['csv-customer-data']) && $customer_data = $_POST['csv-customer-data'];
+   
+    foreach ($customer_data as $key => $row) {  
+        echo '<pre>',print_r($row,1),'</pre>';
+        // Add/update the post
+        $customer_args = array(
+            'post_type' => 'customers',
+            'post_title'    => $row[0],
+            'post_status'   => 'publish',
+            'post_author'   => 1,
+        );
+        //Create or edit post
+        $customer_id = (int)wp_insert_post( $customer_args );
+    
+        // Check if the post was successfully inserted
+        // if ( !is_wp_error($post_id) && $customer_id > 0 ) {
+            
+        //     //Create/update customer details meta
+        //     add_post_meta($customer_id, 'details', $details, true);
+            
+        //     //Create/update customer contact meta
+        //     add_post_meta($customer_id, 'contacts', $contacts, true);
+    
+        // } 
+    }
+    
+
+    if(wp_doing_ajax()) die();
+}
