@@ -209,4 +209,25 @@ jQuery(document).ready(function ($) {
         } );
     }
 
+    //Mechanics
+    //Add Mechanics Form Row
+    $(document).on('click','.add-staff-outer .add-row-button',function(e) {
+        const rowCount = $('#add-staff').children().length
+        const jobRow = `<div class="form-row" >
+                            <div class="input-label-wrapper" >
+                                <label for="name-${rowCount}" >Staff member name</label>
+                                <input type="text" id="name-${rowCount}" name="name-${rowCount}" >
+                            </div>
+                            <div class="input-label-wrapper" >
+                                <label for="contact-number-${rowCount}" >Contact number</label>
+                                <input type="text" id="contact-number-${rowCount}" name="contact-number-${rowCount}" >
+                            </div>
+                            <div class="input-label-wrapper" >
+                                <label for="role-${rowCount}" >Role</label>
+                                <input type="text" id="role-${rowCount}" name="role-${rowCount}" >
+                            </div>
+                        </div>`
+    
+        $('#add-staff').append(jobRow)    
+    })
 })

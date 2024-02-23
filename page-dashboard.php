@@ -24,9 +24,9 @@ get_header(); ?>
 			 *
 			 * @since 0.1
 			 */
-			do_action( 'generate_before_main_content' ); 
-
-            include( get_stylesheet_directory() . "/inc/templates/customers/upload-csv.php"); 
+			
+            include( get_stylesheet_directory() . "/inc/page-templates/dashboard.php"); 
+            include( get_stylesheet_directory() . "/inc/page-templates/staff-template.php"); 
 
 			/**
 			 * generate_after_main_content hook.

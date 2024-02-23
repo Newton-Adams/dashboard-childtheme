@@ -22,3 +22,35 @@ add_action('generate_after_header_content','header_content_wrap_after',100);
 function header_content_wrap_after() {
     echo '</div>';
 }
+
+function custom_user_profile_fields( $user_contactmethods ) {
+	$user_contactmethods['mechanics'] = 'Custom Field Label';
+	return $user_contactmethods;
+}
+add_filter( 'user_contactmethods', 'custom_user_profile_fields' );
+
+function display_custom_user_profile_fields( $user ) {
+	?>
+	<h3>Custom Fields</h3>
+	<table class="form-table">
+		<tr>
+			<th><label for="custom_field_name">Custom Field Label</label></th>
+			<td>
+				<input type="text" name="custom_field_name" id="custom_field_name" value="<?php echo esc_attr( get_the_author_meta( 'mechanics', $user->ID ) ); ?>" class="regular-text" /><br />
+				<span class="description">Enter your custom field value.</span>
+			</td>
+		</tr>
+	</table>
+	<?php
+}
+add_action( 'show_user_profile', 'display_custom_user_profile_fields' );
+add_action( 'edit_user_profile', 'display_custom_user_profile_fields' );
+
+function save_custom_user_profile_fields( $user_id ) {
+	if ( ! current_user_can( 'edit_user', $user_id ) ) {
+		return false;
+	}
+	update_user_meta( $user_id, 'mechanics', sanitize_text_field( $_POST['mechanics'] ) );
+}
+add_action( 'personal_options_update', 'save_custom_user_profile_fields' );
+add_action( 'edit_user_profile_update', 'save_custom_user_profile_fields' );

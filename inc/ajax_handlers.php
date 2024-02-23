@@ -77,7 +77,7 @@ function handle_customer_ajax_form() {
 }
 
 
-//Save & update customer posts
+//Update custome post type with csv upload
 add_action('wp_ajax_insert_csv_customers', 'insert_csv_customers');
 add_action('wp_ajax_nopriv_insert_csv_customers', 'insert_csv_customers');
 function insert_csv_customers() {   
@@ -86,7 +86,7 @@ function insert_csv_customers() {
     isset($_POST['csv-customer-data']) && $customer_data = $_POST['csv-customer-data'];
    
     foreach ($customer_data as $key => $row) {  
-        echo '<pre>',print_r($row,1),'</pre>';
+  
         // Add/update the post
         $customer_args = array(
             'post_type' => 'customers',
@@ -96,19 +96,32 @@ function insert_csv_customers() {
         );
         //Create or edit post
         $customer_id = (int)wp_insert_post( $customer_args );
-    
-        // Check if the post was successfully inserted
-        // if ( !is_wp_error($post_id) && $customer_id > 0 ) {
-            
-        //     //Create/update customer details meta
-        //     add_post_meta($customer_id, 'details', $details, true);
-            
-        //     //Create/update customer contact meta
-        //     add_post_meta($customer_id, 'contacts', $contacts, true);
-    
-        // } 
     }
     
+
+    if(wp_doing_ajax()) die();
+}
+
+//Update Mechanics
+add_action('wp_ajax_insert_mechanics', 'insert_mechanics');
+add_action('wp_ajax_nopriv_insert_mechanics', 'insert_mechanics');
+function insert_mechanics() {   
+    //Get existing mechanics
+    $existing_mechanics = json_decode(get_user_meta( um_profile_id(),  'mechanics' )[0]);
+    
+    //Mechanics Data
+    isset($_POST['mechanics-data']) && $mechanics_data = strip_tags( json_encode($_POST['mechanics-data']) );
+    
+    //Combine existing & new mechanics
+    $updated_mechanics = array();
+    foreach ($existing_mechanics as $key => $mechanic) {
+        array_push($updated_mechanics,$mechanic);
+    }
+    foreach (json_decode($mechanics_data) as $key => $mechanic) {
+        array_push($updated_mechanics,$mechanic);
+    }
+   
+    update_user_meta( um_profile_id(), 'mechanics', json_encode($updated_mechanics) );    
 
     if(wp_doing_ajax()) die();
 }

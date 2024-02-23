@@ -2,6 +2,53 @@
 
 jQuery(document).ready(function ($) {
 
+    //Mechanics Save/Edit Ajax
+    $(document).on('click','#save-post.technicians-save',function() {
+
+        //Labour Rows
+        const mechanicsForm = document.getElementById("add-staff");
+        const mechanicsFormData = new FormData(mechanicsForm);
+        
+        let mechanicRowArray = []
+        let mechanicKeyAndValue = {}
+        let mechanicSortedFormData = {}
+        let mechanicI = 0
+        let mechanicRowNum = 0
+        //The loop count is based on the number of fields in the form
+        for (const pair of mechanicsFormData.entries()) {                
+            if(mechanicI < 3) {
+                mechanicKeyAndValue = {}
+                const pairkey = pair[0]
+                const pairValue = pair[1]
+                if (mechanicKeyAndValue[pairkey] === undefined) {
+                    mechanicKeyAndValue[pairkey] = "";
+                }
+                
+                mechanicKeyAndValue[pairkey] += pairValue
+                mechanicRowArray.push(mechanicKeyAndValue)
+                mechanicI++
+                if(mechanicI === 3) {
+                    mechanicI = 0
+                    mechanicSortedFormData[`row-${mechanicRowNum}`] = mechanicRowArray
+                    mechanicRowArray = []
+                    mechanicRowNum++
+                }
+            } 
+        }
+
+        $.ajax({
+            type: "POST",
+            url: workshop_pro_obj.ajaxurl,
+            data: {
+                'action': 'insert_mechanics',
+                'mechanics-data': mechanicSortedFormData,
+            },
+            success: function (response) {	
+                console.log(response);
+            }
+        });
+    })
+
     //Job Save/Edit Ajax
     $(document).on('click','#save-post.job-save',function() {
         //Job related posts & title
