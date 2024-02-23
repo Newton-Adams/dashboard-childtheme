@@ -230,4 +230,22 @@ jQuery(document).ready(function ($) {
     
         $('#add-staff').append(jobRow)    
     })
+    // Get started guide 
+    if($('.get-started-guide').length) { 
+        let businessForm = $('.add-business-form'); 
+        let businessFormHeight = businessForm[0].scrollHeight + 'px';
+        
+        $(document).on('click','.add-business-btn',function() {
+            console.log(businessFormHeight)
+            $(this).toggleClass('active')
+            $('.add-business-form').toggleClass('show');
+            
+            if($('.add-business-form').hasClass('show')) {
+                $('.add-business-form').css('height', businessFormHeight)
+            } else {
+                $('.add-business-form').css('height','0')
+            }
+        })
+    }
+
 })

@@ -1,6 +1,6 @@
 html {
     body {
-        &:not(.um-page) {
+        &:not(.um-page-login), &:not(.um-page-register), &:not(.um-page-password-reset) {
             display: flex;
             flex-wrap: wrap;
             &.admin-bar {

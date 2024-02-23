@@ -24,9 +24,11 @@ get_header(); ?>
 			 *
 			 * @since 0.1
 			 */
-			
-            include( get_stylesheet_directory() . "/inc/page-templates/dashboard.php"); 
-            include( get_stylesheet_directory() . "/inc/page-templates/staff-template.php"); 
+			do_action( 'generate_before_main_content' ); 
+
+			include( get_stylesheet_directory() . "/inc/templates/welcome-section.php" ); 
+
+			include( get_stylesheet_directory() . "/inc/templates/get-started-guide.php" ); 
 
 			/**
 			 * generate_after_main_content hook.

@@ -1,7 +1,4 @@
 .um-page {
-    h2 {
-        font-weight: 500;
-    }
     &.um-page-login, &.um-page-register {
         @media (min-width: 782px) {
             background: linear-gradient(
