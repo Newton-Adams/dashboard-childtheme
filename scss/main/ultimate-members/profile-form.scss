@@ -109,6 +109,28 @@
                 font-size: 1rem;
                 line-height: 125%;
             }
+            .um-col-alt {
+                .um-center {
+                    text-align: right;
+                }
+                .um-button {
+                    background: var(--accent-1) !important;
+                    border: 1px solid var(--accent-1) !important;
+                    color: var(--background-secondary) !important;
+                    padding: 12px 20px !important;
+                    border-radius: 6px !important;
+                    font-size: 12px !important;
+                    font-weight: 700 !important;
+                    line-height: 133.333% !important;
+                    transition: 0.3s all ease;
+                    min-width: unset !important;
+                    &:hover, &:focus {
+                        background: var(--accent-1-dark) !important;
+                        border: 1px solid var(--accent-1-dark) !important;
+                        color: var(--background-secondary) !important;
+                    }
+                }
+            }
         }
         .um-field {
             padding: 24px 0 0 0;

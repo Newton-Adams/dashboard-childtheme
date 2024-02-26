@@ -194,12 +194,19 @@ jQuery(document).ready(function ($) {
                 progresSegments += `<span class="segment" ></span>`
             }
        
+
             $('#csvData .csv-table').append(`<p>Customers upload progress <span class="loading-elipses" style="opacity:0;" ><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span></span> <span class="bar" ><span class="segment" ></span></span></p>`)
             $('#csvData button').removeAttr('disabled')
+            $('.csv-upload-popup').addClass('show')
         };
 
         reader.readAsText(file);
     });
+
+    // CSV Popup Close 
+    $(document).on('click','.csv-upload-popup .close-popup, .csv-upload-popup .overlay',function() {
+        $('.csv-upload-popup').removeClass('show')
+    })
     
     //Ts&Cs Checkbox
     if( $(".um-field-type_terms_conditions").length ) {
