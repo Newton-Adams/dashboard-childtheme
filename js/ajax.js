@@ -5,6 +5,8 @@ jQuery(document).ready(function ($) {
     //Mechanics Save/Edit Ajax
     $(document).on('click','#save-post.technicians-save',function() {
 
+        addLoader('.add-staff-outer .add-row-button-outer')
+
         //Labour Rows
         const mechanicsForm = document.getElementById("add-staff");
         const mechanicsFormData = new FormData(mechanicsForm);
@@ -44,6 +46,7 @@ jQuery(document).ready(function ($) {
                 'mechanics-data': mechanicSortedFormData,
             },
             success: function (response) {	
+                removeLoader('.add-staff-outer .add-row-button-outer')
                 console.log(response);
             }
         });
@@ -245,4 +248,15 @@ jQuery(document).ready(function ($) {
         insertPosts()
         
     })
+
+    //Loader - used for ajax
+    function addLoader(ele) {
+        const loadingGears = '<div class="svg-loader"></div>';
+        $(ele).prepend(loadingGears)
+    }
+    function removeLoader(ele) {
+        $(ele).find('.svg-loader').fadeOut(300,function() {
+            $(this).remove()
+        })
+    }
 })

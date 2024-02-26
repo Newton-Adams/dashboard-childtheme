@@ -4,6 +4,7 @@
     align-items: flex-end;
     flex-direction: column;
     padding: 15px 0 0;
+    margin-bottom: 30px;
     > p {
         margin-bottom: 0;
         font-size: 0.875rem;
@@ -28,5 +29,13 @@
             font-size: 1.125rem;
             font-weight: 700;
         }
+    }
+}
+.total-outer {
+    background-color: var(--background-primary);
+    padding: 25px 22px;
+    p {
+        text-align: right;
+        margin-bottom: 0;
     }
 }

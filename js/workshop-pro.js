@@ -137,9 +137,21 @@ jQuery(document).ready(function ($) {
             lineSubtotal += Number(lineTotal)
             vatSubtotal += Number(vat)
         })
-        $(this).closest('.forms-container').find('.sub-total-outer .sub-total .value').text(`R${lineSubtotal.toFixed(2)}`)
-        $(this).closest('.forms-container').find('.sub-total-outer .vat .value').text(`R${vatSubtotal.toFixed(2)}`)
-        $(this).closest('.forms-container').find('.sub-total-outer .total .value').text(`R${(lineSubtotal + vatSubtotal).toFixed(2)}`)
+        $(this).closest('.section').find('.sub-total-outer .sub-total .value').text(`R${lineSubtotal.toFixed(2)}`)
+        $(this).closest('.section').find('.sub-total-outer .vat .value').text(`R${vatSubtotal.toFixed(2)}`)
+        $(this).closest('.section').find('.sub-total-outer .total .value').text(`R${(lineSubtotal + vatSubtotal).toFixed(2)}`)
+        updateTotalCosts('.section.jobs-container','.section.parts-container')
+    }
+    
+    //Update Total
+    function updateTotalCosts(subtotal1,subtotal2) {
+        const total1 = Number($(subtotal1).find('.sub-total .value').text().replace('R',''))
+        const vat1 = Number($(subtotal1).find('.vat .value').text().replace('R',''))
+        const total2 = Number($(subtotal2).find('.sub-total .value').text().replace('R',''))
+        const vat2 = Number($(subtotal2).find('.vat .value').text().replace('R',''))
+        console.log(total1,total2,vat1,vat2);
+        $('.total-outer .total-vat .value').text(`R${(vat1 + vat2).toFixed(2)}`)
+        $('.total-outer .grand-total .value').text(`R${(total1 + total2).toFixed(2)}`)
     }
 
     if ($(".onboarding-aside-slider").length) {
@@ -171,7 +183,6 @@ jQuery(document).ready(function ($) {
                     return 
                 }   
             }
-
             
             //Create winow object
             window.customerCsv = data
@@ -237,13 +248,13 @@ jQuery(document).ready(function ($) {
     
         $('#add-staff').append(jobRow)    
     })
+
     // Get started guide 
-    if($('.get-started-guide').length) { 
+    if($('.get-started-guide').length) {
         let businessForm = $('.add-business-form'); 
         let businessFormHeight = businessForm[0].scrollHeight + 'px';
         
         $(document).on('click','.add-business-btn',function() {
-            console.log(businessFormHeight)
             $(this).toggleClass('active')
             $('.add-business-form').toggleClass('show');
             
@@ -254,5 +265,14 @@ jQuery(document).ready(function ($) {
             }
         })
     }
-
+    
+    //Mechanics Table
+    new DataTable('#staff-table', {
+        layout: {
+            topStart: 'info',
+            bottom: 'paging',
+            bottomStart: null,
+            bottomEnd: null
+        }
+    });
 })

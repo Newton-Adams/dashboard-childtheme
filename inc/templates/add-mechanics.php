@@ -21,17 +21,49 @@
         </div>
     </form>
     <div class="add-row-button-outer" >
-        <button class="add-row-button" type="button" >
+        <button id="save-post" class="technicians-save" type="button" >
             <span>Add New Technician</span>
         </button>
     </div>
-</div>
-<div class="forms-container" >
-    <button id="save-post" class="technicians-save" >Save</button>
-    <?php 
-    //Get existing mechanics
-    $existing_mechanics = json_decode(get_user_meta( um_profile_id(),  'mechanics' )[0]);
-    echo '<pre>',print_r($existing_mechanics,1),'</pre>';
-    echo '<pre>',print_r(get_user_meta( um_profile_id(), 'mechanics' ),1),'</pre>'; 
-    ?>
+    <div class="forms-container staff-list" >
+        <?php 
+        //Get existing mechanics
+        $existing_mechanics = array();
+        !empty(get_user_meta( um_profile_id(),  'mechanics' )) && $existing_mechanics = json_decode(get_user_meta( um_profile_id(),  'mechanics' )[0], true);
+        //Mechanics Table
+        ?>
+        <h3>Staff list</h3>
+        <table id="staff-table" class="data-table" >
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>CONTACT</th>
+                    <th>ROLE</th>
+                    <th>DELETE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                     if(!empty($existing_mechanics)) {
+                         foreach ($existing_mechanics as $mechanickey => $mechanic) {
+                            echo '<tr>';
+                                foreach ($mechanic as $key => $value) {
+                                    if(!empty($value["name-0"])) {
+                                        echo '<td class="name" >'.$value["name-0"].'</td>';
+                                    }
+                                    if(!empty($value["contact-number-0"])) {
+                                        echo  '<td class="contact-number" >'.$value["contact-number-0"].'</td>';
+                                    }
+                                    if(!empty($value["role-0"])) {
+                                        echo '<td class="role" >'.$value["role-0"].'</td>';
+                                    }
+                                }
+                                echo '<td>'.file_get_contents( get_stylesheet_directory() . "/assets/images/bin.svg" ).'</td>';
+                            echo '</tr>';
+                        }
+                     }
+                ?>                    
+            </tbody>
+        </table>
+    </div>
 </div>
