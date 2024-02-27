@@ -125,3 +125,41 @@ function insert_mechanics() {
 
     if(wp_doing_ajax()) die();
 }
+
+add_action('wp_ajax_upload_attachment', 'upload_attachment');
+add_action('wp_ajax_nopriv_upload_attachment', 'upload_attachment');
+//Upload Attachments
+function upload_attachment() {
+    
+    //Attachment Data
+    if (isset($_FILES['attachment'])) {
+        global $wpdb;
+        $attachment = $_FILES['attachment'];
+
+        $upload = wp_upload_bits($attachment['name'], null, file_get_contents($attachment['tmp_name']));
+        $attachment_url = $upload['file'];
+        echo '<table id="attachment-files" >
+                <thead><tr><th>Name</th><th>Delete</th></tr></thead>
+                <tbody>
+                    <tr><td attachment_id="'.$attachment_url.'" >'.$attachment['name'].'</td><td class="delete" >Bin</td></tr>
+                </tbody>
+            </table>';
+            unlink('C:\Users\webworx\Local Sites\workshop-pro\app\public/wp-content/uploads/2024/02/Logo-test.png');
+    } else {
+        wp_send_json_error(array('message' => 'No file uploaded'));
+    }
+    
+    wp_die();
+}
+
+//Update Mechanics
+add_action('wp_ajax_delete_file', 'delete_file');
+add_action('wp_ajax_nopriv_delete_file', 'delete_file');
+function delete_file() {   
+    
+    //Mechanics Data
+    isset($_POST['file_url']) && $file_url = strip_tags( json_encode($_POST['file_url']) ); 
+    unlink($file_url);
+
+    if(wp_doing_ajax()) die();
+}

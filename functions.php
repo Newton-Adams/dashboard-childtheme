@@ -54,3 +54,4 @@ function save_custom_user_profile_fields( $user_id ) {
 }
 add_action( 'personal_options_update', 'save_custom_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'save_custom_user_profile_fields' );
+

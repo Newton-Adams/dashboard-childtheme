@@ -183,7 +183,7 @@ jQuery(document).ready(function ($) {
                 if(columns.length === 2) { 
                     i != 0 && data.push(columns)                    
                 } else {
-                    $('#csvData .csv-table').html('<h5>Your CSV format does not look right, stop messing with it you donkey...</h5>')
+                    $('#csvData .csv-table').html('<h5>Your CSV format does not look right, please download the template</h5>')
                     return 
                 }   
             }
@@ -279,4 +279,5 @@ jQuery(document).ready(function ($) {
             bottomEnd: null
         }
     });
+
 })

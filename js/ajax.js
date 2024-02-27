@@ -249,6 +249,40 @@ jQuery(document).ready(function ($) {
         
     })
 
+    
+    //Job attachments
+    $(document).on('change','#attachment', function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+
+        var formData = new FormData();
+        formData.append('action', 'upload_attachment');
+        formData.append('attachment', file);
+
+        $.ajax({
+            type: "POST",
+            url: workshop_pro_obj.ajaxurl,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {                
+                $('.form-row.attachments').append(response)
+                new DataTable('.form-row.attachments #attachment-files', {
+                    layout: {
+                        topStart: 'info',
+                        bottom: 'paging',
+                        bottomStart: null,
+                        bottomEnd: null
+                    }
+                });
+
+            },
+            error: function (xhr, status, error) {
+                alert('Error uploading file: ' + error);
+            }
+        });
+    });
+    
     //Loader - used for ajax
     function addLoader(ele) {
         const loadingGears = '<div class="svg-loader"></div>';
@@ -259,4 +293,21 @@ jQuery(document).ready(function ($) {
             $(this).remove()
         })
     }
+
+    //Delete upload file
+    $(document).on('click','#attachment-files .delete',function() {
+        const attachment_file_url = $(this).closest('tr').find('td[attachment_id]').attr('attachment_id')
+        $.ajax({
+            type: "POST",
+            url: workshop_pro_obj.ajaxurl,
+            data: {
+                'action': 'delete_file',
+                'file_url': attachment_file_url,
+            },
+            success: function (response) {
+                console.log('Test',attachment_file_url);
+            }
+        });
+    })
+
 })

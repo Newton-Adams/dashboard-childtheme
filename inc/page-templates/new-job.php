@@ -16,6 +16,9 @@ echo '<div class="forms-container" >
             include( get_stylesheet_directory() . "/inc/templates/subtotal.php");
             include( get_stylesheet_directory() . "/inc/templates/total.php");
    echo '</div>
+         <div class="section notes&attachments-container" >';
+            include( get_stylesheet_directory() . "/inc/templates/jobs/job-notes-&-attachments.php");
+   echo '</div>
    </div>
    <div class="forms-container" >
       <div class="parts-container" >'; 
