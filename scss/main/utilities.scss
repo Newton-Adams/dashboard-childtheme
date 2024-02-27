@@ -257,3 +257,14 @@ body {
         }
     }
 }
+
+@media (max-width: 1080px) {
+    .wp-block-columns {
+        &:not(.is-not-stacked-on-mobile) {
+            flex-wrap: wrap !important;
+            > .wp-block-column {
+                flex-basis: 100% !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,100 @@
+.snapshot-section {
+    .pie-chart-key {
+        display: flex;
+        width: 8px;
+        height: 8px; 
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+    .card {
+        margin-bottom: 28px;
+        .card-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            width: 48px;
+            height: 48px;
+            margin-right: 18px;
+            border-radius: 50%;
+        }
+        .card-text {
+            display: block;
+            width: 100%; 
+            max-width: calc( 100% - 66px);
+        }
+        .label {
+            width: 100px;
+            margin-right: 10px;
+        }
+        &.active {
+            .card-icon {
+                background-color: var(--active);
+            }
+            .card-heading {
+                color: var(--active);
+            }
+        }
+        &.drafts {
+            .card-icon {
+                background-color: var(--drafts);
+            }
+            .card-heading {
+                color: var(--drafts);
+            }
+        }
+        &.awaiting-parts {
+            .card-icon {
+                background-color: var(--awaiting);
+            }
+            .card-heading {
+                color: var(--awaiting);
+            }
+        }
+        &.invoice {
+            .card-icon {
+                background-color: var(--invoice);
+            }
+            .card-heading {
+                color: var(--invoice);
+            }
+        }
+        &.quotes {
+            .card-icon {
+                background-color: var(--quotes);
+            }
+            .card-heading {
+                color: var(--quotes);
+            }
+        }
+        &.complete {
+            .card-icon {
+                background-color: var(--complete);
+            }
+            .card-heading {
+                color: var(--complete);
+            }
+        }
+
+    }
+    @media (max-width: 1600px) { 
+        flex-wrap: wrap !important; 
+        row-gap: 0;
+        column-gap: 2em;
+        .wp-block-column {
+            flex-basis: calc(50% - 1em) !important;
+        }
+    } 
+    @media (min-width: 782px) and (max-width: 900px) { 
+        .wp-block-column {
+            flex-basis: 100% !important;
+        }
+    }
+    @media only screen and (max-width: 781px) { 
+        .card {
+            padding: 20px;
+            .card-icon {
+                margin-right: 18px;
+            }
+        }
+    }
+}

@@ -254,18 +254,19 @@ jQuery(document).ready(function ($) {
     })
 
     // Get started guide 
-    if($('.get-started-guide').length) {
-        let businessForm = $('.add-business-form'); 
-        let businessFormHeight = businessForm[0].scrollHeight + 'px';
+    if($('.get-started-guide').length) { 
+        let businessForm = $('.um-profile-body'); 
+        let businessFormHeight = businessForm[0].clientHeight + 'px';
+        console.log(businessForm)
         
-        $(document).on('click','.add-business-btn',function() {
+        $(document).on('click','.add-business-info .add-business-btn',function() {
             $(this).toggleClass('active')
             $('.add-business-form').toggleClass('show');
             
             if($('.add-business-form').hasClass('show')) {
-                $('.add-business-form').css('height', businessFormHeight)
+                $('.add-business-form').slideToggle('slow');
             } else {
-                $('.add-business-form').css('height','0')
+                $('.add-business-form').slideUp('slow');
             }
         })
     }
@@ -279,5 +280,59 @@ jQuery(document).ready(function ($) {
             bottomEnd: null
         }
     });
+
+    // Workshop Doughnut Chart 
+    if( $('#workshopChart').length ) {
+        var activeVal = $('.active .chart-value').text();
+        var completeVal = $('.complete .chart-value').text();
+        var awaitingVal = $('.awaiting .chart-value').text();
+
+        var ctx = document.getElementById('workshopChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Active', 'Complete', 'Waiting'],
+                datasets: [{
+                    label: '',
+                    data: [ 
+                        activeVal, 
+                        completeVal, 
+                        awaitingVal
+                    ],
+                    backgroundColor: [
+                        '#68DBF2',
+                        '#2ECF88',
+                        '#F7936F'
+                    ],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutoutPercentage: 90,
+                title: {
+                    display: true,
+                    text: 'Workshop Chart',
+                    fontSize: 16,
+                    fontWeight: 700, 
+                },
+                tooltips: {
+                    display: false
+                },
+                plugins: {
+                    legend: { 
+                        display: false, 
+                        position: 'bottom', 
+                        align: 'center',
+                    }
+                }
+
+            }
+        });
+
+    }
+
+
+
 
 })

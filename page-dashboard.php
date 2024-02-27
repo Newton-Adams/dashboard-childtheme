@@ -28,6 +28,8 @@ get_header(); ?>
 
 			include( get_stylesheet_directory() . "/inc/templates/welcome-section.php" ); 
 
+			include( get_stylesheet_directory() . "/inc/templates/snapshot.php" );
+
 			include( get_stylesheet_directory() . "/inc/templates/get-started-guide.php" ); 
 
 			/**
