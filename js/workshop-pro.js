@@ -47,7 +47,7 @@ jQuery(document).ready(function ($) {
                                 <label for="line-total-${rowCount}" >Line Total </label>
                             <input type="text" id="line-total-${rowCount}" name="line-total-${rowCount}" >
                             </div>
-                            <div class="delete-row" >
+                            <div class="input-label-wrapper delete-row" >
                                 <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M4.30769 6.36667C4.60508 6.36667 4.84615 6.60545 4.84615 6.9V13.3C4.84615 13.5946 4.60508 13.8333 4.30769 13.8333C4.01031 13.8333 3.76923 13.5946 3.76923 13.3V6.9C3.76923 6.60545 4.01031 6.36667 4.30769 6.36667Z" fill="#7A7A9D"/>
                                     <path d="M7 6.36667C7.29738 6.36667 7.53846 6.60545 7.53846 6.9V13.3C7.53846 13.5946 7.29738 13.8333 7 13.8333C6.70262 13.8333 6.46154 13.5946 6.46154 13.3V6.9C6.46154 6.60545 6.70262 6.36667 7 6.36667Z" fill="#7A7A9D"/>
@@ -97,7 +97,7 @@ jQuery(document).ready(function ($) {
                                 <label for="line-total-${rowCount}" >Line Total</label>
                                 <input type="text" id="line-total-${rowCount}" name="line-total-${rowCount}" >
                             </div>
-                            <div class="delete-row" >
+                            <div class="input-label-wrapper delete-row" >
                                 <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4.30769 6.36667C4.60508 6.36667 4.84615 6.60545 4.84615 6.9V13.3C4.84615 13.5946 4.60508 13.8333 4.30769 13.8333C4.01031 13.8333 3.76923 13.5946 3.76923 13.3V6.9C3.76923 6.60545 4.01031 6.36667 4.30769 6.36667Z" fill="#7A7A9D"/>
                                 <path d="M7 6.36667C7.29738 6.36667 7.53846 6.60545 7.53846 6.9V13.3C7.53846 13.5946 7.29738 13.8333 7 13.8333C6.70262 13.8333 6.46154 13.5946 6.46154 13.3V6.9C6.46154 6.60545 6.70262 6.36667 7 6.36667Z" fill="#7A7A9D"/>
@@ -115,8 +115,13 @@ jQuery(document).ready(function ($) {
     $(document).on('click','.delete-row',function(e) {
         const form = $(this).closest('form')
         $(this).closest('.form-row').remove()
-        const value = form.find('.form-row:first-child .quantity-wrapper input').val()
-        form.find('.form-row:first-child .quantity-wrapper input').change()      
+        form.find('.form-row:first-child .quantity-wrapper input').change()  
+        if(form.children().length === 0) {
+            form.closest('.section').find('.sub-total-outer > p > .value').text('R0.00')
+            updateTotalCosts('.section.jobs-container','.section.parts-container')
+        }
+        console.log(form.children().length);
+        
     })
     
     //Calculate Line Total
@@ -145,11 +150,11 @@ jQuery(document).ready(function ($) {
     
     //Update Total
     function updateTotalCosts(subtotal1,subtotal2) {
-        const total1 = Number($(subtotal1).find('.sub-total .value').text().replace('R',''))
+        const total1 = Number($(subtotal1).find('.total .value').text().replace('R',''))
         const vat1 = Number($(subtotal1).find('.vat .value').text().replace('R',''))
-        const total2 = Number($(subtotal2).find('.sub-total .value').text().replace('R',''))
+        const total2 = Number($(subtotal2).find('.total .value').text().replace('R',''))
         const vat2 = Number($(subtotal2).find('.vat .value').text().replace('R',''))
-        console.log(total1,total2,vat1,vat2);
+       
         $('.total-outer .total-vat .value').text(`R${(vat1 + vat2).toFixed(2)}`)
         $('.total-outer .grand-total .value').text(`R${(total1 + total2).toFixed(2)}`)
     }
@@ -164,8 +169,7 @@ jQuery(document).ready(function ($) {
 		});
 	}
     
-    $(document).on('change','#csvFile', function(e){
-        console.log('changed');
+    $(document).on('change','#csvFile', function(e) {
         var file = e.target.files[0];
         if (!file) return;
         var reader = new FileReader();
