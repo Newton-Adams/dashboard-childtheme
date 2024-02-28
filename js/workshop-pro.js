@@ -255,9 +255,6 @@ jQuery(document).ready(function ($) {
 
     // Get started guide 
     if($('.get-started-guide').length) { 
-        let businessForm = $('.um-profile-body'); 
-        let businessFormHeight = businessForm[0].clientHeight + 'px';
-        console.log(businessForm)
         
         $(document).on('click','.add-business-info .add-business-btn',function() {
             $(this).toggleClass('active')
@@ -268,6 +265,13 @@ jQuery(document).ready(function ($) {
             } else {
                 $('.add-business-form').slideUp('slow');
             }
+        })
+    }
+
+    if($('.snapshot-section').length)  { 
+        $(document).on('click','.snapshot-section .reveal-snapshot-btn',function() {
+            $(this).toggleClass('active')
+            $('.snapshot-items').slideToggle('slow');
         })
     }
     

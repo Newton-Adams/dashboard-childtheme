@@ -1,4 +1,19 @@
 .snapshot-section {
+    .reveal-snapshot-btn {
+        display: flex;
+        align-items: center;
+        margin-left: 16px;
+        padding: 5px 12px;
+        cursor: pointer;
+        transition: 0.3s transform ease;
+        &.active {
+            transform: rotate(180deg);
+        }
+    }
+    .snapshot-items {
+        display: none;
+        overflow-y: hidden;
+    }
     .pie-chart-key {
         display: flex;
         width: 8px;
