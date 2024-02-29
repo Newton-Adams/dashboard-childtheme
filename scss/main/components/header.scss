@@ -9,6 +9,9 @@
     overflow: hidden;
     border: 1px solid var(--borders);
     transition: max-width 0.3s ease-in-out;
+    .admin-bar & {
+        top: 32px;
+    }
     #burger-menu svg {
         cursor: pointer;
         margin-bottom: 14px;
@@ -116,7 +119,7 @@
                 width: 100%;
                 #burger-menu {
                     width: unset;
-                    // min-width: 76px;
+                    min-width: 76px;
                     margin-right: auto; 
                     svg {
                         cursor: pointer;
@@ -246,6 +249,15 @@
                     margin: 0;
                     max-width: 100%;
                     bottom: 30px;
+                }
+            }
+        }
+    }
+    @media (max-width: 480px) {
+        .inside-header {
+            .site-branding-container {
+                #user-account-avatar {
+                    margin: 0 0 0 10px;
                 }
             }
         }
