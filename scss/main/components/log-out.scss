@@ -12,11 +12,13 @@
     }
 }
 .menu-closed {
-    .log-out-link {
-        p {
-            opacity: 0;
-            width: 0;
-            height: 0;
+    @media (min-width: 782px) {
+        .log-out-link {
+            p {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
         }
     }
 }

@@ -34,10 +34,12 @@
     }
 }
 .menu-closed {
-    .upgrade-account {
-        background: radial-gradient(circle at top, transparent 0%,transparent 200%);
-        p {
-            opacity: 0;
+    @media (min-width: 782px) {
+        .upgrade-account {
+            background: radial-gradient(circle at top, transparent 0%,transparent 200%);
+            p {
+                opacity: 0;
+            }
         }
     }
 }
