@@ -129,32 +129,34 @@
     }
 }
 .menu-closed {
-    #account-checklist {
-        opacity: 0;
-        max-height: 0;
-        transition: opacity 0.3s ease-in-out, max-height 0s ease-in-out 0.3s;
-    }
-    .checklist-outer {
-        .checklist-icon {
-            opacity: 1;  
-            width: 18px;
-            height: 18px;
-            background-color: var(--accent-1);       
-            margin-bottom: 6px;
-            transition: opacity 0.2s ease-in-out 0.3s, background-color 0.2s ease-in-out 0.3s, height 0.2s ease-in-out 0.3s, margin-bottom 0.2s ease-in-out 0.3s;
+    @media (min-width: 782px) {
+        #account-checklist {
+            opacity: 0;
+            max-height: 0;
+            transition: opacity 0.3s ease-in-out, max-height 0s ease-in-out 0.3s;
         }
-        .title-and-count {
-            > p {
-                opacity: 0;
-                width: 0%;
+        .checklist-outer {
+            .checklist-icon {
+                opacity: 1;  
+                width: 18px;
+                height: 18px;
+                background-color: var(--accent-1);       
+                margin-bottom: 6px;
+                transition: opacity 0.2s ease-in-out 0.3s, background-color 0.2s ease-in-out 0.3s, height 0.2s ease-in-out 0.3s, margin-bottom 0.2s ease-in-out 0.3s;
             }
-        }
-        .percentage {
-            width: 0%;
-            opacity: 0;
-        }
-        .checklist-progress-bar {
-            opacity: 0;
+            .title-and-count {
+                > p {
+                    opacity: 0;
+                    width: 0%;
+                }
+            }
+            .percentage {
+                width: 0%;
+                opacity: 0;
+            }
+            .checklist-progress-bar {
+                opacity: 0;
+            }
         }
     }
 }

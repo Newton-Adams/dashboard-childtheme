@@ -137,7 +137,7 @@ function top_bar_account_callback() {
    um_reset_user();
 
    ob_start(); ?>
-      <div id="user-account-avatar" class="um-user-profile user-<?php echo $user_id; ?>">
+      <div id="user-account-avatar" class="um-user-profile user-<?php echo um_user( 'ID' ); ?>">
          <a href="<?php echo $url; ?>">
                <p class="avatar"><?php echo $avatar; ?></p>
          </a>

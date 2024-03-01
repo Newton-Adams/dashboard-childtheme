@@ -3,8 +3,21 @@
 jQuery(document).ready(function ($) {
 
     //Toggle Sidebar View
-    $(document).on('click','#burger-menu svg',function() {
+    $(document).on('click','#burger-menu svg, .mobile-close, .mobile-overlay', function() {
         $('body').toggleClass('menu-closed')
+    })
+
+    // Mobi search 
+    $(document).on('click','.mobi-search-icon', function() { 
+
+        $('.mobi-search').toggleClass('show');
+
+        if( $('.mobi-search').hasClass('show') ) {
+            $('.mobi-search-input').slideDown('slow');
+        }else{
+            $('.mobi-search-input').slideUp('slow');
+        }
+
     })
 
     // Check if system is dark mode (currently set colors to light if it is)

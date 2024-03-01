@@ -1,8 +1,10 @@
 body {
     &.menu-closed {
-        .top-bar {
-            max-width: calc(100vw - 90px);
-        }
+		@media (min-width: 782px) {
+			.top-bar {
+				max-width: calc(100vw - 90px);
+			}
+		}
     }
     .top-bar {
         width: 100vw;
@@ -46,6 +48,9 @@ body {
                     }
                 }
             }
+        }
+        @media (max-width: 781px) {
+            display: none;
         }
     }
 }
