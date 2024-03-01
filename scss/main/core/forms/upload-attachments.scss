@@ -1,0 +1,58 @@
+.form-row.attachments {
+    label {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        margin: 0 auto 30px;
+        border: 1px solid var(--borders);
+        padding: 28px;
+        border-radius: 6px;
+        cursor: pointer;
+        .upload-title {
+            font-weight: 700;
+        }
+    }
+}
+#attachment-files {
+    border: none;
+    thead {
+        background-color: var(--background-tertiary);
+        tr {
+            border: 1px solid var(--borders);
+            th {
+                border: none;
+                font-size: 0.625rem;
+                padding: 16px;
+                &:first-child {
+                    text-align: left;
+                }
+                &:last-child {
+                    max-width: 40px;
+                }
+            }
+        }
+    }
+    tbody {
+        border-radius: 16px;
+        overflow: hidden;
+        tr {
+            border-bottom: 1px solid var(--borders);            
+            &:nth-child(2n + 2) {
+                background-color: var(--background-tertiary);
+            }
+            td {
+                font-size: 0.75rem;
+                padding: 16px;
+                &:last-child {
+                    text-align: center;
+                    width: 80px;
+                    svg {
+                        display: flex;
+                        margin: 0 auto;
+                    }
+                }
+            }
+        }
+    }
+}
