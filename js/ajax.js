@@ -54,7 +54,6 @@ jQuery(document).ready(function ($) {
 
     //Job Save/Edit Ajax
     $(document).on('click','#save-post.job-save',function() {
-        console.log('this should be firing');
         //Job related posts & title
         const jobNumber = $('input#job-number').val();
 
@@ -118,35 +117,11 @@ jQuery(document).ready(function ($) {
             } 
         }
 
-        //  //Notes & Attachments Rows
-        //  const jobNoteFieldForm = document.getElementById("notes-attachment-fields");
-        //  const jobNoteFormData = new FormData(jobNoteFieldForm);
-         
-        //  let jobNotesRowArray = []
-        //  let jobNotesKeyAndValue = {}
-        //  let jobNotesSortedFormData = {}
-        //  let jobNotesI = 0
-        //  let jobNotesRowNum = 0
-        //  //The loop count is based on the number of fields in the form
-        //  for (const pair of jobNoteFormData.entries()) {                
-        //      if(jobNotesI < 8) {
-        //          jobNotesKeyAndValue = {}
-        //          const pairkey = pair[0]
-        //          const pairValue = pair[1]
-        //          if (jobNotesKeyAndValue[pairkey] === undefined) {
-        //              jobNotesKeyAndValue[pairkey] = "";
-        //          }
-        //          jobNotesKeyAndValue[pairkey] += pairValue
-        //          jobNotesRowArray.push(jobNotesKeyAndValue)
-        //          jobNotesI++
-        //          if(jobNotesI === 8) {
-        //              jobNotesI = 0
-        //              jobNotesSortedFormData[`row-${jobNotesRowNum}`] = jobNotesRowArray
-        //              jobNotesRowArray = []
-        //              jobNotesRowNum++
-        //          }
-        //      } 
-        //  }
+        //Notes & Attachments Rows
+        const jobAttachments = $("#attachments-obj").val()
+        const jobJobNotes = $("#job-notes").val()
+        
+        console.log('Test',jobAttachments);
 
         $.ajax({
             type: "POST",
@@ -156,10 +131,11 @@ jQuery(document).ready(function ($) {
                 'labour_data': labourSortedFormData,
                 'parts_data': partsSortedFormData,
                 'job_number': jobNumber,
-                // 'job_notes': jobNoteFormData,
+                'job_notes': jobJobNotes,
+                'attachments': jobAttachments
             },
             success: function (response) {	
-                alert('Job added!')
+                console.log(response);
             }
         });
     })
@@ -258,7 +234,6 @@ jQuery(document).ready(function ($) {
                             i = 0
                             completedChunks++
                             $(`.bar > .segment`).css('max-width',`${(100 / chunkCount) * completedChunks}%`)
-                            console.log((100 / chunkCount) * (completedChunks));
                             
                             if(completedChunks < chunkCount) {
                                 insertPosts()
@@ -300,16 +275,46 @@ jQuery(document).ready(function ($) {
             data: attachmentFormData,
             processData: false,
             contentType: false,
-            success: function (response) {   
-                const fileObj = JSON.parse(response)
-                const name = fileObj[0][0]
-                const tmp_name = fileObj[0][1]
-                // console.log(atob(fileObj[0][1].replace('"','').replace('"','')));
-                const url = fileObj[0][2]
+            success: function (response) {  
+                //Existing Attachments
+                const jobAttachments = JSON.parse($("#attachments-obj").val()) 
+                console.log('Existing',jobAttachments);
+                //New Attachments
+                let concatenatedFiles = {}
+                const files = JSON.parse(response)
+                let name = files[0][0]
+                const tmp_name = files[0][1]
+                const url = files[0][2]
+
+                
+                //First add existing attachments
+                jobAttachments.forEach(attachmentArray => {
+                    concatenatedFiles[attachmentArray[0]] = attachmentArray
+                });
+
+                //Rename new attachment if name is used
+                const existingAttchmentsCount = Object.keys(concatenatedFiles)                
+                if(existingAttchmentsCount.includes(name)) {
+                    for (let i = 0; i <= existingAttchmentsCount.length; i++) {
+                        //TODO:Change to recursive fucntion instead of for
+                        if(!existingAttchmentsCount.includes(`${name}-${i}`)) {
+                            concatenatedFiles[`${name}-${i}`] = [name,tmp_name,url]
+                            name = `${name}-${i}`
+                            break
+                        } else {
+                            concatenatedFiles[name] = [name,tmp_name,url]   
+                            break     
+                        }   
+                    }
+                } else {
+                    concatenatedFiles[name] = [name,tmp_name,url]
+                }
+                
+                //Append new attachment to table
                 const newTableRow = `
                 <tr>
                     <td>
-                    <a href="${tmp_name}" target="_blank" >'${fileObj[0][1].replace('"','').replace('"','')}'</a>
+                    <a href="${url}" target="_blank" >${name}</a>
                     <input type="hidden" class="hidden-attachment-values" name="hidden-attachment" value="${tmp_name}" >
                     </td>
                     <td class="delete" attachment_id="${url}" >
@@ -321,7 +326,12 @@ jQuery(document).ready(function ($) {
                         </svg>
                     </td>
                 </tr>`
+
                 removeLoader('.form-row.attachments label')
+                console.log(JSON.stringify(concatenatedFiles));
+                $('#attachments-obj').val(JSON.stringify(concatenatedFiles))
+
+                //Add new attachment to table
                 $('#attachment-files tbody').append(newTableRow)            
                 self.val('')
             },
@@ -337,6 +347,7 @@ jQuery(document).ready(function ($) {
         const attachment_file_url = $(this).attr('attachment_id')
         let self = $(this)
         addLoader(self)
+     
         $.ajax({
             type: "POST",
             url: workshop_pro_obj.ajaxurl,

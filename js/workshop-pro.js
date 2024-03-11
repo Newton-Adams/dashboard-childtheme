@@ -287,16 +287,6 @@ jQuery(document).ready(function ($) {
             $('.snapshot-items').slideToggle('slow');
         })
     }
-    
-    //Mechanics Table
-    new DataTable('#staff-table', {
-        layout: {
-            topStart: 'info',
-            bottom: 'paging',
-            bottomStart: null,
-            bottomEnd: null
-        }
-    });
 
     // Workshop Doughnut Chart 
     if( $('#workshopChart').length ) {
@@ -348,8 +338,5 @@ jQuery(document).ready(function ($) {
         });
 
     }
-
-
-
 
 })
