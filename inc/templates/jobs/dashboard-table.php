@@ -1,3 +1,5 @@
+<button class="table-filter" value="complete" >Complete</button>
+<button class="table-filter" value="draft" >Draft</button>
 <table id="jobs-table" >
     <thead>
         <tr>

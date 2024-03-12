@@ -149,7 +149,6 @@ function upload_attachment() {
         
         $upload = wp_upload_bits($attachment['name'], null, file_get_contents($attachment['tmp_name']));
         $attachment_url = $upload['file'];
-        // $attachment_tmp_name = json_encode(base64_encode(file_get_contents($attachment['tmp_name'])));
         $attachmentJSONNew = json_encode(array(
             array($attachment['name'], $attachment['tmp_name'], $attachment_url)
         ));
@@ -178,30 +177,80 @@ add_action('wp_ajax_get_all_jobs', 'get_all_jobs');
 add_action('wp_ajax_nopriv_get_all_jobs', 'get_all_jobs');
 function get_all_jobs() {
 
+    //Current USer
+    $loggedInUser = get_current_user();
+
     $args = array(
         'post_type' => 'jobs',
         'numberposts' => -1,
+        'author' => $loggedInUser,
     );
     $jobs = get_posts($args);
 
-    $job_data = [];
+    $job_data = array();
+
     foreach ($jobs as $key => $job) {
         $job_data[$key] = array(
-            $job_data,
-            'Customer name',
-            '15/03/24',
-            $job->post_title,
-            'Mazda','CAA 123 456',
-            '<span class="status-light" ></span>Complete',
-            get_post_meta($job->ID, 'notes', true),
-            'Total',
-            '...',
+            "name" => "Customer name",
+            "date" => "15/03/24",
+            "job_no" => $job->post_title,
+            "vehicle" => "Mazda",
+            "registration" => "CAA 123 456",
+            "status" => "<span class='status-light' ></span>Complete",
+            "notes" => get_post_meta($job->ID, 'notes', true),
+            "total" => "R1234",
+            "actions" => "...",
         );
     };
 
     // Send JSON response
     echo json_encode($job_data);
 
-    // Make sure to exit after sending the JSON response
+    wp_die();
+}
+
+//Get Jobs COntent
+add_action('wp_ajax_get_job_content', 'get_job_content');
+add_action('wp_ajax_nopriv_get_job_content', 'get_job_content');
+function get_job_content() {
+    
+    //Current USer
+    $loggedInUser = get_current_user();
+    $notes = "";
+
+    if(isset($_POST['job_id'])) { 
+        $notes = get_post_meta((int)$_POST['job_id'] , 'notes', true);
+    }
+    
+    $expanded_content = '
+        <div>
+            <div class="address" > 
+                <p>
+                    101 Beach Paradise Way
+                    Durban, 10118
+                </p>
+            </div>
+            <div class="contacts" >
+                <p>
+                    082 345 6789
+                    lance@domain.com
+                </p> 
+            </div>
+            <p class="vin" ><strong>VIN</strong>1234567890123</p>
+            <p class="vehicle" ><strong>VEHICLE YR:</strong> BMW Z5 2015</p>
+            <div>
+                <div>
+                    <p>Customer Notes</p>
+                    <p>'.$notes.'</p>
+                </div>
+                <div>
+                    <p>Job History</p>
+                </div>
+            </div>
+        </div>        
+    ';
+    
+    echo $expanded_content;
+
     wp_die();
 }
