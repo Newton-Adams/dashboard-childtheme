@@ -192,7 +192,7 @@ function get_all_jobs() {
     foreach ($jobs as $key => $job) {
         $job_data[$key] = array(
             "name" => "Customer name",
-            "date" => "15/03/24",
+            "date" => "03/0".($key + 2)."/2024",
             "job_no" => $job->post_title,
             "vehicle" => "Mazda",
             "registration" => "CAA 123 456",

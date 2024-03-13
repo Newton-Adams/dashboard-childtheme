@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
                 //Create Table
                 let jobsTable = new DataTable('#jobs-table', { 
                     data: tableData,
-                    pageLength: 2,
+                    pageLength: 7,
                     columns: [
                         { data: 'name' },
                         { data: 'date' },
@@ -49,34 +49,37 @@ jQuery(document).ready(function ($) {
                     }
                 })
 
-                //Filter Table
+                //Filter Status
                 $(document).on('click','.table-filter',function() {
-                    const value = $(this).val()
-                    filterTable(5,value)
+                    const filterValue = $(this).val()
+                    jobsTable.columns(5).search(filterValue).draw()  
                 })
-                function filterTable(colNumb,filterValue) { 
-                    let row
-                    jobsTable
-                    .rows()
-                    .data()
-                    .each(function(ele,index) {
-                        const status = ele['status']
-                        console.log(ele);
-                        console.log(filterValue,status,status.toLowerCase().indexOf(filterValue));
-                    })
-                    // .filter(function (value, index) {
-                    //     if(value.toLowerCase().indexOf(filterValue) > 0) {
-                    //         row = jobsTable.row( $(this).closest('tr') )                            
-                    //         console.log( $(this)[index],filterValue,value.toLowerCase(),row.child );
-                    //         // if (row.child.isShown()) {
-                    //         //     row.child.hide();
-                    //         // }
-                    //     } else {
-                    //         console.log( value.indexOf('complete') );
-                    //         $(this).closest('tr')
-                    //     }
-                    // });                           
-                }
+                
+                //Filter Date
+                let order = 'default'
+                $(document).on('click','.last-7',function() {
+                    const dayCount = 10
+                    let validDates = []
+                    let currentDate = new Date()
+                    for (let i = 0; i < dayCount; i++) {
+                        currentDate.setDate(currentDate.getDate()-1)
+                        const searchString = currentDate.toLocaleDateString('en-US', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        })
+                        validDates.push(searchString)                    
+                    }
+                                        
+                    // Assuming you want to retrieve the text from the second column (index 1)
+                    let columnData = jobsTable.column(1).nodes();
+                    
+                    for (let i = 0; i < columnData.length; i++) {
+                        const date = $(columnData[i]).text()
+                        !validDates.includes(date) && $(columnData[i]).closest('tr').hide()  
+                    }
+
+                })
 
                 //Expand/COllapse Job Extra Info
                 $(document).on('click', '#jobs-table tbody tr', function () {
