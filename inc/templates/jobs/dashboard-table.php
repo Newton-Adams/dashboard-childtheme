@@ -1,49 +1,58 @@
+<?php
+$status_options = array(
+     "Complete" => "complete",
+     "Draft" => "draft",
+     "Pending" => "pending"
+); 
+$date_options = array(
+    "Last 7 days" => 7,
+    "Last 14 days" => 14,
+    "Last 21 days" => 21, 
+    "Last 28 days" => 28,
+);
+?>
 <form id="" class="table-filters" >
-    <label for="">
-        <input class="search" type="text" value="" >
-    </label>
-    <select name="job-status" >
-        <option value="complete">Complete</option>
-        <option value="draft">Draft</option>
-        <option value="pending">Pending</option>
-    </select>
-    <select name="date-range" >
-        <option value="7">Last 7 Days</option>
-        <option value="14">Last 14 Days</option>
-        <option value="21">Last 21 Days</option>
-    </select>
-    <div>
+    <div class="filter-dropdowns" >
+        <label for="">
+            Search
+            <input class="search" type="text" value="" >
+        </label>        
+        <?php include( get_stylesheet_directory() . "/inc/templates/global/status-drop-down.php"); ?>
+        <?php include( get_stylesheet_directory() . "/inc/templates/global/date-range-drop-down.php"); ?>
+    </div>
+
+    <div class="column-states" >
         <label for="hide-customer">
+            <input checked="true" type="checkbox" id="hide-customer" name="hide-customer" value="0" >
             Customer
-            <input checked="true" type="checkbox" id="hide-customer" name="hide-customer" >
         </label>
         <label for="hide-date">
+            <input checked="true" type="checkbox" id="hide-date" name="hide-date" value="1" >
             Date
-            <input checked="true" type="checkbox" id="hide-date" name="hide-date" >
         </label>
         <label for="hide-jobno">
+            <input checked="true" type="checkbox" id="hide-jobno" name="hide-jobno" value="2" >
             Job No.
-            <input checked="true" type="checkbox" id="hide-jobno" name="hide-jobno" >
         </label>
         <label for="hide-vehicle" >
+            <input checked="true" type="checkbox" id="hide-vehicle" name="hide-vehicle" value="3" >
             Vehicle
-            <input checked="true" type="checkbox" id="hide-vehicle" name="hide-vehicle" >
         </label>
         <label for="hide-registration" >
+            <input checked="true" type="checkbox" id="hide-registration" name="hide-registration" value="4" >
             Registration
-            <input checked="true" type="checkbox" id="hide-registration" name="hide-registration" >
         </label>
         <label for="hide-status" >
+            <input checked="true" type="checkbox" id="hide-status" name="hide-status" value="5" >
             Status
-            <input checked="true" type="checkbox" id="hide-status" name="hide-status" >
         </label>
         <label for="hide-notes" >
+            <input checked="true" type="checkbox" id="hide-notes" name="hide-notes" value="6" >
             Notes
-            <input checked="true" type="checkbox" id="hide-notes" name="hide-notes" >
         </label>
         <label for="hide-total" >
+            <input checked="true" type="checkbox" id="hide-total" name="hide-total" value="7" >
             Total
-            <input checked="true" type="checkbox" id="hide-total" name="hide-total" >
         </label>
     </div>
 </form>

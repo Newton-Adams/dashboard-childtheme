@@ -1,0 +1,28 @@
+.dt-layout-table {
+    table {
+        border-left: none;
+        thead {
+            tr {
+                background-color: var(--background-tertiary);  
+                th {
+                    border-right: none;
+                    border-left: none;
+                }            
+            }
+        }
+        tbody {
+            tr {
+                &:nth-child(2n + 1) {
+                    background-color: var(--background-secondary);
+                }
+                &:nth-child(2n + 2) {
+                    background-color: var(--background-tertiary);
+                }
+                td {
+                    border-right: none;
+                    border-left: none;
+                }
+            }
+        }
+    }
+}

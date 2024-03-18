@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
                 //Create Table
                 let jobsTable = new DataTable('#jobs-table', { 
                     data: tableData,
-                    pageLength: 7,
+                    pageLength: 7,                    
                     columns: [
                         { data: 'name' },
                         { data: 'date' },
@@ -50,17 +50,19 @@ jQuery(document).ready(function ($) {
                 })
 
                 //Filter Status
-                $(document).on('click','.table-filter',function() {
-                    const filterValue = $(this).val()
-                    jobsTable.columns(5).search(filterValue).draw()  
+                $(document).on('click','.table-filters .job-status span',function() {
+                    const filterValue = $(this).data('value')
+                    jobsTable.columns(5).search(filterValue).draw() 
+                    console.log($(this).closest('.select-wrapper'));
+                    $(this).closest('.select-wrapper').removeClass('active')
                 })
                 
                 //Filter Date
-                let order = 'default'
-                $(document).on('click','.last-7',function() {
-                    const dayCount = 10
+                $(document).on('click','.select-wrapper.date-range .options > span',function() {
+                    const dayCount = $(this).data('value')
                     let validDates = []
                     let currentDate = new Date()
+                    
                     for (let i = 0; i < dayCount; i++) {
                         currentDate.setDate(currentDate.getDate()-1)
                         const searchString = currentDate.toLocaleDateString('en-US', {
@@ -71,17 +73,37 @@ jQuery(document).ready(function ($) {
                         validDates.push(searchString)                    
                     }
                                         
-                    // Assuming you want to retrieve the text from the second column (index 1)
                     let columnData = jobsTable.column(1).nodes();
-                    
                     for (let i = 0; i < columnData.length; i++) {
                         const date = $(columnData[i]).text()
-                        !validDates.includes(date) && $(columnData[i]).closest('tr').hide()  
-                    }
+                        if(!validDates.includes(date) && dayCount > 0) { 
+                            $(columnData[i]).closest('tr').hide() 
+                        } else {
+                            $(columnData[i]).closest('tr').show() 
+                        }
+                    }   
+                    
+                    //Close drop down
+                    $(this).closest('.select-wrapper').removeClass('active')
 
                 })
 
-                //Expand/COllapse Job Extra Info
+                //Hide/Show Columns
+                $(document).on('click','.table-filters .column-states input',function() {
+                    const columnNo = $(this).attr('value')
+                    let column = jobsTable.column(columnNo);
+                
+                    // Toggle the visibility
+                    column.visible(!column.visible());
+                })
+              
+                //Search Tables
+                $(document).on('keyup','.table-filters input.search',function() {
+                    const searchValue = $(this).val()
+                    jobsTable.search(searchValue).draw()
+                })
+
+                //Expand/Collapse Job Extra Info
                 $(document).on('click', '#jobs-table tbody tr', function () {
                     const jobID = $(this).text()
                     let tr = $(this)
@@ -119,4 +141,8 @@ jQuery(document).ready(function ($) {
     }
     instantiateJobsTable()    
 
+    //Drop down open
+    $(document).on('click','.select-wrapper:not(.active)',function() {
+        $(this).closest('.select-wrapper').addClass('active')
+    })
 });

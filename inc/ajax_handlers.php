@@ -160,7 +160,7 @@ function upload_attachment() {
     if(wp_doing_ajax()) die();
 }
 
-//Update Mechanics
+//Delete File
 add_action('wp_ajax_delete_file', 'delete_file');
 add_action('wp_ajax_nopriv_delete_file', 'delete_file');
 function delete_file() {   
