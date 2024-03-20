@@ -373,4 +373,18 @@ jQuery(document).ready(function ($) {
         })
     }
 
+    // $.ajax({
+    //     url: workshop_pro_obj.ajaxurl,
+    //     type: 'POST',
+    //     data: {
+    //         action: 'get_authentication_vrid'
+    //     },
+    //     success: function(response) {
+    //         const vrid=getAuthenticationVrid()
+    //         console.log('success',response); // Handle the response accordingly
+    //     },
+    //     error: function(xhr, status, error) {
+    //         console.error(xhr.responseText); // Handle errors
+    //     }
+    // });
 })

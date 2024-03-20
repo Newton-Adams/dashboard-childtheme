@@ -1,10 +1,14 @@
 .dt-layout-table {
     table {
         border-left: none;
+        tr {
+            height: 52px;
+        }
         thead {
             tr {
                 background-color: var(--background-tertiary);  
                 th {
+                    text-align: left;
                     border-right: none;
                     border-left: none;
                 }            

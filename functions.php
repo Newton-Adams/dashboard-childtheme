@@ -55,3 +55,76 @@ function save_custom_user_profile_fields( $user_id ) {
 add_action( 'personal_options_update', 'save_custom_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'save_custom_user_profile_fields' );
 
+
+
+//Haynes Pro API
+// function get_authentication_vrid() {
+
+//     $url = 'https://www.haynespro-services.com/workshopServices3/rest/jsonendpoint/getAuthenticationVrid';
+//     $username = 'webworx_dx_demo';
+//     $password = 'ZVJwu3U6A00Q4zgu';
+//     $unique_identifier = 'workshop-pro';
+
+//     // Construct the query string
+//     $query_string = http_build_query(array(
+//         'distributorUsername' => $username,
+//         'distributorPassword' => $password,
+//         'username' => $unique_identifier
+//     ));
+
+//     try {
+//         // Initialize cURL session
+//         $ch = curl_init();
+
+//         // Set cURL options
+//         curl_setopt($ch, CURLOPT_URL, $url . '?' . $query_string);
+//         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+//         // Execute the cURL request
+//         $response = curl_exec($ch);
+
+//         // Check for errors
+//         if($response === false) {
+//             throw new Exception('Error fetching data: ' . curl_error($ch));
+//         }
+
+//         // Decode the JSON response
+//         $result = json_decode($response, true);
+
+// 		//Fetch test data
+// 		//Get request
+// 		$url_test = 'http://www.haynespro-services.com/workshopServices3/rest/jsonendpoint/getMaintenanceTasksV7?vrid='.$result["vrid"].'&descriptionLanguage=en&carTypeId=319001025&repairtimesTypeId=120226&rtTypeCategory=CAR&systemId=319003435&periodId=319062051&includeSmartLinks=true&includeServiceTimes=true&maintenanceBasedType=SUBJECT_BASED';
+// 		$username_test = 'webworx_dx_demo';
+// 		$password_test = 'ZVJwu3U6A00Q4zgu';
+// 		$unique_identifier_test = 'workshop-pro';
+	
+// 		// Construct the query string
+// 		$query_string_test = http_build_query(array(
+// 			'distributorUsername' => $username_test,
+// 			'distributorPassword' => $password_test,
+// 			'username' => $unique_identifier_test
+// 		));
+// 		//  Set cURL options
+// 		 curl_setopt($ch, CURLOPT_URL, $url_test . '?' . $query_string_test);
+// 		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		 
+// 		 $response_test = curl_exec($ch);
+	
+// 		 // Check for errors
+// 		 if($response_test === false) {
+// 			throw new Exception('Error fetching data: ' . curl_error($ch));
+// 		}
+// 		echo '<pre>',print_r(json_decode($response_test),1),'</pre>';
+
+//         // Close cURL session
+//         curl_close($ch);
+		
+//         return $result['vrid']; // Assuming 'vrid' is the key for the VRID in the JSON response
+//     } catch (Exception $e) {
+//         return 'Error: ' . $e->getMessage(); // Handle errors appropriately
+//     }
+// }
+
+// add_action('wp_ajax_nopriv_get_authentication_vrid', 'get_authentication_vrid');
+// add_action('wp_ajax_get_authentication_vrid', 'get_authentication_vrid');
+

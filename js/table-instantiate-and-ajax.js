@@ -51,14 +51,30 @@ jQuery(document).ready(function ($) {
 
                 //Filter Status
                 $(document).on('click','.table-filters .job-status span',function() {
+                    //Selected option
+                    $('.select-wrapper.job-status > .value').text($(this).text())
+
+                    //Selected value
                     const filterValue = $(this).data('value')
                     jobsTable.columns(5).search(filterValue).draw() 
-                    console.log($(this).closest('.select-wrapper'));
                     $(this).closest('.select-wrapper').removeClass('active')
+                    
+                    //Count Rows
+                    let allRows = $('#jobs-table tbody > tr:not([style="display: none;"])')
+                    let rowCount = 0
+                    for (let i = 0; i < allRows.length; i++) {
+                        $(allRows[i]).find('.dt-empty').length == 0 && rowCount++
+                    }
+                
+                    countVisibleRows(rowCount)
                 })
                 
                 //Filter Date
                 $(document).on('click','.select-wrapper.date-range .options > span',function() {
+                    //Selected option
+                    $('.select-wrapper.date-range > .value').text($(this).text())
+
+                    //Selected value
                     const dayCount = $(this).data('value')
                     let validDates = []
                     let currentDate = new Date()
@@ -74,18 +90,24 @@ jQuery(document).ready(function ($) {
                     }
                                         
                     let columnData = jobsTable.column(1).nodes();
+                    
                     for (let i = 0; i < columnData.length; i++) {
                         const date = $(columnData[i]).text()
                         if(!validDates.includes(date) && dayCount > 0) { 
-                            $(columnData[i]).closest('tr').hide() 
+                            $(columnData[i]).closest('tr').hide()
                         } else {
                             $(columnData[i]).closest('tr').show() 
                         }
                     }   
+
+                    //Count Rows
+                    const rows = $('#jobs-table tbody tr:not([style="display: none;"]):not(.dt-empty)')
+                    let rowCount = rows.length
                     
                     //Close drop down
                     $(this).closest('.select-wrapper').removeClass('active')
-
+                    countVisibleRows(rowCount)
+                    
                 })
 
                 //Hide/Show Columns
@@ -94,13 +116,21 @@ jQuery(document).ready(function ($) {
                     let column = jobsTable.column(columnNo);
                 
                     // Toggle the visibility
-                    column.visible(!column.visible());
+                    column.visible(!column.visible());                    
                 })
               
                 //Search Tables
                 $(document).on('keyup','.table-filters input.search',function() {
                     const searchValue = $(this).val()
                     jobsTable.search(searchValue).draw()
+                    //Count Rows
+                    let allRows = $('#jobs-table tbody > tr:not([style="display: none;"])')
+                    let rowCount = 0
+                    for (let i = 0; i < allRows.length; i++) {
+                        $(allRows[i]).find('.dt-empty').length == 0 && rowCount++
+                    }
+                
+                    countVisibleRows(rowCount)
                 })
 
                 //Expand/Collapse Job Extra Info
@@ -135,6 +165,17 @@ jQuery(document).ready(function ($) {
                         }
                     })
                 }
+
+                //Get visible row count
+                function countVisibleRows(rowCount=undefined) {
+                    const tableRows = $('#jobs-table tbody tr td').length && rowCount === undefined ? $('#jobs-table tbody tr').length : rowCount 
+                    $('#jobs-table_wrapper > .dt-layout-row:last-child').text(`${tableRows} of ${jobsTable.rows().count()} results`)
+                }
+
+                //Result Count
+                const loadRows = $('#jobs-table tbody tr').length
+                $('#jobs-table_wrapper > .dt-layout-row:last-child').prepend(`<p class="row-count" >Showing ${loadRows} of ${jobsTable.rows().count()} results found</p>`)
+                countVisibleRows()
 
             }
         });
