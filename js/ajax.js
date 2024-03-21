@@ -361,6 +361,55 @@ jQuery(document).ready(function ($) {
             }
         });
     })
+
+    // Profile Form update 
+    $('#profile-form').submit(function(e) { 
+        e.preventDefault()
+        const profileForm = document.getElementById("profile-form");
+        const profileFormData = new FormData(profileForm);
+        
+        // const profile_picture = profileFormData.get('profile_picture');
+        // const company_name = profileFormData.get('company_name');
+        // const first_name = profileFormData.get('first_name');
+        // const last_name = profileFormData.get('last_name');
+        // const email = profileFormData.get('email');
+        // const cell_number = profileFormData.get('cell_number');
+        // const whatsapp_number = profileFormData.get('whatsapp_number');
+        // const address = profileFormData.get('address');
+        // const vat_number = profileFormData.get('vat_number');
+        // const company_registration_number = profileFormData.get('company_registration_number');
+
+        // loop through form data and create object to send to ajax 
+        let profileData = {}
+        for (const pair of profileFormData.entries()) {
+            const pairkey = pair[0]
+            const pairValue = pair[1]
+            if (profileData[pairkey] === undefined) {
+                profileData[pairkey] = "";
+            }
+            profileData[pairkey] += pairValue
+        }
+
+        console.log(profileData);
+
+        const self = $(this)
+        addLoader(self)
+
+        // $.ajax({ 
+        //     type: "POST",
+        //     url: workshop_pro_obj.ajaxurl,
+        //     data: {
+        //         'action': 'profile_form', 
+        //         'profile-data': profileData
+        //     }, 
+        //     processData: false, 
+        //     contentType: false, 
+        //     success: function (response) {
+        //         JSON.parse(response);
+        //         removeLoader(self)
+        //     }
+        // });
+    });
     
     //Loader - used for ajax
     function addLoader(ele) {

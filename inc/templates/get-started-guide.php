@@ -22,8 +22,9 @@
         </div> 
 
         <div class="add-business-form">
-            <div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
-            <?php echo do_shortcode('[ultimatemember form_id="52"]'); ?>
+
+            <?php profile_form() ?>
+            
         </div>
     </div> 
 

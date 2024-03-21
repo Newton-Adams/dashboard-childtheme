@@ -34,12 +34,36 @@ function display_custom_user_profile_fields( $user ) {
 	<h3>Custom Fields</h3>
 	<table class="form-table">
 		<tr>
-			<th><label for="custom_field_name">Custom Field Label</label></th>
+			<th><label for="custom_field_name">Mechanics</label></th>
 			<td>
 				<input type="text" name="custom_field_name" id="custom_field_name" value="<?php echo esc_attr( get_the_author_meta( 'mechanics', $user->ID ) ); ?>" class="regular-text" /><br />
 				<span class="description">Enter your custom field value.</span>
 			</td>
 		</tr>
+        <tr>
+            <th><label for="company_name">Company Name</label></th>
+            <td><input type="text" name="company_name" id="company_name" value="<?php echo esc_attr(get_user_meta($user->ID, 'company_name', true)); ?>" class="regular-text" /></td>
+        </tr>
+        <tr>
+            <th><label for="cell_number">Cell Number</label></th>
+            <td><input type="text" name="cell_number" id="cell_number" value="<?php echo esc_attr(get_user_meta($user->ID, 'cell_number', true)); ?>" class="regular-text" /></td>
+        </tr>
+        <tr>
+            <th><label for="whatsapp_number">Whatsapp Number</label></th>
+            <td><input type="text" name="whatsapp_number" id="whatsapp_number" value="<?php echo esc_attr(get_user_meta($user->ID, 'whatsapp_number', true)); ?>" class="regular-text" /></td>
+        </tr>
+        <tr>
+            <th><label for="address">Address</label></th>
+            <td><input type="text" name="address" id="address" value="<?php echo esc_attr(get_user_meta($user->ID, 'address', true)); ?>" class="regular-text" /></td>
+        </tr>
+        <tr>
+            <th><label for="vat_number">VAT Number</label></th>
+            <td><input type="text" name="vat_number" id="vat_number" value="<?php echo esc_attr(get_user_meta($user->ID, 'vat_number', true)); ?>" class="regular-text" /></td>
+        </tr>
+        <tr>
+            <th><label for="company_registration_number">Company Registration Number</label></th>
+            <td><input type="text" name="company_registration_number" id="company_registration_number" value="<?php echo esc_attr(get_user_meta($user->ID, 'company_registration_number', true)); ?>" class="regular-text" /></td>
+        </tr>
 	</table>
 	<?php
 }
@@ -51,6 +75,13 @@ function save_custom_user_profile_fields( $user_id ) {
 		return false;
 	}
 	update_user_meta( $user_id, 'mechanics', sanitize_text_field( $_POST['mechanics'] ) );
+	update_user_meta($user_id, 'company_name', sanitize_text_field( $_POST['company_name']) ); 
+	update_user_meta($user_id, 'cell_number', sanitize_text_field( $_POST['cell_number']) );
+	update_user_meta($user_id, 'whatsapp_number', sanitize_text_field( $_POST['whatsapp_number']) );
+	update_user_meta($user_id, 'address', sanitize_text_field( $_POST['address']) ); 
+	update_user_meta($user_id, 'vat_number', sanitize_text_field( $_POST['vat_number']) );
+	update_user_meta($user_id, 'company_registration_number', sanitize_text_field( $_POST['company_registration_number']) );
+
 }
 add_action( 'personal_options_update', 'save_custom_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'save_custom_user_profile_fields' );
@@ -127,4 +158,14 @@ add_action( 'edit_user_profile_update', 'save_custom_user_profile_fields' );
 
 // add_action('wp_ajax_nopriv_get_authentication_vrid', 'get_authentication_vrid');
 // add_action('wp_ajax_get_authentication_vrid', 'get_authentication_vrid');
+
+remove_action( 'um_main_profile_fields', 'um_add_profile_fields', 100 );
+
+function um_add_profile_fields_replace( $args ) {
+
+	echo UM()->fields()->display( 'profile', $args );
+
+}
+add_action( 'um_main_profile_fields', 'um_add_profile_fields_replace', 100 );
+
 

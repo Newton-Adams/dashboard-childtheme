@@ -254,3 +254,173 @@ function get_job_content() {
 
     wp_die();
 }
+
+
+// Profile Form
+function profile_form() {
+    
+    $user = wp_get_current_user();
+    $user_avatar = get_avatar_url( $user->ID, array( 'size' => 48 ) );
+    $user_name = $user->display_name;
+    $user_id = get_current_user_id();
+    $company_name = esc_attr(get_user_meta(get_current_user_id(), 'company_name', true));
+    $firstname = esc_attr(get_user_meta(get_current_user_id(), 'first_name', true));
+    $lastname = esc_attr(get_user_meta(get_current_user_id(), 'last_name', true));
+    $user_email = esc_attr( wp_get_current_user()->user_email );
+    $user_phone = esc_attr(get_user_meta(get_current_user_id(), 'cell_number', true));
+    $userWhatsAppNumber = esc_attr(get_user_meta(get_current_user_id(), 'whatsapp_number', true));
+    $userAddress = esc_attr(get_user_meta(get_current_user_id(), 'address', true));
+    $vatNumber = esc_attr(get_user_meta(get_current_user_id(), 'vat_number', true));
+    $companyRegistrationNumber = esc_attr(get_user_meta(get_current_user_id(), 'company_registration_number', true));
+
+    if ( isset($_POST['company_name']) ) {
+        update_user_meta($user_id, 'company_name', $_POST['company_name']);
+    }
+    if ( isset($_POST['first_name']) ) {
+        update_user_meta($user_id, 'first_name', $_POST['first_name']);
+    }
+    if ( isset($_POST['last_name']) ) {
+        update_user_meta($user_id, 'last_name', $_POST['last_name']);
+        echo '<pre>'.print_r($_POST['last_name'], true).'</pre>';
+    }
+    if ( isset($_POST['email']) ) {
+        update_user_meta($user_id, 'user_email', $_POST['email']);
+    }
+    if ( isset($_POST['cell_number']) ) {
+        update_user_meta($user_id, 'cell_number', $_POST['cell_number']);
+    }
+    if ( isset($_POST['whatsapp_number']) ) {
+        update_user_meta($user_id, 'whatsapp_number', $_POST['whatsapp_number']);
+    }
+    if ( isset($_POST['address']) ) {
+        update_user_meta($user_id, 'address', $_POST['address']);
+    }
+    if ( isset($_POST['vat_number']) ) {
+        update_user_meta($user_id, 'vat_number', $_POST['vat_number']);
+    }
+    if ( isset($_POST['company_registration_number']) ) {
+        update_user_meta($user_id, 'company_registration_number', $_POST['company_registration_number']);
+    }
+
+    ?>
+
+    <form id="profile-form" class="form" action="" method="post">
+    
+        <div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
+
+        <!-- Profile Image and Company name -->
+        <div class="form-row">
+            <div class="input-label-wrapper" >
+                <div class="profile-form-header d-flex flex-align-center">
+                    <div class="d-flex flex-align-center">
+                        <div class="profile-image">
+                            <?php 
+                            if ( $user_avatar ) {
+                                echo '<img src="' . esc_url( $user_avatar ) . '" />';
+                            } else {
+                                echo '<img src="' . get_stylesheet_directory_uri() . '/assets/images/default-avatar.png" />';
+                            }
+                            ?>
+                        </div>
+                        <div class="">
+                            <div class="profile-name"><?php echo esc_attr(get_user_meta(get_current_user_id(), 'company_name', true)); ?></div>
+                            <div class="upload-note">PNG or JPG no bigger than 1000px wide and tall.</div>
+                        </div>
+                    </div>
+
+                    <div class="image-uploader">
+                        <input type="file" name="profile_picture" id="csvFile" accept="image/png, image/jpeg">
+                        <label for="csvFile" class="custom-file-upload d-flex flex-align-center">
+                            <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.375 6.55984C0.582107 6.55984 0.75 6.71289 0.75 6.90169V9.29466C0.75 9.67226 1.08579 9.97837 1.5 9.97837H10.5C10.9142 9.97837 11.25 9.67226 11.25 9.29466V6.90169C11.25 6.71289 11.4179 6.55984 11.625 6.55984C11.8321 6.55984 12 6.71289 12 6.90169V9.29466C12 10.0499 11.3284 10.6621 10.5 10.6621H1.5C0.671573 10.6621 0 10.0499 0 9.29466V6.90169C0 6.71289 0.167893 6.55984 0.375 6.55984Z" fill="#18181A"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M3.74999 4.40859C3.89644 4.5421 4.13388 4.5421 4.28032 4.40859L5.99999 2.84093L7.71967 4.40861C7.86611 4.54211 8.10355 4.54211 8.24999 4.40861C8.39644 4.27511 8.39644 4.05866 8.24999 3.92516L6.26516 2.11575C6.11871 1.98225 5.88128 1.98225 5.73483 2.11575L3.74999 3.92514C3.60355 4.05864 3.60355 4.27509 3.74999 4.40859Z" fill="#18181A"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M6 2.4576C6.20711 2.4576 6.375 2.61066 6.375 2.79946V8.2691C6.375 8.4579 6.20711 8.61095 6 8.61095C5.79289 8.61095 5.625 8.4579 5.625 8.2691V2.79946C5.625 2.61066 5.79289 2.4576 6 2.4576Z" fill="#18181A"/>
+                            </svg> 
+                            <div class="caption mb-0">Upload</div>
+                        </label>
+                    </div>
+                </div>
+
+            </div> 
+        </div>
+
+        <h5 class="mb-0">Business information</h5>
+
+        <div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
+
+        <!-- First name -->
+        <div class="form-row" >
+            <div class="input-label-wrapper" >
+                <label for="company_name" >Company name</label>
+                <input type="text" name="company_name" id="company_name" value="<?= $company_name; ?>" />
+            </div>
+        </div>
+
+        <!-- Last name -->
+        <div class="form-row" >
+            <div class="input-label-wrapper" >
+                <label for="first_name" >First name</label>
+                <input type="text" name="first_name" id="first_name" value="<?= $firstname; ?>" placeholder="Firstname" />
+            </div>
+            <div class="input-label-wrapper" >
+                <label for="last_name" >Last name</label>
+                <input type="text" name="last_name" id="last_name" value="<?= $lastname ?>" placeholder="Lastname" />
+            </div>
+        </div>
+
+        <!-- Email, Cell number, Whatsapp number -->
+        <div class="form-row" >
+            <div class="input-label-wrapper" >
+                <label for="email" >Email</label>
+                <input type="email" name="email" id="email" value="<?= $user_email ?>" placeholder="Placeholder" />
+            </div>
+            <div class="input-label-wrapper" >
+                <label for="cellnumber" >Cell number</label>
+                <input type="text" name="cell_number" id="cell_number" value="<?= $user_phone ?>" />
+            </div>
+            <div class="input-label-wrapper" >
+                <label for="whatsapp_number" >WhatsApp number</label>
+                <input type="text" name="whatsapp_number" id="whatsapp_number" value="<?= $userWhatsAppNumber ?>" />
+            </div>
+        </div>
+
+        <!-- Address -->
+        <div class="form-row" >
+            <div class="input-label-wrapper" >
+                <label for="address" >Address</label>
+                <input type="text" name="address" id="address" value="<?= $userAddress ?>" placeholder="Placeholder" />
+            </div>
+        </div>
+
+        <!-- VAT number, Company registration number -->
+        <div class="form-row" >
+            <div class="input-label-wrapper" >
+                <label for="vat_number" >VAT number (Optional)</label> 
+                <input type="text" name="vat_number" id="vat_number" value="<?= $vatNumber ?>" placeholder="Placeholder" /> 
+            </div>
+            <div class="input-label-wrapper" >
+                <label for="company_registration_number" >Company registration number (Optional)</label>
+                <input type="text" name="company_registration_number" id="company_registration_number" value="<?= $companyRegistrationNumber ?>" placeholder="Placeholder" /> 
+            </div>
+        </div>
+    
+        <div style="height:10px" aria-hidden="true" class="wp-block-spacer"></div>
+
+        <!-- Save button -->
+        <div class="form-row" >
+            <div class="input-label-wrapper" >
+                <div class="wp-block-buttons is-content-justification-right is-layout-flex wp-container-core-buttons-layout-1 wp-block-buttons-is-layout-flex">
+                    <div class="wp-block-button">
+                        <input type="submit" name="update_info" value="Save changes" class="wp-block-button__link wp-element-button" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <?php 
+
+}
+add_action('wp_ajax_profile_form', 'profile_form');
+add_action('wp_ajax_nopriv_profile_form', 'profile_form');
+
