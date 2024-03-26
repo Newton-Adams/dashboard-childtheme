@@ -1,6 +1,58 @@
 'use strict'
 
 jQuery(document).ready(function ($) {
+    
+    // Form Validation 
+
+    function validateForm(form) { 
+
+        let valid = false;
+        const formFields = form.find('input.required, select.required, textarea.required');
+
+        formFields.each(function() {
+            const self = $(this); 
+            const selfVal = self.val();
+            
+            console.log(selfVal)
+
+            // Required validation  
+            if( selfVal === '' ) {
+                if( !self.hasClass('error') ) {
+                    self.addClass('error');
+                    self.closest('.input-label-wrapper').append('<span class="error-message">This field is required</span>');
+                }
+                valid = false;
+            } else {
+                self.removeClass('error');
+                self.siblings('.error-message').remove();
+                valid = true;
+            }
+
+            // Email validation 
+            // if( self.attr('type') === 'email' ) {
+            //     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            //     if( !emailPattern.test(selfVal) ) {
+            //         self.addClass('error');
+            //         self.closest('.input-label-wrapper').append('<span class="error-message">Enter a valid email address</span>');
+            //         valid = false;
+            //     }
+            // }
+
+        });
+        
+        console.log(valid);
+        return valid;
+
+    }
+    
+    if( $('.validate-form').length ) {
+        $(document).on('submit','.validate-form',function(e) {
+
+            e.preventDefault();
+            validateForm( $(this) );
+            
+        })
+    }
 
     //Mechanics Save/Edit Ajax
     $(document).on('click','#save-post.technicians-save',function() {
@@ -364,51 +416,33 @@ jQuery(document).ready(function ($) {
 
     // Profile Form update 
     $('#profile-form').submit(function(e) { 
-        e.preventDefault()
-        const profileForm = document.getElementById("profile-form");
-        const profileFormData = new FormData(profileForm);
         
-        // const profile_picture = profileFormData.get('profile_picture');
-        // const company_name = profileFormData.get('company_name');
-        // const first_name = profileFormData.get('first_name');
-        // const last_name = profileFormData.get('last_name');
-        // const email = profileFormData.get('email');
-        // const cell_number = profileFormData.get('cell_number');
-        // const whatsapp_number = profileFormData.get('whatsapp_number');
-        // const address = profileFormData.get('address');
-        // const vat_number = profileFormData.get('vat_number');
-        // const company_registration_number = profileFormData.get('company_registration_number');
+        e.preventDefault();
 
-        // loop through form data and create object to send to ajax 
-        let profileData = {}
-        for (const pair of profileFormData.entries()) {
-            const pairkey = pair[0]
-            const pairValue = pair[1]
-            if (profileData[pairkey] === undefined) {
-                profileData[pairkey] = "";
+        const self = $(this); 
+        validateForm(self); 
+        addLoader(self); 
+
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: workshop_pro_obj.ajaxurl,
+            data: {
+                action: 'update_profile',
+                formData: formData
+            },
+            success: function(response) {
+                // alert('Profile updated successfully!');
+                removeLoader(self); 
+                // $(this).html(response).fadeIn()
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                // Handle errors here
             }
-            profileData[pairkey] += pairValue
-        }
+        });
 
-        console.log(profileData);
-
-        const self = $(this)
-        addLoader(self)
-
-        // $.ajax({ 
-        //     type: "POST",
-        //     url: workshop_pro_obj.ajaxurl,
-        //     data: {
-        //         'action': 'profile_form', 
-        //         'profile-data': profileData
-        //     }, 
-        //     processData: false, 
-        //     contentType: false, 
-        //     success: function (response) {
-        //         JSON.parse(response);
-        //         removeLoader(self)
-        //     }
-        // });
     });
     
     //Loader - used for ajax

@@ -263,44 +263,58 @@ function profile_form() {
     $user_avatar = get_avatar_url( $user->ID, array( 'size' => 48 ) );
     $user_name = $user->display_name;
     $user_id = get_current_user_id();
-    $company_name = esc_attr(get_user_meta(get_current_user_id(), 'company_name', true));
-    $firstname = esc_attr(get_user_meta(get_current_user_id(), 'first_name', true));
-    $lastname = esc_attr(get_user_meta(get_current_user_id(), 'last_name', true));
+    $company_name = esc_attr(get_user_meta($user_id, 'company_name', true));
+    $firstname = esc_attr(get_user_meta($user_id, 'first_name', true));
+    $lastname = esc_attr(get_user_meta($user_id, 'last_name', true));
     $user_email = esc_attr( wp_get_current_user()->user_email );
-    $user_phone = esc_attr(get_user_meta(get_current_user_id(), 'cell_number', true));
-    $userWhatsAppNumber = esc_attr(get_user_meta(get_current_user_id(), 'whatsapp_number', true));
-    $userAddress = esc_attr(get_user_meta(get_current_user_id(), 'address', true));
-    $vatNumber = esc_attr(get_user_meta(get_current_user_id(), 'vat_number', true));
-    $companyRegistrationNumber = esc_attr(get_user_meta(get_current_user_id(), 'company_registration_number', true));
+    $user_phone = esc_attr(get_user_meta($user_id, 'cell_number', true));
+    $userWhatsAppNumber = esc_attr(get_user_meta($user_id, 'whatsapp_number', true));
+    $userAddress = esc_attr(get_user_meta($user_id, 'address', true));
+    $vatNumber = esc_attr(get_user_meta($user_id, 'vat_number', true));
+    $companyRegistrationNumber = esc_attr(get_user_meta($user_id, 'company_registration_number', true));
 
-    if ( isset($_POST['company_name']) ) {
-        update_user_meta($user_id, 'company_name', $_POST['company_name']);
+    if (isset($_FILES['profile_picture'])) {
+        $user_id = get_current_user_id();
+        $file = $_FILES['profile_picture'];
+
+        if (!empty($file['name'])) {
+            $upload_overrides = array('test_form' => false);
+            $uploaded_file = wp_handle_upload($file, $upload_overrides);
+
+            if (isset($uploaded_file['url'])) {
+                // Add the image to the media library
+                $file_path = $uploaded_file['file'];
+                $file_name = basename($file_path);
+                $attachment = array(
+                    'guid'           => $uploaded_file['url'],
+                    'post_mime_type' => $uploaded_file['type'],
+                    'post_title'     => preg_replace('/\.[^.]+$/', '', $file_name),
+                    'post_content'   => '',
+                    'post_status'    => 'inherit'
+                );
+                $attach_id = wp_insert_attachment($attachment, $file_path);
+
+                // Set user's avatar to the uploaded image
+                if (!is_wp_error($attach_id)) {
+                    update_user_meta($user_id, 'profile_picture_attachment_id', $attach_id);
+                    set_post_thumbnail($attach_id, $attach_id);
+                }
+            }
+        }
     }
-    if ( isset($_POST['first_name']) ) {
-        update_user_meta($user_id, 'first_name', $_POST['first_name']);
+
+    if ( isset($_POST['formData']) ) {
+        parse_str($_POST['formData'], $form_data);
+        
+        foreach ($form_data as $key => $value) {
+            if ( isset($value) ) {
+                update_user_meta($user_id, $key, $value);
+            }
+        }
+        echo 'success';
     }
-    if ( isset($_POST['last_name']) ) {
-        update_user_meta($user_id, 'last_name', $_POST['last_name']);
-        echo '<pre>'.print_r($_POST['last_name'], true).'</pre>';
-    }
-    if ( isset($_POST['email']) ) {
-        update_user_meta($user_id, 'user_email', $_POST['email']);
-    }
-    if ( isset($_POST['cell_number']) ) {
-        update_user_meta($user_id, 'cell_number', $_POST['cell_number']);
-    }
-    if ( isset($_POST['whatsapp_number']) ) {
-        update_user_meta($user_id, 'whatsapp_number', $_POST['whatsapp_number']);
-    }
-    if ( isset($_POST['address']) ) {
-        update_user_meta($user_id, 'address', $_POST['address']);
-    }
-    if ( isset($_POST['vat_number']) ) {
-        update_user_meta($user_id, 'vat_number', $_POST['vat_number']);
-    }
-    if ( isset($_POST['company_registration_number']) ) {
-        update_user_meta($user_id, 'company_registration_number', $_POST['company_registration_number']);
-    }
+
+    // echo '<pre>'.print_r(get_userdata($user_id), true).'</pre>';
 
     ?>
 
@@ -323,14 +337,14 @@ function profile_form() {
                             ?>
                         </div>
                         <div class="">
-                            <div class="profile-name"><?php echo esc_attr(get_user_meta(get_current_user_id(), 'company_name', true)); ?></div>
+                            <div class="profile-name"><?php echo $company_name; ?></div>
                             <div class="upload-note">PNG or JPG no bigger than 1000px wide and tall.</div>
                         </div>
                     </div>
 
                     <div class="image-uploader">
-                        <input type="file" name="profile_picture" id="csvFile" accept="image/png, image/jpeg">
-                        <label for="csvFile" class="custom-file-upload d-flex flex-align-center">
+                        <input type="file" name="profile_picture" id="profile_picture" accept="image/png, image/jpeg">
+                        <label for="profile_picture" class="custom-file-upload d-flex flex-align-center">
                             <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.375 6.55984C0.582107 6.55984 0.75 6.71289 0.75 6.90169V9.29466C0.75 9.67226 1.08579 9.97837 1.5 9.97837H10.5C10.9142 9.97837 11.25 9.67226 11.25 9.29466V6.90169C11.25 6.71289 11.4179 6.55984 11.625 6.55984C11.8321 6.55984 12 6.71289 12 6.90169V9.29466C12 10.0499 11.3284 10.6621 10.5 10.6621H1.5C0.671573 10.6621 0 10.0499 0 9.29466V6.90169C0 6.71289 0.167893 6.55984 0.375 6.55984Z" fill="#18181A"/>
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M3.74999 4.40859C3.89644 4.5421 4.13388 4.5421 4.28032 4.40859L5.99999 2.84093L7.71967 4.40861C7.86611 4.54211 8.10355 4.54211 8.24999 4.40861C8.39644 4.27511 8.39644 4.05866 8.24999 3.92516L6.26516 2.11575C6.11871 1.98225 5.88128 1.98225 5.73483 2.11575L3.74999 3.92514C3.60355 4.05864 3.60355 4.27509 3.74999 4.40859Z" fill="#18181A"/>
@@ -352,7 +366,7 @@ function profile_form() {
         <div class="form-row" >
             <div class="input-label-wrapper" >
                 <label for="company_name" >Company name</label>
-                <input type="text" name="company_name" id="company_name" value="<?= $company_name; ?>" />
+                <input type="text" name="company_name" id="company_name" value="<?= $company_name; ?>" class="required" />
             </div>
         </div>
 
@@ -360,11 +374,11 @@ function profile_form() {
         <div class="form-row" >
             <div class="input-label-wrapper" >
                 <label for="first_name" >First name</label>
-                <input type="text" name="first_name" id="first_name" value="<?= $firstname; ?>" placeholder="Firstname" />
+                <input type="text" name="first_name" id="first_name" value="<?= $firstname; ?>" placeholder="Firstname" class="required"  />
             </div>
             <div class="input-label-wrapper" >
                 <label for="last_name" >Last name</label>
-                <input type="text" name="last_name" id="last_name" value="<?= $lastname ?>" placeholder="Lastname" />
+                <input type="text" name="last_name" id="last_name" value="<?= $lastname ?>" placeholder="Lastname" class="required"  />
             </div>
         </div>
 
@@ -372,15 +386,15 @@ function profile_form() {
         <div class="form-row" >
             <div class="input-label-wrapper" >
                 <label for="email" >Email</label>
-                <input type="email" name="email" id="email" value="<?= $user_email ?>" placeholder="Placeholder" />
+                <input type="email" name="email" id="email" value="<?= $user_email ?>" placeholder="Placeholder" class="required"  />
             </div>
             <div class="input-label-wrapper" >
                 <label for="cellnumber" >Cell number</label>
-                <input type="text" name="cell_number" id="cell_number" value="<?= $user_phone ?>" />
+                <input type="text" name="cell_number" id="cell_number" value="<?= $user_phone ?>" class="required" />
             </div>
             <div class="input-label-wrapper" >
                 <label for="whatsapp_number" >WhatsApp number</label>
-                <input type="text" name="whatsapp_number" id="whatsapp_number" value="<?= $userWhatsAppNumber ?>" />
+                <input type="text" name="whatsapp_number" id="whatsapp_number" value="<?= $userWhatsAppNumber ?>" class="required" />
             </div>
         </div>
 
@@ -388,7 +402,7 @@ function profile_form() {
         <div class="form-row" >
             <div class="input-label-wrapper" >
                 <label for="address" >Address</label>
-                <input type="text" name="address" id="address" value="<?= $userAddress ?>" placeholder="Placeholder" />
+                <input type="text" name="address" id="address" value="<?= $userAddress ?>" placeholder="Placeholder" class="required" />
             </div>
         </div>
 
@@ -419,8 +433,12 @@ function profile_form() {
     </form>
 
     <?php 
+    
+    if(wp_doing_ajax()) {
+        die();
+    };
 
 }
-add_action('wp_ajax_profile_form', 'profile_form');
-add_action('wp_ajax_nopriv_profile_form', 'profile_form');
+add_action('wp_ajax_update_profile', 'profile_form');
+add_action('wp_ajax_nopriv_update_profile', 'profile_form');
 
