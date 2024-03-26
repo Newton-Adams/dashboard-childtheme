@@ -3,46 +3,64 @@
 jQuery(document).ready(function ($) {
     
     // Form Validation 
+    function validateForm(form) {
 
-    function validateForm(form) { 
+        let isValid = true; // Initialize flag
+    
+        // Check if the form exists and has the validate-form class
+        if (form) {
 
-        let valid = false;
-        const formFields = form.find('input.required, select.required, textarea.required');
-
-        formFields.each(function() {
-            const self = $(this); 
-            const selfVal = self.val();
+            // Select all required fields within the form
+            const formFields = form.find('input.required, select.required, textarea.required');
             
-            console.log(selfVal)
+            // Loop through each required field
+            formFields.each( function() {
+                const self = $(this); 
+                const selfVal = self.val();
 
-            // Required validation  
-            if( selfVal === '' ) {
-                if( !self.hasClass('error') ) {
-                    self.addClass('error');
-                    self.closest('.input-label-wrapper').append('<span class="error-message">This field is required</span>');
+                // Check if the field is empty
+                if( selfVal === '' ) {
+                    if( !self.hasClass('error') ) {
+                        self.addClass('error');
+                        self.closest('.input-label-wrapper').append('<span class="error-message">This field is required</span>');
+                    }
+                    console.log('Field is empty')
+                    isValid = false; // Set flag to false if any field is empty
+                    return false; // Exit the loop
+                } else {
+                    self.removeClass('error');
+                    self.siblings('.error-message').remove();
                 }
-                valid = false;
-            } else {
-                self.removeClass('error');
-                self.siblings('.error-message').remove();
-                valid = true;
-            }
 
-            // Email validation 
-            // if( self.attr('type') === 'email' ) {
-            //     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            //     if( !emailPattern.test(selfVal) ) {
-            //         self.addClass('error');
-            //         self.closest('.input-label-wrapper').append('<span class="error-message">Enter a valid email address</span>');
-            //         valid = false;
-            //     }
-            // }
+                // Email validation 
+                if (self.attr('type') === 'email') {
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailPattern.test(selfVal)) {
+                        self.addClass('error');
+                        self.closest('.input-label-wrapper').append('<span class="error-message">Enter a valid email address</span>');
+                        isValid = false; // Set flag to false if email is invalid
+                        return false; // Exit the loop
+                    }
+                }
 
-        });
-        
-        console.log(valid);
-        return valid;
-
+                // Cellphone validation 
+                if (self.attr('type') === 'tel') {
+                    const cellphonePattern = /^\d{10}$/; // Assuming 10 digit cellphone format
+                    if (!cellphonePattern.test(selfVal)) {
+                        self.addClass('error');
+                        self.closest('.input-label-wrapper').append('<span class="error-message">Enter a valid cellphone number (10 digits)</span>');
+                        isValid = false; // Set flag to false if cellphone is invalid
+                        return false; // Exit the loop
+                    }
+                }
+            });
+            
+            // Return isValid flag
+            return isValid;
+        } else {
+            // Form with validate-form class not found, allow submission
+            return true;
+        }
     }
     
     if( $('.validate-form').length ) {
@@ -420,28 +438,35 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         const self = $(this); 
-        validateForm(self); 
-        addLoader(self); 
 
-        var formData = $(this).serialize();
+        console.log('valid: ', validateForm(self))
+        if(validateForm(self)) {
 
-        $.ajax({
-            type: 'POST',
-            url: workshop_pro_obj.ajaxurl,
-            data: {
-                action: 'update_profile',
-                formData: formData
-            },
-            success: function(response) {
-                // alert('Profile updated successfully!');
-                removeLoader(self); 
-                // $(this).html(response).fadeIn()
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                // Handle errors here
-            }
-        });
+            console.log('Profile form is valid')
+            
+            addLoader(self); 
+
+            var formData = $(this).serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: workshop_pro_obj.ajaxurl,
+                data: {
+                    action: 'update_profile',
+                    formData: formData
+                },
+                success: function(response) {
+                    // alert('Profile updated successfully!');
+                    removeLoader(self); 
+                    // $(this).html(response).fadeIn()
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    // Handle errors here
+                }
+            });
+        }
+
 
     });
     

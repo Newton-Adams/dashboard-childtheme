@@ -2,10 +2,10 @@ form {
     .form-row {
         display: flex;
         justify-content: space-between;
-        margin: 0 -10px 20px;
+        margin: 0 -10px 0px;
         .input-label-wrapper {
             display: block; 
-            margin: 0 10px;
+            margin: 0 10px 20px;
             label {
                 font-size: 14px; 
                 font-weight: 500; 
@@ -32,6 +32,18 @@ form {
         }
         &.error {
             border-color: var(--warning);
+        }
+        &:focus {
+            border-color: var(--accent-1);
+        }
+    }
+    textarea {
+        border-radius: 6px; 
+        border: none; 
+        background: var(--background-secondary);
+        box-shadow: 0px 1px 2px 0px rgba(50, 50, 71, 0.08), 0px 0px 1px 0px rgba(50, 50, 71, 0.20); 
+        &:focus {
+            border-color: var(--accent-1);
         }
     }
     &.form {
