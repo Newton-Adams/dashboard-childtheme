@@ -1,19 +1,26 @@
 .table-filters {
     margin: 0;
+    .hide-columns {
+        svg {
+            cursor: pointer;
+        }
+    }
     .column-states {
         display: flex;
         justify-content: space-between;
         background-color: var(--background-secondary);
         border-radius: 16px 16px 0 0;
         padding: 15px;
-        input {
-            cursor: pointer;
+        label {
+            input {
+                cursor: pointer;
+            }
         }
     }
     .filter-dropdowns {
         display: grid;
         grid-template-columns: repeat(3,1fr);
-        margin-bottom: 20px;
+        margin-bottom: 16px;
     }
 }
 

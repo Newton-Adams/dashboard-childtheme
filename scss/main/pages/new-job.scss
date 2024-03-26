@@ -2,7 +2,11 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    .select-wrapper {
-        width: 50%;
+    column-gap: 25px;
+    .select-wrapper,.job-select-wrapper {
+        width: calc(50% - 25px);
+    }
+    .job-number-outer  {
+        width: 100%;
     }
 }

@@ -22,6 +22,7 @@ switch (true) {
 
 <div class="job-number-outer" >
     <div class="job-number-wrapper" >
-        <p>Job Number </p><input id="job-number" type="text" value="WP-<?php echo $job_number; ?>" >
+        <h3>Job Number </h3>
+        <input id="job-number" type="text" value="WP-<?php echo $job_number; ?>" >
     </div>
 </div>

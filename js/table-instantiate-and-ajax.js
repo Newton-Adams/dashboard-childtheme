@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
                 //Create Table
                 let jobsTable = new DataTable('#jobs-table', { 
                     data: tableData,
-                    pageLength: 7,                    
+                    pageLength: 7,                  
                     columns: [
                         { data: 'name' },
                         { data: 'date' },
@@ -43,10 +43,20 @@ jQuery(document).ready(function ($) {
                         ordering: true,
                         select: true,
                         topStart: 'info',
-                        bottom: 'paging', 
                         bottomStart: null,
-                        bottomEnd: null,
-                    }
+                        // pagingType: 'simple_numbers',
+                        bottomEnd: {
+                            paging: {
+                                numbers: 1
+                            }
+                        },
+                    },
+                    columnDefs: [
+                        {
+                            targets: 8, 
+                            className: 'actions' 
+                        }
+                    ]
                 })
 
                 //Filter Status
@@ -118,7 +128,7 @@ jQuery(document).ready(function ($) {
                     // Toggle the visibility
                     column.visible(!column.visible());                    
                 })
-              
+                
                 //Search Tables
                 $(document).on('keyup','.table-filters input.search',function() {
                     const searchValue = $(this).val()
@@ -133,8 +143,29 @@ jQuery(document).ready(function ($) {
                     countVisibleRows(rowCount)
                 })
 
+                //Actions popup
+                if($('table tbody td.actions').length > 0) {
+                    let actionOpen = false
+                    $(document).on('click','table tbody td.actions',function() {
+                        if(!actionOpen) {
+                            $(this).append(
+                                `<ul>
+                                    <li>Edit</li>
+                                    <li>Delete</li>
+                                    <li>Send Quote</li>
+                                    <li>Send Invoice</li>
+                                </ul>`
+                            )
+                            actionOpen = true
+                        } else {
+                            $('table tbody td.actions > ul').fadeOut().remove()
+                            actionOpen = false
+                        }
+                    })
+                }
+
                 //Expand/Collapse Job Extra Info
-                $(document).on('click', '#jobs-table tbody tr', function () {
+                $(document).on('click', '#jobs-table tbody tr td:not(.actions)', function () {
                     const jobID = $(this).text()
                     let tr = $(this)
                     let row = jobsTable.row( tr )
@@ -169,18 +200,32 @@ jQuery(document).ready(function ($) {
                 //Get visible row count
                 function countVisibleRows(rowCount=undefined) {
                     const tableRows = $('#jobs-table tbody tr td').length && rowCount === undefined ? $('#jobs-table tbody tr').length : rowCount 
-                    $('#jobs-table_wrapper > .dt-layout-row:last-child').text(`${tableRows} of ${jobsTable.rows().count()} results`)
+                    $('#jobs-table_wrapper > .dt-layout-row:last-child .row-count .showing').text(tableRows)
                 }
 
                 //Result Count
                 const loadRows = $('#jobs-table tbody tr').length
-                $('#jobs-table_wrapper > .dt-layout-row:last-child').prepend(`<p class="row-count" >Showing ${loadRows} of ${jobsTable.rows().count()} results found</p>`)
-                countVisibleRows()
+                $('#jobs-table_wrapper > .dt-layout-row:last-child').prepend(`<p class="row-count" >Showing <span class="showing">${loadRows}</span> of <span class="results" >${jobsTable.rows().count()}</span> results found</p>`)
+              
 
             }
         });
     }
     instantiateJobsTable()    
+
+    //Hide datatable columns
+    if($('.column-states').length > 0) {
+        let colStateVis = true
+        $(document).on('click','.hide-columns',function() {
+            if(colStateVis) {
+                $(this).closest('.table-filters').find('.column-states').fadeOut() 
+                colStateVis = false
+            } else {
+                $(this).closest('.table-filters').find('.column-states').fadeIn()
+                colStateVis = true
+            } 
+        })
+    }
 
     //Drop down open
     $(document).on('click','.select-wrapper:not(.active)',function() {

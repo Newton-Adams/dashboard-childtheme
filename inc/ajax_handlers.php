@@ -63,17 +63,24 @@ function handle_customer_ajax_form() {
  
     //Contact Data
     isset($_POST['customer-contacts']) && $contacts = strip_tags( json_encode($_POST['customer-contacts']) );
+
+    //Vehicle Data
+    isset($_POST['customer-vehicles']) && $vehicles = strip_tags( json_encode($_POST['customer-vehicles']) );
+    
+    //Notes Data
+    isset($_POST['customer-notes']) && $notes = strip_tags( json_encode($_POST['customer-notes']) );
+
     //Add/update the post
     $customer_args = array(
         'post_type' => 'customers',
         'post_title'    => $customer_name,
         'post_status'   => 'publish',
         'post_author'   => 1,
-    );
+    );    
     
     //Create or edit post
     $customer_id = (int)wp_insert_post( $customer_args );
-
+    
     // Check if the post was successfully inserted
     if ( !is_wp_error($post_id) && $customer_id > 0 ) {
         
@@ -82,7 +89,14 @@ function handle_customer_ajax_form() {
         
         //Create/update customer contact meta
         add_post_meta($customer_id, 'contacts', $contacts, true);
-
+        
+        //Create/update customer vehicles meta
+        add_post_meta($customer_id, 'vehicles', $vehicles, true);
+        
+        //Create/update customer notes meta
+        add_post_meta($customer_id, 'notes', $notes, true);
+        
+        echo '<pre>',print_r($note,1),'</pre>';
     } 
 
     if(wp_doing_ajax()) die();
@@ -442,3 +456,39 @@ function profile_form() {
 add_action('wp_ajax_update_profile', 'profile_form');
 add_action('wp_ajax_nopriv_update_profile', 'profile_form');
 
+//Fetch Searched Customers
+add_action('wp_ajax_fetch_customers', 'fetch_customers');
+add_action('wp_ajax_nopriv_fetch_customers', 'fetch_customers');
+function fetch_customers() {
+    //Fetch Customers based off of search
+    if(isset($_POST['fetch_customers'])) { 
+        $search_value = $_POST['fetch_customers'];
+    } else {
+        $search_value = '';
+    }
+
+    $args = array(
+        'post_type' => 'customers',
+        'numberposts' => -1,
+        's' => $search_value
+    );
+
+    $customers = get_posts($args);
+    
+    //Sort data to pass back to JS
+    $customer_data = array();
+    foreach ($customers as $key => $customer) {
+        $details = json_decode( get_post_meta($customer->ID, 'details', true) );
+        $contacts = json_decode( get_post_meta($customer->ID, 'contacts', true) );
+        $customer_data[$customer->ID] = array(
+            "name" => $customer->post_title,
+            "company-name" => $details[0]->{"company-name"},
+            "email" => $contacts[2]->{"email-1"},
+            "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"} 
+        );
+    }
+    $customer_data = json_encode($customer_data);
+    echo $customer_data;
+
+    wp_die();
+}

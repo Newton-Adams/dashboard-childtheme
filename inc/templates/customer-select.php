@@ -1,9 +1,7 @@
-<div class="select-wrapper" >
+<div class="job-select-wrapper customer" >
+    <h3>Customer</h3>
     <div class="customer-select" >
-        <p>Customer</p>
-        <span>option 1</span>
-        <span>option 2</span>
-        <span>option 3</span>
-        <span>option 4</span>
+        <input type="text" class="selected-value" palceholder="Find a customer by name, vehicle or registraion" >
+        <ul class="options" ></ul>
     </div>
 </div>

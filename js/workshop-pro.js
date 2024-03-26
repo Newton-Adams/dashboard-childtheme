@@ -281,6 +281,7 @@ jQuery(document).ready(function ($) {
         })
     }
 
+    //Toggle snapshot
     if($('.snapshot-section').length)  { 
         $(document).on('click','.snapshot-section .reveal-snapshot-btn',function() {
             $(this).toggleClass('active')

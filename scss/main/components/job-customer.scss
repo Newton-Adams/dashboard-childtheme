@@ -1,0 +1,106 @@
+.job-select-wrapper.customer {
+    .customer-select {
+        position: relative;
+        input {
+            border: 1px solid var(--input-border-color);
+            border-radius: 6px;
+            box-shadow: var(--input-shadow);
+            width: 100%;
+            height: 36px;
+            padding: 11px 16px;
+            font-size: 0.813rem;
+            font-weight: 500;
+            line-height: 13px;
+        }
+        .options {
+            width: 100%;
+            margin: 0;
+            padding: 0px 12px;
+            top: 56px;
+            list-style: none;
+            border-radius: 8px;
+            position: absolute;
+            background-color: var(--background-secondary);
+            &.active {
+                border: 1px solid var(--borders);
+                padding: 14px 12px;
+                box-shadow: 0 0 6px 0px rgba(0,0,0,0.1);
+                li {
+                    &:not(.add-new-customer):hover {
+                        background-color: var(--background-tertiary);
+                    }
+                }
+            }
+            li {
+                display: flex;
+                padding: 8px;
+                align-items: center;
+                cursor: pointer;
+                &:not(:last-child) {
+                    margin-bottom: 12px;
+                }
+                &.add-new-customer {
+                    padding: 0 8px 16px;
+                    border-bottom: 1px solid var(--borders);
+                }
+                svg {
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+    .selected-customer-outer {
+        .customer-name-outer {
+            display: flex;
+            justify-content: space-between;
+            .customer-name {
+                padding: 10px 10px 0;
+                background-color: var(--borders);
+                border-radius: 6px 6px 0 0;
+                display: flex;
+                justify-content: space-between;
+                width: calc(100% - 257px);
+                font-size: 0.875rem;
+                font-weight: 900;
+                .close {
+                    width: 16px;
+                    height: 16px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                }
+            }
+            .change-customer {
+                background-color: var(--white);
+                border: 1px solid var(--borders);
+                width: 100%;
+                max-width: 247px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 0 10px;
+                border-radius: 6px;
+                line-height: 34px;
+                font-size: 0.813rem;
+                cursor: pointer;
+            }
+        }
+        .customer-details {
+            border-radius: 0 6px 6px 6px;
+            padding: 10px;
+            background-color: var(--borders);
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            > span {
+                > p {
+                    margin-bottom: 0;
+                    font-size: 0.875rem;
+                    &:first-child {
+                        font-weight: 900;
+                    }
+                }
+            }
+        }
+    }   
+}

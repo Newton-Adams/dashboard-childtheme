@@ -143,7 +143,7 @@ function workshop_pro_post_types() {
 	register_post_type( 'customers', $review_args );
 
 
-	//Register Jobss Taxonomies
+	//Register Jobs Taxonomies
 	$customer_categories_args = array(
 		'labels' => array(
 		  'name'              => _x( 'Customer Categories', 'taxonomy general name', 'generatepress' ),
