@@ -461,12 +461,12 @@ add_action('wp_ajax_fetch_customers', 'fetch_customers');
 add_action('wp_ajax_nopriv_fetch_customers', 'fetch_customers');
 function fetch_customers() {
     //Fetch Customers based off of search
-    if(isset($_POST['fetch_customers'])) { 
-        $search_value = $_POST['fetch_customers'];
+    if(isset($_POST['search-val'])) { 
+        $search_value = $_POST['search-val'];
     } else {
         $search_value = '';
     }
-
+    
     $args = array(
         'post_type' => 'customers',
         'numberposts' => -1,
@@ -480,13 +480,27 @@ function fetch_customers() {
     foreach ($customers as $key => $customer) {
         $details = json_decode( get_post_meta($customer->ID, 'details', true) );
         $contacts = json_decode( get_post_meta($customer->ID, 'contacts', true) );
+        $vehicles = get_object_vars( json_decode( get_post_meta($customer->ID, 'vehicles', true) ));
+
+        //Vehicle data
+        $VIN = key($vehicles);
+        $vehicle_values = $vehicles[$VIN];
+
         $customer_data[$customer->ID] = array(
             "name" => $customer->post_title,
             "company-name" => $details[0]->{"company-name"},
             "email" => $contacts[2]->{"email-1"},
-            "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"} 
+            "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"},
+            "vin" => $VIN,
+            "make" => $vehicle_values->make,
+            "model" => $vehicle_values->model,
+            "registration" => $vehicle_values->registration,
+            "mileage" => $vehicle_values->mileage,
+            "colour" => $vehicle_values->colour,
         );
+        // echo '<pre>',print_r(get_object_vars($vehicles),1),'</pre>';
     }
+    // echo '<pre>',print_r($vehicle_values->make,1),'</pre>';
     $customer_data = json_encode($customer_data);
     echo $customer_data;
 

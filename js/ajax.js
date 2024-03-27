@@ -74,11 +74,84 @@ jQuery(document).ready(function ($) {
 
     //Customer Select Dropdown
     if($('.job-select-wrapper.customer .customer-select').length > 0) {
+        function vehicleOptions(self) {
+            //Get vehicle data
+            const dataValues = self.data()           
+            const vehicleOptions = `<li data-vin="${dataValues['vin']}" data-mileage="${dataValues['mileage']}" >
+                                        <p class="make-model" > ${dataValues['make']} / ${dataValues['model']} / ${dataValues['colour']} </p>
+                                        <p class="registration" > ${dataValues['registration']} </p>
+                                    </li>`;
+
+            $('.no-customer-selected').fadeOut(0)
+            $('.job-select-wrapper.vehicle .options > li').remove()
+            $('.job-select-wrapper.vehicle .options').html( vehicleOptions )
+            
+            //Add event listeners
+            $(document).on('click','.job-select-wrapper.vehicle .options > li',function() {
+                const selectedVin = $(this).data("vin")
+                const selectedMakeModel = $(this).find(".make-model").text()
+                const selectedMileage = $(this).data("mileage")
+                // const selectedRegistration = $(this).find(".registration").text()
+                //Todo: Update job customer and vehicle hidden fields
+
+                const markup = `<div class="selected-vehicle-outer" >
+                                    <div class="vehicle-name-outer" >
+                                        <span class="vehicle-name" >
+                                            <p>${selectedMakeModel}</p>
+                                            <span class="close" >
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z" fill="#425466"/>
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M4.64645 4.64645C4.84171 4.45118 5.15829 4.45118 5.35355 4.64645L8 7.29289L10.6464 4.64645C10.8417 4.45118 11.1583 4.45118 11.3536 4.64645C11.5488 4.84171 11.5488 5.15829 11.3536 5.35355L8.70711 8L11.3536 10.6464C11.5488 10.8417 11.5488 11.1583 11.3536 11.3536C11.1583 11.5488 10.8417 11.5488 10.6464 11.3536L8 8.70711L5.35355 11.3536C5.15829 11.5488 4.84171 11.5488 4.64645 11.3536C4.45118 11.1583 4.45118 10.8417 4.64645 10.6464L7.29289 8L4.64645 5.35355C4.45118 5.15829 4.45118 4.84171 4.64645 4.64645Z" fill="#425466"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                        <span class="change-vehicle" >
+                                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect width="26" height="26" rx="13" fill="#EDFFEB"/>
+                                                <mask id="mask0_30_12060" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="6" width="14" height="14">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M13 9.5C13.2416 9.5 13.4375 9.69588 13.4375 9.9375V12.5625H16.0625C16.3041 12.5625 16.5 12.7584 16.5 13C16.5 13.2416 16.3041 13.4375 16.0625 13.4375H13.4375V16.0625C13.4375 16.3041 13.2416 16.5 13 16.5C12.7584 16.5 12.5625 16.3041 12.5625 16.0625V13.4375H9.9375C9.69588 13.4375 9.5 13.2416 9.5 13C9.5 12.7584 9.69588 12.5625 9.9375 12.5625H12.5625V9.9375C12.5625 9.69588 12.7584 9.5 13 9.5Z" fill="black"/>
+                                                </mask>
+                                                <g mask="url(#mask0_30_12060)">
+                                                <rect x="6" y="6" width="14" height="14" fill="#009026"/>
+                                                </g>
+                                            </svg>
+                                            Add vehicle
+                                        </span>
+                                    </div>
+                                    <div class="vehicle-details" >
+                                        <span class="vehicle-details" >
+                                            <p>Details</p>
+                                            <p>${selectedMileage}</p>
+                                            <p>${selectedVin}</p>
+                                        </span>
+                                        <span class="vehicle-make-model" >
+                                            <p>Make/Model</p>
+                                            <p>${selectedMakeModel}</p>
+                                        </span>
+                                    </div>
+                                </div>`
+                    
+                    $('.vehicle-select .selected-vehicle-outer').length > 0 && $('.vehicle-select .selected-vehicle-outer').remove(markup)
+                    $('.vehicle-select .pre-vehicle-selection').fadeOut(function() {
+                        $('.vehicle-select').append(markup)
+                    })
+            })
+        }
+
+        let keyupTimeout
         $(document).on('keyup','.selected-value',function() {
             const searchValue = $(this).val()            
             const self = $(this)
+
+            //Prevent search from running until we stop typing for 2 seconds
+            clearTimeout(keyupTimeout);
+
+            //Set a new timeout
+            keyupTimeout = setTimeout(function() {
+                
             //Add loader
             addLoader('.job-select-wrapper.customer')
+            
             $.ajax({
                 type: "POST",
                 url: workshop_pro_obj.ajaxurl,
@@ -87,6 +160,7 @@ jQuery(document).ready(function ($) {
                     'search-val': searchValue,
                 },
                 success: function (response) {	
+               
                     const customerData = JSON.parse(response)
                     let options = `<li class="add-new-customer" >
                                         <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -100,9 +174,39 @@ jQuery(document).ready(function ($) {
                                         </svg>
                                         Add new customer
                                     </li>`
-                    Object.keys(customerData).forEach(customer => {
-                        options += `<li data-company-name="${customerData[customer]['company-name']}" data-address="${customerData[customer]['address']}" data-name="${customerData[customer]['name']}" data-email="${customerData[customer]['email']}" >
-                                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                    if(Object.keys(customerData).length > 0) {
+                        Object.keys(customerData).forEach(customer => {
+                            options += `<li 
+                                            data-company-name="${customerData[customer]['company-name']}" 
+                                            data-address="${customerData[customer]['address']}" 
+                                            data-name="${customerData[customer]['name']}" 
+                                            data-email="${customerData[customer]['email']}" 
+                                            data-vin="${customerData[customer]['vin']}" 
+                                            data-make="${customerData[customer]['make']}"
+                                            data-model="${customerData[customer]['model']}"
+                                            data-registration="${customerData[customer]['registration']}"
+                                            data-mileage="${customerData[customer]['mileage']}"
+                                            data-colour="${customerData[customer]['colour']}"
+                                        >
+                                            <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect width="46" height="46" rx="23" fill="#F0F6FF"/>
+                                                <mask id="mask0_2_12688" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="14" width="18" height="18">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M23 30.875C27.3492 30.875 30.875 27.3492 30.875 23C30.875 18.6508 27.3492 15.125 23 15.125C18.6508 15.125 15.125 18.6508 15.125 23C15.125 27.3492 18.6508 30.875 23 30.875ZM23 32C27.9706 32 32 27.9706 32 23C32 18.0294 27.9706 14 23 14C18.0294 14 14 18.0294 14 23C14 27.9706 18.0294 32 23 32Z" fill="black"/>
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.8204 24.7631C19.0893 24.6075 19.4334 24.6994 19.589 24.9683C20.2706 26.1467 21.5433 26.9375 23 26.9375C24.4568 26.9375 25.7294 26.1467 26.4111 24.9683C26.5667 24.6994 26.9108 24.6075 27.1797 24.7631C27.4486 24.9187 27.5405 25.2627 27.3849 25.5317C26.5104 27.0434 24.8746 28.0625 23 28.0625C21.1255 28.0625 19.4896 27.0434 18.6151 25.5317C18.4596 25.2627 18.5515 24.9187 18.8204 24.7631Z" fill="black"/>
+                                                <path d="M21.875 21.3125C21.875 22.2445 21.3713 23 20.75 23C20.1287 23 19.625 22.2445 19.625 21.3125C19.625 20.3805 20.1287 19.625 20.75 19.625C21.3713 19.625 21.875 20.3805 21.875 21.3125Z" fill="black"/>
+                                                <path d="M26.375 21.3125C26.375 22.2445 25.8713 23 25.25 23C24.6287 23 24.125 22.2445 24.125 21.3125C24.125 20.3805 24.6287 19.625 25.25 19.625C25.8713 19.625 26.375 20.3805 26.375 21.3125Z" fill="black"/>
+                                                </mask>
+                                                <g mask="url(#mask0_2_12688)">
+                                                <rect x="14" y="14" width="18" height="18" fill="#18181A"/>
+                                                </g>
+                                            </svg>
+                                            ${customerData[customer]['name']} 
+                                        </li>`
+                        });
+                    } else {
+                        options += `<li class="no-customers" >
+                                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);" >
                                             <rect width="46" height="46" rx="23" fill="#F0F6FF"/>
                                             <mask id="mask0_2_12688" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="14" width="18" height="18">
                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M23 30.875C27.3492 30.875 30.875 27.3492 30.875 23C30.875 18.6508 27.3492 15.125 23 15.125C18.6508 15.125 15.125 18.6508 15.125 23C15.125 27.3492 18.6508 30.875 23 30.875ZM23 32C27.9706 32 32 27.9706 32 23C32 18.0294 27.9706 14 23 14C18.0294 14 14 18.0294 14 23C14 27.9706 18.0294 32 23 32Z" fill="black"/>
@@ -114,20 +218,24 @@ jQuery(document).ready(function ($) {
                                             <rect x="14" y="14" width="18" height="18" fill="#18181A"/>
                                             </g>
                                         </svg>
-                                        ${customerData[customer]['name']} 
+                                        No matching customers found
                                     </li>`
-                    });
+                    }
                     self.closest('.customer-select').find('.options').addClass('active').html(options)
 
                     //Remove loader
                     removeLoader('.job-select-wrapper.customer')    
                     
                     //Attach click event to options
-                    $(document).on('click','.job-select-wrapper.customer .options li:not(.add-new-customer)',function() {
+                    $(document).on('click','.job-select-wrapper.customer .options li:not(.add-new-customer):not(.no-customers)',function() {
                         const customerName = $(this).data('name')
                         const companyName = $(this).data('company-name')
                         const contact = $(this).data('email')
                         const address = $(this).data('address')
+
+                        //Build out vehicle options
+                        vehicleOptions( $(this) )                        
+                        $('.job-select-wrapper.vehicle .vehicle-select').fadeIn()
               
                         //Markup
                         const markup = `<div class="selected-customer-outer" >
@@ -162,18 +270,24 @@ jQuery(document).ready(function ($) {
                         //Append selected customer markup & hide search field.
                         //Add click event to allow changing of customer.
                         $(this).closest('.job-select-wrapper.customer').find('.customer-select').hide().fadeOut(function() {
+
+                            //Remove old markup if it exists
+                            $('.selected-customer-outer').length > 0 && $('.selected-customer-outer').remove()
+
                             $(this).closest('.job-select-wrapper.customer').append(markup).fadeIn(function() {
+
                                 //Change customer event
                                 $(document).on('click','.change-customer, .selected-customer-outer .close',function() {                  
                                     $(this).closest('.job-select-wrapper').find('.selected-customer-outer').fadeOut(function() {
 
-                                        //Previous search
-                                        // $('.job-select-wrapper.customer .options.active').addClass('active')    
-                                        // $('.job-select-wrapper.customer .options.active li').fadeIn()
+                                        //Make search results active again
+                                        $('.job-select-wrapper.customer .options').addClass('active')
+                                        $('.job-select-wrapper.customer .options.active li').fadeIn()
 
                                         $(this).closest('.job-select-wrapper').find('.customer-select').fadeIn(function() {
                                             $(this).closest('.job-select-wrapper').find('.selected-customer-outer').remove()
                                         })
+
                                     })
                                 })
                             })
@@ -182,15 +296,18 @@ jQuery(document).ready(function ($) {
 
                 }
             });
+
+            }, 1500);
+            
         })
 
-        //Close dropdown on clickoff
-        // $(document).on('click',function(e) {
-        //     if( !$(e.target).closest('.customer-select').length > 0 ) { 
-        //         $('.job-select-wrapper.customer .options.active li').fadeOut()
-        //         $('.job-select-wrapper.customer .options.active').removeClass('active') 
-        //     } 
-        // })
+        // Close dropdown on clickoff
+        $(document).on('click',function(e) {
+            if( !$(e.target).closest('.customer-select').length > 0 ) { 
+                $('.job-select-wrapper.customer .options.active li').fadeOut()
+                $('.job-select-wrapper.customer .options.active').removeClass('active') 
+            } 
+        })
     }
 
     //Mechanics Save/Edit Ajax
@@ -405,12 +522,12 @@ jQuery(document).ready(function ($) {
                 vehicleKeyAndValue[pairkey] += pairValue
                 if(vehicleVin.length > 1 && vehicleI === 8) {
                     vehicleObject[vehicleVin] = vehicleKeyAndValue
-                    vehicleObject = JSON.stringify(vehicleObject)
+                    // vehicleObject = JSON.stringify(vehicleObject)
                 }
                 vehicleI++
             } 
         }
-
+        
         //Notes Fields
         const customerNotes = $('#customer-notes textarea').val()
 
@@ -425,7 +542,7 @@ jQuery(document).ready(function ($) {
                 'customer-vehicles': vehicleObject,
                 'customer-notes': customerNotes,
             },
-            success: function (response) {	
+            success: function (response) {	                
                 alert('Customer added!')
             }
         });
@@ -520,7 +637,7 @@ jQuery(document).ready(function ($) {
                 const existingAttchmentsCount = Object.keys(concatenatedFiles)                
                 if(existingAttchmentsCount.includes(name)) {
                     for (let i = 0; i <= existingAttchmentsCount.length; i++) {
-                        //TODO:Change to recursive fucntion instead of for
+                        //TODO:Change to recursive function instead of for
                         if(!existingAttchmentsCount.includes(`${name}-${i}`)) {
                             concatenatedFiles[`${name}-${i}`] = [name,tmp_name,url]
                             name = `${name}-${i}`
