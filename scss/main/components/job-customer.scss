@@ -62,9 +62,13 @@
                 width: calc(100% - 257px);
                 font-size: 0.875rem;
                 font-weight: 900;
+                > p {
+                    margin-bottom: 10px;
+                    text-transform: uppercase;
+                }
                 .close {
                     width: 16px;
-                    height: 16px;
+                    height: 26px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
