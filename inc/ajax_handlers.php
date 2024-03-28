@@ -305,35 +305,37 @@ function profile_form() {
     $vatNumber = esc_attr(get_user_meta($user_id, 'vat_number', true));
     $companyRegistrationNumber = esc_attr(get_user_meta($user_id, 'company_registration_number', true));
 
-    if (isset($_FILES['profile_picture'])) {
-        $user_id = get_current_user_id();
-        $file = $_FILES['profile_picture'];
 
-        if (!empty($file['name'])) {
-            $upload_overrides = array('test_form' => false);
-            $uploaded_file = wp_handle_upload($file, $upload_overrides);
+    // todo: handle profile picture upload
+    // if (isset($_FILES['profile_picture'])) {
+    //     $user_id = get_current_user_id();
+    //     $file = $_FILES['profile_picture'];
 
-            if (isset($uploaded_file['url'])) {
-                // Add the image to the media library
-                $file_path = $uploaded_file['file'];
-                $file_name = basename($file_path);
-                $attachment = array(
-                    'guid'           => $uploaded_file['url'],
-                    'post_mime_type' => $uploaded_file['type'],
-                    'post_title'     => preg_replace('/\.[^.]+$/', '', $file_name),
-                    'post_content'   => '',
-                    'post_status'    => 'inherit'
-                );
-                $attach_id = wp_insert_attachment($attachment, $file_path);
+    //     if (!empty($file['name'])) {
+    //         $upload_overrides = array('test_form' => false);
+    //         $uploaded_file = wp_handle_upload($file, $upload_overrides);
 
-                // Set user's avatar to the uploaded image
-                if (!is_wp_error($attach_id)) {
-                    update_user_meta($user_id, 'profile_picture_attachment_id', $attach_id);
-                    set_post_thumbnail($attach_id, $attach_id);
-                }
-            }
-        }
-    }
+    //         if (isset($uploaded_file['url'])) {
+    //             // Add the image to the media library
+    //             $file_path = $uploaded_file['file'];
+    //             $file_name = basename($file_path);
+    //             $attachment = array(
+    //                 'guid'           => $uploaded_file['url'],
+    //                 'post_mime_type' => $uploaded_file['type'],
+    //                 'post_title'     => preg_replace('/\.[^.]+$/', '', $file_name),
+    //                 'post_content'   => '',
+    //                 'post_status'    => 'inherit'
+    //             );
+    //             $attach_id = wp_insert_attachment($attachment, $file_path);
+
+    //             // Set user's avatar to the uploaded image
+    //             if (!is_wp_error($attach_id)) {
+    //                 update_user_meta($user_id, 'profile_picture_attachment_id', $attach_id);
+    //                 set_post_thumbnail($attach_id, $attach_id);
+    //             }
+    //         }
+    //     }
+    // }
 
     if ( isset($_POST['formData']) ) {
         parse_str($_POST['formData'], $form_data);
@@ -477,12 +479,12 @@ add_action('wp_ajax_fetch_customers', 'fetch_customers');
 add_action('wp_ajax_nopriv_fetch_customers', 'fetch_customers');
 function fetch_customers() {
     //Fetch Customers based off of search
-    if(isset($_POST['search-val'])) { 
-        $search_value = $_POST['search-val'];
+    if(isset($_POST['fetch_customers'])) { 
+        $search_value = $_POST['fetch_customers'];
     } else {
         $search_value = '';
     }
-    
+
     $args = array(
         'post_type' => 'customers',
         'numberposts' => -1,
@@ -496,28 +498,61 @@ function fetch_customers() {
     foreach ($customers as $key => $customer) {
         $details = json_decode( get_post_meta($customer->ID, 'details', true) );
         $contacts = json_decode( get_post_meta($customer->ID, 'contacts', true) );
-        $vehicles = get_object_vars( json_decode( get_post_meta($customer->ID, 'vehicles', true) ));
-
-        //Vehicle data
-        $VIN = key($vehicles);
-        $vehicle_values = $vehicles[$VIN];
-
         $customer_data[$customer->ID] = array(
             "name" => $customer->post_title,
             "company-name" => $details[0]->{"company-name"},
             "email" => $contacts[2]->{"email-1"},
-            "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"},
-            "vin" => $VIN,
-            "make" => $vehicle_values->make,
-            "model" => $vehicle_values->model,
-            "registration" => $vehicle_values->registration,
-            "mileage" => $vehicle_values->mileage,
-            "colour" => $vehicle_values->colour,
+            "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"} 
         );
     }
-    // echo '<pre>',print_r($vehicle_values->make,1),'</pre>';
     $customer_data = json_encode($customer_data);
     echo $customer_data;
 
     wp_die();
+}
+
+// Save Vehicle Data
+add_action('wp_ajax_save_vehicle_data', 'save_vehicle_data');
+add_action('wp_ajax_nopriv_save_vehicle_data', 'save_vehicle_data');
+
+
+function save_vehicle_data() {
+    if (isset($_POST['formData'])) {
+        parse_str($_POST['formData'], $formFields); // Convert serialized form data to array
+
+        if (isset($formFields['vehicle_make'])) {
+            //Add/update the post
+            $vehicle_args = array(
+                'post_type' => 'vehicles',
+                'post_title' => $formFields['vehicle_make'] . '-' . $formFields['vehicle_model'],
+                'post_status' => 'publish',
+                'post_author' => 1,
+            );
+
+            //Create or edit post
+            $vehicle_id = (int) wp_insert_post($vehicle_args);
+
+            // Check if the post was successfully inserted
+            if (!is_wp_error($vehicle_id) && $vehicle_id > 0) {
+                // Update post meta
+                add_post_meta($vehicle_id, 'data', json_encode($formFields));
+                add_post_meta($vehicle_id, 'attachments', json_encode($formFields['vehicle_attachments']));
+
+                // Handle file upload
+                // if (!empty($formFields['vehicle_attachments'])) {
+                //     $attachment_id = vehicle_upload_attachment('vehicle_attachments', $vehicle_id);
+                //     if ($attachment_id) {
+                //         // Get attachment URL
+                //         $attachment_url = wp_get_attachment_url($attachment_id);
+                //         // Add attachment URL to meta field
+                //         add_post_meta($vehicle_id, 'attachment_url', $attachment_url);
+                //     }
+                // }
+            }
+        }
+    }
+
+    if (wp_doing_ajax()) {
+        die();
+    }
 }

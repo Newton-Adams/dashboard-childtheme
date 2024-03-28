@@ -41,6 +41,11 @@ form {
         border-radius: 6px; 
         border: none; 
         background: var(--background-secondary);
+        width: 100%;
+        padding: 14px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 13px;
         box-shadow: 0px 1px 2px 0px rgba(50, 50, 71, 0.08), 0px 0px 1px 0px rgba(50, 50, 71, 0.20); 
         &:focus {
             border-color: var(--accent-1);
@@ -125,5 +130,33 @@ file-uploader {
             left: 80px;
             text-indent: inherit;
         }
+    }
+}
+
+.attachments {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    padding: 28px 10px;
+    gap: 10px; 
+    border-radius: 6px;
+    background: var(--background-secondary);
+    box-shadow: 0px 1px 2px 0px rgba(50, 50, 71, 0.08), 0px 0px 1px 0px rgba(50, 50, 71, 0.20); 
+    cursor: pointer;
+    h6 {
+        color: var(--text-muted);
+        margin-bottom: 0;
+    }
+    p {
+        font-size: 0.625rem;
+        font-weight: 400;
+        line-height: normal; 
+        color: var(--text-muted);
+    }
+    input {
+        position: absolute;
+        opacity: 0;
+        visibility: hidden;
     }
 }

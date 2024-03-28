@@ -683,7 +683,7 @@ jQuery(document).ready(function ($) {
                 self.closest('tr').fadeOut().remove()
             }
         });
-    })
+    });
 
     // Profile Form update 
     $('#profile-form').submit(function(e) { 
@@ -692,7 +692,6 @@ jQuery(document).ready(function ($) {
 
         const self = $(this); 
 
-        console.log('valid: ', validateForm(self))
         if(validateForm(self)) {
 
             console.log('Profile form is valid')
@@ -719,8 +718,39 @@ jQuery(document).ready(function ($) {
                 }
             });
         }
+    });
 
 
+    $('#add-vehicle-form').submit(function(e) {
+
+        e.preventDefault(); // Prevent default form submission
+
+        const self = $(this); 
+
+        var formData = $(self).serialize();
+
+        console.log('Form data:', formData)
+            
+        addLoader(self); 
+
+        $.ajax({
+            url: workshop_pro_obj.ajaxurl, // AJAX URL provided by WordPress
+            type: 'POST',
+            data: {
+                action: 'save_vehicle_data',
+                formData: formData
+            }, 
+            success: function(response) {
+                removeLoader(self); 
+                // Handle success 
+                console.log('Success')
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                // Handle error
+                console.log('Error')
+            }
+        });
     });
     
     //Loader - used for ajax

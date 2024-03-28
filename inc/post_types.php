@@ -173,5 +173,61 @@ function workshop_pro_post_types() {
 	);	
 	
 	register_taxonomy( 'job_categories', array('jobs'), $customer_categories_args );
+
+	// Vehicles 
+	$review_labels = array(
+		'name'                  => _x( 'Vehicles', 'Post Type General Name', 'workshop-pro' ),
+		'singular_name'         => _x( 'Vehicle', 'Post Type Singular Name', 'workshop-pro' ),
+		'menu_name'             => __( 'Vehicles', 'workshop-pro' ),
+		'name_admin_bar'        => __( 'Vehicle', 'workshop-pro' ),
+		'archives'              => __( 'Vehicle Archives', 'workshop-pro' ),
+		'attributes'            => __( 'Vehicle Attributes', 'workshop-pro' ),
+		'parent_item_colon'     => __( 'Parent Vehicle:', 'workshop-pro' ),
+		'all_items'             => __( 'All Vehicles', 'workshop-pro' ),
+		'add_new_item'          => __( 'Add New Vehicle', 'workshop-pro' ),
+		'add_new'               => __( 'Add Vehicle', 'workshop-pro' ),
+		'new_item'              => __( 'New Vehicle', 'workshop-pro' ),
+		'edit_item'             => __( 'Edit Vehicle', 'workshop-pro' ),
+		'update_item'           => __( 'Update Vehicle', 'workshop-pro' ),
+		'view_item'             => __( 'View Vehicle', 'workshop-pro' ),
+		'view_items'            => __( 'View Vehicles', 'workshop-pro' ),
+		'search_items'          => __( 'Search Vehicles', 'workshop-pro' ),
+		'not_found'             => __( 'Not found', 'workshop-pro' ),
+		'not_found_in_trash'    => __( 'Not found in Trash', 'workshop-pro' ),
+		'featured_image'        => __( 'Featured Image', 'workshop-pro' ),
+		'set_featured_image'    => __( 'Set featured image', 'workshop-pro' ),
+		'remove_featured_image' => __( 'Remove featured image', 'workshop-pro' ),
+		'use_featured_image'    => __( 'Use as featured image', 'workshop-pro' ),
+		'insert_into_item'      => __( 'Insert into item', 'workshop-pro' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this item', 'workshop-pro' ),
+		'items_list'            => __( 'Items list', 'workshop-pro' ), 
+		'items_list_navigation' => __( 'Items list navigation', 'workshop-pro' ), 
+		'filter_items_list'     => __( 'Filter items list', 'workshop-pro' ), 
+	); 
+	$review_args = array(
+		'label'                 => __( 'Vehicles', 'workshop-pro' ),
+		'labels'                => $review_labels,
+		'supports'              => array('title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'custom-fields'),
+		'taxonomies' => array('vehicle_categories'),
+		'hierarchical'          => true,
+		'public'                => true,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 5,
+		'menu_icon'             => 'dashicons-car',
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => true,
+		'show_in_rest'          => true,
+		'rewrite'               => array('slug' => "vehicles", 'with_front' => false),
+		'can_export'            => true,
+		'has_archive'           => false,
+		'exclude_from_search'   => false,
+		'publicly_queryable'    => true,
+		'capability_type'       => 'page',
+	); 
+
+	register_post_type( 'vehicles', $review_args ); 
+
+	
 }
 add_action( 'init', 'workshop_pro_post_types', 0 );
