@@ -18,6 +18,15 @@ function handle_job_ajax_form() {
     
     //Attachments
     isset($_POST['attachments']) && $attachments = strip_tags( $_POST['attachments'] );
+    
+    //Customer
+    isset($_POST['customer-name']) && $customer_name = strip_tags( $_POST['customer-name'] );
+    
+    //VIN
+    isset($_POST['vin']) && $vin = strip_tags( $_POST['vin'] );
+    
+    //Registration
+    isset($_POST['registration']) && $registration = strip_tags( $_POST['registration'] );
   
     //Add/update the post
     $job_args = array(
@@ -44,6 +53,15 @@ function handle_job_ajax_form() {
         
         //Create/update job attachments meta
         add_post_meta($job_id, 'attachments', $attachments, true);
+        
+        //Create/update job vin meta
+        add_post_meta($job_id, 'customer-name', $customer_name, true);
+        
+        //Create/update job vin meta
+        add_post_meta($job_id, 'vin', $vin, true);
+        
+        //Create/update job registration meta
+        add_post_meta($job_id, 'registration', $registration, true);
 
     } 
 
@@ -223,7 +241,7 @@ function get_all_jobs() {
     wp_die();
 }
 
-//Get Jobs COntent
+//Get Jobs Content
 add_action('wp_ajax_get_job_content', 'get_job_content');
 add_action('wp_ajax_nopriv_get_job_content', 'get_job_content');
 function get_job_content() {
@@ -327,8 +345,6 @@ function profile_form() {
         }
         echo 'success';
     }
-
-    // echo '<pre>'.print_r(get_userdata($user_id), true).'</pre>';
 
     ?>
 
@@ -498,7 +514,6 @@ function fetch_customers() {
             "mileage" => $vehicle_values->mileage,
             "colour" => $vehicle_values->colour,
         );
-        // echo '<pre>',print_r(get_object_vars($vehicles),1),'</pre>';
     }
     // echo '<pre>',print_r($vehicle_values->make,1),'</pre>';
     $customer_data = json_encode($customer_data);
