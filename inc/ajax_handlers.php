@@ -498,13 +498,28 @@ function fetch_customers() {
     foreach ($customers as $key => $customer) {
         $details = json_decode( get_post_meta($customer->ID, 'details', true) );
         $contacts = json_decode( get_post_meta($customer->ID, 'contacts', true) );
+
+        $vehicles = get_object_vars( json_decode( get_post_meta($customer->ID, 'vehicles', true) ));
+
+        //Vehicle data
+        $VIN = key($vehicles);
+        $vehicle_values = $vehicles[$VIN];
+
         $customer_data[$customer->ID] = array(
             "name" => $customer->post_title,
             "company-name" => $details[0]->{"company-name"},
             "email" => $contacts[2]->{"email-1"},
-            "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"} 
+            "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"},
+            "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"},
+            "vin" => $VIN,
+            "make" => $vehicle_values->make,
+            "model" => $vehicle_values->model,
+            "registration" => $vehicle_values->registration,
+            "mileage" => $vehicle_values->mileage,
+            "colour" => $vehicle_values->colour,
         );
     }
+    
     $customer_data = json_encode($customer_data);
     echo $customer_data;
 
