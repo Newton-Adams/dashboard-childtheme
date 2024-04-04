@@ -426,6 +426,23 @@ jQuery(document).ready(function ($) {
                 console.log(response);
             }
         });
+
+        //Delete attachment files from folder (The saving of attachment json is handled in te main ajax function above)
+        const attachment_file_url = $('#delete-attachments').val()
+        
+        $.ajax({
+            type: "POST",
+            url: workshop_pro_obj.ajaxurl,
+            data: {
+                'action': 'delete_file',
+                'file_url': attachment_file_url,
+            },
+            success: function (response) {
+                //Update JSON
+                console.log(response);
+                removeLoader(self)
+            }
+        });
     })
 
     //New Customer Save/Edit Ajax
@@ -655,7 +672,6 @@ jQuery(document).ready(function ($) {
 
                 removeLoader('.form-row.attachments label')
               
-                console.log(url, tmp_name, concatenatedFiles, JSON.stringify(concatenatedFiles));
                 $('#attachments-obj').val(JSON.stringify(concatenatedFiles))
 
                 //Add new attachment to table
@@ -676,22 +692,20 @@ jQuery(document).ready(function ($) {
         const attachment_file_name = self.attr('attachment_id')
         let attachmentObj = JSON.parse($('#attachments-obj').val())
         delete attachmentObj[attachment_file_name]        
-        addLoader(self)
         
-        $.ajax({
-            type: "POST",
-            url: workshop_pro_obj.ajaxurl,
-            data: {
-                'action': 'delete_file',
-                'file_url': attachment_file_url,
-            },
-            success: function (response) {
-                //Update JSON
-                $('#attachments-obj').val( JSON.stringify(attachmentObj) )
-                removeLoader(self)
-                self.closest('tr').fadeOut().remove()
-            }
-        });
+        $('#attachments-obj').val( JSON.stringify(attachmentObj) )
+        
+        //Add attachment url to delete field to delete later
+        let attchmentsToDelete = []
+        if($('#delete-attachments').val().length > 0) {
+            attchmentsToDelete.push($('#delete-attachments').val() + ',',attachment_file_url)
+        } else {
+            attchmentsToDelete.push(attachment_file_url)
+        }
+
+        $('#delete-attachments').val(attchmentsToDelete)        
+        self.closest('tr').fadeOut().remove()
+      
     });
 
     // Profile Form update 

@@ -7,7 +7,7 @@ $status_options =array(
 );
 
 //Url param - edit id
-if ( $_GET['edit'] ) {
+if ( isset($_GET['edit']) ) {
    $job_edit_id = $_GET['edit'];
 }
 

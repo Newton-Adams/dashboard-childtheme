@@ -2,12 +2,11 @@
  if(isset($job_edit_id)) {
      !empty(get_post_meta($job_edit_id, 'attachments', true) ) && $attachments = get_post_meta($job_edit_id, 'attachments', true); 
      !empty($attachments) && $attchments_decoded = json_decode($attachments);
-     echo '<pre>',print_r($attchments_decoded,1),'</pre>';
      $existingAttachments = array();
      foreach ($attchments_decoded as $key => $attachment) {
         array_push($existingAttachments,$attachment);
      }
- }
+ } 
  ?>
 <form id="notes-attachment-fields" >
     <div class="form-row" >
@@ -34,6 +33,7 @@
                 </label>
                 <input type="file" id="attachment" accept=".jpg,.png,.pdf" class="d-none" >                
                 <input type="hidden" id="attachments-obj" class="d-none" value='<?php echo isset($attachments) ? $attachments : ""; ?>' >                
+                <input type="hidden" id="delete-attachments" class="d-none" value="" >                
             </div>
         </div>
     </div>

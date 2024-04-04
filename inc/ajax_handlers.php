@@ -198,8 +198,11 @@ add_action('wp_ajax_nopriv_delete_file', 'delete_file');
 function delete_file() {   
     
     //Mechanics Data
-    isset($_POST['file_url']) && $file_url = strip_tags( $_POST['file_url'] ); 
-    unlink($file_url);
+    isset($_POST['file_url']) && $file_urls = explode(',',strip_tags( $_POST['file_url'] )); 
+    echo '<pre>',print_r($file_urls,1),'</pre>';
+    foreach ($file_urls as $key => $file_url) {
+        unlink($file_url);
+    }
  
     if(wp_doing_ajax()) die();
 }
