@@ -101,7 +101,7 @@ jQuery(document).ready(function ($) {
                 success: function (response) {	
                     customerResultsActive = true
                     const customerData = JSON.parse(response)
-                    
+                    console.log(customerData);
                     let options = `<li class="add-new-customer" >
                                         <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="46" height="46" rx="23" fill="#EDFFEB"/>
@@ -117,17 +117,19 @@ jQuery(document).ready(function ($) {
 
                     if(Object.keys(customerData).length > 0) {
                         Object.keys(customerData).forEach(customer => {
+                            console.log(JSON.stringify( customerData[customer]['all-vehicle-values'] ));
                             options += `<li 
-                                            data-company-name="${customerData[customer]['company-name']}" 
-                                            data-address="${customerData[customer]['address']}" 
-                                            data-name="${customerData[customer]['name']}" 
-                                            data-email="${customerData[customer]['email']}" 
-                                            data-vin="${customerData[customer]['vin']}" 
-                                            data-make="${customerData[customer]['make']}"
-                                            data-model="${customerData[customer]['model']}"
-                                            data-registration="${customerData[customer]['registration']}"
-                                            data-mileage="${customerData[customer]['mileage']}"
-                                            data-colour="${customerData[customer]['colour']}"
+                                            data-company-name='${customerData[customer]["company-name"]}' 
+                                            data-address='${customerData[customer]["address"]}' 
+                                            data-name='${customerData[customer]["name"]}' 
+                                            data-email='${customerData[customer]["email"]}' 
+                                            data-vin='${customerData[customer]["vin"]}' 
+                                            data-make='${customerData[customer]["make"]}'
+                                            data-model='${customerData[customer]["model"]}'
+                                            data-registration='${customerData[customer]["registration"]}'
+                                            data-mileage='${customerData[customer]["mileage"]}'
+                                            data-colour='${customerData[customer]["colour"]}'
+                                            data-vehicle-all='${JSON.stringify( customerData[customer]["all-vehicle-values"] )}'
                                         >
                                             <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect width="46" height="46" rx="23" fill="#F0F6FF"/>
@@ -202,21 +204,23 @@ jQuery(document).ready(function ($) {
              $(document).on('click','.job-select-wrapper.vehicle .pre-vehicle-selection > .options > li',function() {
                 customerResultsActive = false
                 const selectedVin = $(this).data("vin")
+                const selectedVehicleData = $(this).data("vehicle-all")
                 const selectedMakeModel = $(this).find(".make-model").text()
                 const selectedMileage = $(this).data("mileage")
                 const selectedRegistration = $(this).find(".registration").text()
-                
+            
                 //Complete hidden vehicle fields
                 $('input[name="vehicle-registration"]').val(selectedRegistration)
                 $('input[name="vehicle-vin"]').val(selectedVin)         
+                $('input[name="vehicle-data"]').val(JSON.stringify(selectedVehicleData))         
 
-                    $('.vehicle-select .pre-vehicle-selection').fadeOut(function() {
-                        $('.selected-vehicle-outer .make-model-val').text(selectedMakeModel)
-                        $('.selected-vehicle-outer .vehicle-details .mileage-val').text(selectedMileage)
-                        $('.selected-vehicle-outer .vehicle-details .vin-val').text(selectedVin)
-                        $('.selected-vehicle-outer .vehicle-details .registration-val').text(selectedRegistration)
-                        $('.selected-vehicle-outer').fadeIn()
-                    })
+                $('.vehicle-select .pre-vehicle-selection').fadeOut(function() {
+                    $('.selected-vehicle-outer .make-model-val').text(selectedMakeModel)
+                    $('.selected-vehicle-outer .vehicle-details .mileage-val').text(selectedMileage)
+                    $('.selected-vehicle-outer .vehicle-details .vin-val').text(selectedVin)
+                    $('.selected-vehicle-outer .vehicle-details .registration-val').text(selectedRegistration)
+                    $('.selected-vehicle-outer').fadeIn()
+                })
             })
 
             //Change customer event
@@ -246,12 +250,13 @@ jQuery(document).ready(function ($) {
             //Vehicle Options
             function vehicleOptions(self) {
                 const dataValues = self.data()           
-              
+        
                 const vehicleOptions = `<li 
                                             data-vin="${dataValues['vin']}" 
                                             data-mileage="${dataValues['mileage']}" 
                                             data-make="${dataValues['make']}" 
                                             data-model="${dataValues['model']}" 
+                                            data-vehicle-all='${ JSON.stringify(dataValues['vehicleAll']) }' 
                                         >
                                             <p class="make-model" > ${dataValues['make']} / ${dataValues['model']} / ${dataValues['colour']} </p>
                                             <p class="registration" > ${dataValues['registration']} </p>
@@ -343,6 +348,7 @@ jQuery(document).ready(function ($) {
         //Vehicle hidden fields
         const vehicleRegistration = $('input[name="vehicle-registration"]').val()
         const vehicleVIN = $('input[name="vehicle-vin"]').val()
+        const vehicleData = $('input[name="vehicle-data"]').val()
 
         //Notes & Attachments Rows
         let jobAttachments = $("#attachments-obj").val()
@@ -420,7 +426,8 @@ jQuery(document).ready(function ($) {
                 'attachments': jobAttachments,
                 'vin': vehicleVIN,
                 'registration': vehicleRegistration,
-                'customer-name': customerName
+                'customer-name': customerName,
+                'vehicle-data': vehicleData,
             },
             success: function (response) {	
                 console.log(response);

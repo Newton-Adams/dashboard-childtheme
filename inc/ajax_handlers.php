@@ -27,6 +27,9 @@ function handle_job_ajax_form() {
     
     //Registration
     isset($_POST['registration']) && $registration = strip_tags( $_POST['registration'] );
+    
+    //Registration
+    isset($_POST['vehicle-data']) && $vehicle_data = strip_tags( $_POST['vehicle-data'] );
   
     //Add/update the post
     $job_args = array(
@@ -59,6 +62,9 @@ function handle_job_ajax_form() {
         
         //Create/update job vin meta
         add_post_meta($job_id, 'vin', $vin, true);
+        
+        //Create/update job vin meta
+        add_post_meta($job_id, 'vehicle_data', $vehicle_data, true);
         
         //Create/update job registration meta
         add_post_meta($job_id, 'registration', $registration, true);
@@ -197,9 +203,7 @@ add_action('wp_ajax_delete_file', 'delete_file');
 add_action('wp_ajax_nopriv_delete_file', 'delete_file');
 function delete_file() {   
     
-    //Mechanics Data
     isset($_POST['file_url']) && $file_urls = explode(',',strip_tags( $_POST['file_url'] )); 
-    echo '<pre>',print_r($file_urls,1),'</pre>';
     foreach ($file_urls as $key => $file_url) {
         unlink($file_url);
     }
@@ -234,7 +238,13 @@ function get_all_jobs() {
             "status" => "<span class='status-light' ></span>Complete",
             "notes" => get_post_meta($job->ID, 'notes', true),
             "total" => "R1234",
-            "actions" => "...",
+            "actions" => "<span class='action-ellipses' ><span></span><span></span><span></span></span>
+                          <ul style='display:none;' >
+                              <li><a href=".home_url()."/jobs/?edit=".$job->ID." >Edit</a></li>
+                              <li>Delete</li>
+                              <li>Send Quote</li>
+                              <li>Send Invoice</li>
+                          </ul>",
         );
     };
 
@@ -255,8 +265,9 @@ function get_job_content() {
 
     if(isset($_POST['job_id'])) { 
         $notes = get_post_meta((int)$_POST['job_id'] , 'notes', true);
+        $vehicle_data = get_post_meta((int)$_POST['vehicle_data'] , 'vehicles', true);
     }
-    
+    echo '<pre>',print_r($vehicle_data),'</pre>';
     $expanded_content = '
         <div>
             <div class="address" > 
@@ -520,6 +531,7 @@ function fetch_customers() {
             "registration" => $vehicle_values->registration,
             "mileage" => $vehicle_values->mileage,
             "colour" => $vehicle_values->colour,
+            "all-vehicle-values" => $vehicle_values,
         );
     }
     

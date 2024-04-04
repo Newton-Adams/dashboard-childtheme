@@ -148,17 +148,10 @@ jQuery(document).ready(function ($) {
                     let actionOpen = false
                     $(document).on('click','table tbody td.actions',function() {
                         if(!actionOpen) {
-                            $(this).append(
-                                `<ul>
-                                    <li>Edit</li>
-                                    <li>Delete</li>
-                                    <li>Send Quote</li>
-                                    <li>Send Invoice</li>
-                                </ul>`
-                            )
+                            $(this).find('ul').fadeIn()
                             actionOpen = true
                         } else {
-                            $('table tbody td.actions > ul').fadeOut().remove()
+                            $('table tbody td.actions').find('ul').fadeOut()
                             actionOpen = false
                         }
                     })

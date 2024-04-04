@@ -47,5 +47,6 @@
     <!-- //Hidden fields -->
     <input type="hidden" name="vehicle-registration" value="" >
     <input type="hidden" name="vehicle-vin" value="" >
+    <input type="hidden" name="vehicle-data" value="" >
 
 </div>
