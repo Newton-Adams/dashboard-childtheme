@@ -1,5 +1,29 @@
 <?php
+$status_options =array( 
+   "draft" => "Draft",
+   "complete" => "Complete",
+   "invoice" => "Invoice",
+   "quote" => "Quote",  
+);
 
+//Url param - edit id
+if ( $_GET['edit'] ) {
+   $job_edit_id = $_GET['edit'];
+}
+
+//Conrol object
+$Controls = array(
+   "save" => true,
+   "status" => true,
+   "invoice" => true,
+   "send" => true,
+   "cancel" => true,
+   "change_warning" => true
+);
+
+// echo '<div class="controls" >';
+//          include( get_stylesheet_directory() . "/inc/templates/jobs/controls.php");          
+// echo '</div>';
 echo '<div class="forms-container" >
             <div class="jobno-customer-vehicle" >';
                   include( get_stylesheet_directory() . "/inc/templates/jobs/job-number.php");         
@@ -25,8 +49,8 @@ echo '<div class="forms-container" >
       <div class="parts-container" >'; 
          include( get_stylesheet_directory() . "/inc/templates/jobs/booking.php");
 echo '</div>
-   </div>
-   <div class="forms-container" >
-      <button id="save-post" class="job-save" >Save</button>
    </div>';
-   // include( get_stylesheet_directory() . "/inc/page-templates/staff-template.php");
+echo '<div class="controls" >';
+   include( get_stylesheet_directory() . "/inc/templates/jobs/controls.php");          
+echo '</div>';
+include( get_stylesheet_directory() . "/inc/templates/global/unsaved-data-popup.php");          

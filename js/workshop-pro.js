@@ -2,6 +2,41 @@
 
 jQuery(document).ready(function ($) {
 
+    //Unsaved changes warning
+    if( $('input[name="content-changed"]').length > 0 ) {
+
+        //Check if page has changed before navigating away
+        let navURL
+        $(document).on('click','a:not([target="_blank"]):not(.save-changes-button)', function(e) {
+            console.log($(e.target).closest('a:not([target="_blank"])').attr('href')  );
+            navURL = $(e.target).closest('a:not([target="_blank"])').attr('href')            
+            if($('input[name="content-changed"]').prop('checked')) {
+                e.preventDefault()
+                $('.unsaved-data-popup-outer').fadeIn()                    
+            } 
+        })     
+
+        //Yes/No event leave page popup
+        $(document).on('click','.unsaved-data-popup-outer a.wp-block-button__link',function(e) {  
+            console.log(navURL);         
+            if( $(this).attr('value') !== 'false' && navURL.length > 0 ) {     
+                $('.unsaved-data-popup-outer').fadeOut(function() {
+                    window.location.href = navURL
+                })  
+            } else {
+                $('.unsaved-data-popup-outer').fadeOut()                  
+            }
+        })
+
+        $(document).on('keyup','input', pageChanged)
+        $(document).on('change','#attachment', pageChanged)
+        $(document).on('click','.delete', pageChanged)
+        function pageChanged() {
+            $('input[name="content-changed"]').prop('checked',true)
+        }
+
+    }
+
     //Toggle Sidebar View
     $(document).on('click','#burger-menu svg, .mobile-close, .mobile-overlay', function() {
         $('body').toggleClass('menu-closed')

@@ -1,0 +1,31 @@
+.unsaved-data-popup-outer {    
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.2);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+    .unsaved-data-popup-inner {
+        background-color: var(--background-tertiary);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        text-align: center;
+        padding: 35px 40px;
+        max-width: 410px;
+        h2 {
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 15px;
+            button {
+                width: 100%;
+            }
+        }
+    }
+}

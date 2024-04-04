@@ -23,6 +23,7 @@
 @import "main/components/job-customer.scss";
 @import "main/components/job-vehicles.scss"; 
 @import "main/components/popup.scss";
+@import "main/components/unsaved-data-popup.scss";
 
 //Core
 @import "main/core/forms/add-labour.scss";
@@ -31,6 +32,7 @@
 @import "main/core/forms/upload-attachments.scss";
 @import "main/core/forms/profile-form.scss";
 @import "main/core/forms/vehicle-form.scss";
+@import "main/core/forms/controls.scss";
 
 //Pages
 @import "main/pages/new-job.scss";

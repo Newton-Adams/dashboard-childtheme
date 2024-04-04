@@ -331,8 +331,9 @@ jQuery(document).ready(function ($) {
     })
 
     //Job Save/Edit Ajax
-    $(document).on('click','#save-post.job-save',function() {
-
+    $(document).on('click','#save-post.job-save',function(event) {
+        event.preventDefault()
+        
         //Job related posts & title
         const jobNumber = $('input#job-number').val()
         
@@ -344,7 +345,7 @@ jQuery(document).ready(function ($) {
         const vehicleVIN = $('input[name="vehicle-vin"]').val()
 
         //Notes & Attachments Rows
-        const jobAttachments = $("#attachments-obj").val()
+        let jobAttachments = $("#attachments-obj").val()
         const jobJobNotes = $("#job-notes").val()
 
         //Labour Rows
@@ -596,26 +597,31 @@ jQuery(document).ready(function ($) {
             processData: false,
             contentType: false,
             success: function (response) {  
-                //Existing Attachments
-                // const jobAttachments = JSON.parse($("#attachments-obj").val()) 
-               
+                
                 //New Attachments
                 let concatenatedFiles = {}
                 const files = JSON.parse(response)
                 let name = files[0][0]
                 const tmp_name = files[0][1]
                 const url = files[0][2]
-
                 
-                //First add existing attachments
-                files.forEach(attachmentArray => {
-                    concatenatedFiles[attachmentArray[0]] = attachmentArray
-                });
+                //Existing Attachments
+                let jobAttachments = $("#attachments-obj").val()
+                if(jobAttachments.length > 0) {
+                    jobAttachments = JSON.parse(jobAttachments)
+                    //First add existing attachments
+                    console.log(jobAttachments);
+                    Object.keys(jobAttachments).forEach(key => {
+                        concatenatedFiles[key] = jobAttachments[key]
+                    });
+                }
+                
 
                 //Rename new attachment if name is used
                 const existingAttchmentsCount = Object.keys(concatenatedFiles)                
                 if(existingAttchmentsCount.includes(name)) {
                     for (let i = 0; i <= existingAttchmentsCount.length; i++) {
+                
                         //TODO:Change to recursive function instead of for
                         if(!existingAttchmentsCount.includes(`${name}-${i}`)) {
                             concatenatedFiles[`${name}-${i}`] = [name,tmp_name,url]
@@ -629,7 +635,7 @@ jQuery(document).ready(function ($) {
                 } else {
                     concatenatedFiles[name] = [name,tmp_name,url]
                 }
-                
+           
                 //Append new attachment to table
                 const newTableRow = `
                 <tr>
@@ -637,7 +643,7 @@ jQuery(document).ready(function ($) {
                     <a href="${url}" target="_blank" >${name}</a>
                     <input type="hidden" class="hidden-attachment-values" name="hidden-attachment" value="${tmp_name}" >
                     </td>
-                    <td class="delete" attachment_id="${url}" >
+                    <td class="delete" attachment_id="${name}" >
                         <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http:www.w3.org/2000/svg">
                             <path d="M4.30769 6.36667C4.60508 6.36667 4.84615 6.60545 4.84615 6.9V13.3C4.84615 13.5946 4.60508 13.8333 4.30769 13.8333C4.01031 13.8333 3.76923 13.5946 3.76923 13.3V6.9C3.76923 6.60545 4.01031 6.36667 4.30769 6.36667Z" fill="#7A7A9D"></path>
                             <path d="M7 6.36667C7.29738 6.36667 7.53846 6.60545 7.53846 6.9V13.3C7.53846 13.5946 7.29738 13.8333 7 13.8333C6.70262 13.8333 6.46154 13.5946 6.46154 13.3V6.9C6.46154 6.60545 6.70262 6.36667 7 6.36667Z" fill="#7A7A9D"></path>
@@ -648,7 +654,8 @@ jQuery(document).ready(function ($) {
                 </tr>`
 
                 removeLoader('.form-row.attachments label')
-                console.log(JSON.stringify(concatenatedFiles));
+              
+                console.log(url, tmp_name, concatenatedFiles, JSON.stringify(concatenatedFiles));
                 $('#attachments-obj').val(JSON.stringify(concatenatedFiles))
 
                 //Add new attachment to table
@@ -664,10 +671,13 @@ jQuery(document).ready(function ($) {
     
     //Delete upload file
     $(document).on('click','#attachment-files .delete',function() {
-        const attachment_file_url = $(this).attr('attachment_id')
         let self = $(this)
+        const attachment_file_url = self.closest('tr').find('a').attr('href')
+        const attachment_file_name = self.attr('attachment_id')
+        let attachmentObj = JSON.parse($('#attachments-obj').val())
+        delete attachmentObj[attachment_file_name]        
         addLoader(self)
-     
+        
         $.ajax({
             type: "POST",
             url: workshop_pro_obj.ajaxurl,
@@ -676,6 +686,8 @@ jQuery(document).ready(function ($) {
                 'file_url': attachment_file_url,
             },
             success: function (response) {
+                //Update JSON
+                $('#attachments-obj').val( JSON.stringify(attachmentObj) )
                 removeLoader(self)
                 self.closest('tr').fadeOut().remove()
             }
