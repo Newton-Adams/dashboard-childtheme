@@ -1,13 +1,13 @@
 <div class="job-select-wrapper customer" >
     <h3>Customer</h3>
-    <div class="customer-select" >
+    <div class="customer-select" style="<?php echo isset($customer_data_decoded->{"customer-name"}) ? "display: none;" : ""; ?>" >
         <input type="text" class="selected-value" placeholder="Find a customer by name, vehicle or registraion" >
         <ul class="options" ></ul>
     </div>
-    <div class="selected-customer-outer" style="display: none;" >
+    <div class="selected-customer-outer" style="<?php echo isset($customer_data_decoded->{"customer-name"}) ? "" : "display: none;"; ?>" >
         <div class="customer-name-outer" >
             <span class="customer-name" >
-                <p class="customer-name-val" ></p>
+                <p class="customer-name-val" ><?php echo isset($customer_data_decoded->{"customer-name"}) ? $customer_data_decoded->{"customer-name"} : ""; ?></p>
                 <span class="close" >
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z" fill="#425466"/>
@@ -20,20 +20,20 @@
         <div class="customer-details" >
             <span class="company-name" >
                 <p>Company Name</p>
-                <p class="company-name-val" ></p>
+                <p class="company-name-val" ><?php echo isset($customer_data_decoded->{"company-name"}) ? $customer_data_decoded->{"customer-name"} : ""; ?></p>
             </span>
             <span class="contact" >
                 <p>Contact</p>
-                <p class="contact-val" ></p>
+                <p class="contact-val" ><?php echo isset($customer_data_decoded->{"email"}) ? $customer_data_decoded->{"email"} : ""; ?></p>
             </span>
             <span class="address" >
                 <p>Address</p>
-                <p class="address-val" ></p>
+                <p class="address-val" ><?php echo isset($customer_data_decoded->{"address"}) ? $customer_data_decoded->{"address"} : ""; ?></p>
             </span>
         </div>
     </div>
 
     <!-- //Hidden fields -->
-    <input type="hidden" name="customer-name" value="" >
+    <input type="hidden" name="customer-data" value="<?php echo $customer_data; ?>" >
     
 </div>

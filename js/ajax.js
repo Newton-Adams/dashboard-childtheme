@@ -187,7 +187,13 @@ jQuery(document).ready(function ($) {
                 $('.selected-customer-outer .address-val').text(address)
 
                 //Complete hidden customer field
-                $('input[name="customer-name"]').val(customerName)                        
+                const customerData = {
+                    "customer-name": customerName,
+                    "company-name": companyName,
+                    "email": contact,
+                    "address": address,
+                }
+                $('input[name="customer-data"]').val(JSON.stringify(customerData))                        
                 
                 //Build out vehicle options
                 vehicleOptions( $(this) )                        
@@ -338,12 +344,13 @@ jQuery(document).ready(function ($) {
     //Job Save/Edit Ajax
     $(document).on('click','#save-post.job-save',function(event) {
         event.preventDefault()
-        
+        const existingJobID = $('input#job-id').val()
+
         //Job related posts & title
         const jobNumber = $('input#job-number').val()
         
         //Customer hidden fields
-        const customerName = $('input[name="customer-name"]').val()
+        const customerData = $('input[name="customer-data"]').val()
         
         //Vehicle hidden fields
         const vehicleRegistration = $('input[name="vehicle-registration"]').val()
@@ -352,7 +359,7 @@ jQuery(document).ready(function ($) {
 
         //Notes & Attachments Rows
         let jobAttachments = $("#attachments-obj").val()
-        const jobJobNotes = $("#job-notes").val()
+        const jobJobNotes = $("#job-notes").serialize()
 
         //Labour Rows
         const labourFieldForm = document.getElementById("job-fields")
@@ -385,49 +392,54 @@ jQuery(document).ready(function ($) {
         }
 
         //Parts Rows
-        const partsFieldForm = document.getElementById("parts-fields");
-        const partsFormData = new FormData(partsFieldForm);
-        
-        let partsRowArray = []
-        let partsKeyAndValue = {}
-        let partsSortedFormData = {}
-        let partsI = 0
-        let partsRowNum = 0
-        //The loop count is based on the number of fields in the form
-        for (const pair of partsFormData.entries()) {                
-            if(partsI < 8) {
-                partsKeyAndValue = {}
-                const pairkey = pair[0]
-                const pairValue = pair[1]
-                if (partsKeyAndValue[pairkey] === undefined) {
-                    partsKeyAndValue[pairkey] = "";
-                }
-                partsKeyAndValue[pairkey] += pairValue
-                partsRowArray.push(partsKeyAndValue)
-                partsI++
-                if(partsI === 8) {
-                    partsI = 0
-                    partsSortedFormData[`row-${partsRowNum}`] = partsRowArray
-                    partsRowArray = []
-                    partsRowNum++
-                }
-            } 
-        }
+         const partsFieldForm = document.getElementById("parts-fields");
+         const partsFormData = new FormData(partsFieldForm);
+         
+         let partsRowArray = []
+         let partsKeyAndValue = {}
+         let partsSortedFormData = {}
+         let partsI = 0
+         let partsRowNum = 0
+         //The loop count is based on the number of fields in the form
+         for (const pair of partsFormData.entries()) {                
+             if(partsI < 8) {
+                 partsKeyAndValue = {}
+                 const pairkey = pair[0]
+                 const pairValue = pair[1]
+                 if (partsKeyAndValue[pairkey] === undefined) {
+                     partsKeyAndValue[pairkey] = "";
+                 }
+                 partsKeyAndValue[pairkey] += pairValue
+                 partsRowArray.push(partsKeyAndValue)
+                 partsI++
+                 if(partsI === 8) {
+                     partsI = 0
+                     partsSortedFormData[`row-${partsRowNum}`] = partsRowArray
+                     partsRowArray = []
+                     partsRowNum++
+                 }
+             } 
+         }
+
+        //Booking Fields
+        const bookingFields = $('#booking-fields').serialize()
 
         $.ajax({
             type: "POST",
             url: workshop_pro_obj.ajaxurl,
             data: {
                 'action': 'post_jobs',
-                'labour_data': labourSortedFormData,
-                'parts_data': partsSortedFormData,
-                'job_number': jobNumber,
-                'job_notes': jobJobNotes,
+                'labour-data': labourSortedFormData,
+                'parts-data': partsSortedFormData,
+                'job-number': jobNumber,
+                'job-notes': jobJobNotes,
                 'attachments': jobAttachments,
                 'vin': vehicleVIN,
                 'registration': vehicleRegistration,
-                'customer-name': customerName,
+                'customer-data': customerData,
                 'vehicle-data': vehicleData,
+                'booking-fields': bookingFields,
+                'existing-job-id': existingJobID,
             },
             success: function (response) {	
                 console.log(response);

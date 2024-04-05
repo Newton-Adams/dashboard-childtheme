@@ -4,23 +4,26 @@ add_action('wp_ajax_post_jobs', 'handle_job_ajax_form');
 add_action('wp_ajax_nopriv_post_jobs', 'handle_job_ajax_form');
 function handle_job_ajax_form() {    
     
+    //Existing Job ID
+    isset($_POST['existing-job-id']) && $existing_job_id = (int)strip_tags($_POST['existing-job-id']);
+
     //Job number & related posts
-    isset($_POST['job_number']) && $job_number = strip_tags($_POST['job_number']);
+    isset($_POST['job-number']) && $job_number = strip_tags($_POST['job-number']);
 
     //Labour Data
-    isset($_POST['labour_data']) && $labour_data = strip_tags( json_encode($_POST['labour_data']) );
+    isset($_POST['labour-data']) && $labour_data = strip_tags( json_encode($_POST['labour-data']) );
 
     //Parts Data
-    isset($_POST['parts_data']) && $parts_data = strip_tags( json_encode($_POST['parts_data']) );
+    isset($_POST['parts-data']) && $parts_data = strip_tags( json_encode($_POST['parts-data']) );
     
     //Notes
-    isset($_POST['job_notes']) && $job_notes = strip_tags( $_POST['job_notes'] );
+    isset($_POST['job-notes']) && $job_notes = strip_tags( $_POST['job-notes'] );
     
     //Attachments
     isset($_POST['attachments']) && $attachments = strip_tags( $_POST['attachments'] );
     
     //Customer
-    isset($_POST['customer-name']) && $customer_name = strip_tags( $_POST['customer-name'] );
+    isset($_POST['customer-data']) && $customer_data = strip_tags( $_POST['customer-data'] );
     
     //VIN
     isset($_POST['vin']) && $vin = strip_tags( $_POST['vin'] );
@@ -28,9 +31,12 @@ function handle_job_ajax_form() {
     //Registration
     isset($_POST['registration']) && $registration = strip_tags( $_POST['registration'] );
     
-    //Registration
+    //Vehicle
     isset($_POST['vehicle-data']) && $vehicle_data = strip_tags( $_POST['vehicle-data'] );
-  
+
+    //Booking Fields
+    isset($_POST['booking-fields']) && $booking_fields = strip_tags( $_POST['booking-fields'] );
+     
     //Add/update the post
     $job_args = array(
         'post_type' => 'jobs',
@@ -38,19 +44,22 @@ function handle_job_ajax_form() {
         'post_status'   => 'publish',
         'post_author'   => 1,
     );
-    
+   
     //Create or edit post
-    $job_id = (int)wp_insert_post( $job_args );
-
+    echo $existing_job_id;
+    if($existing_job_id == 0) {
+        $job_id = (int)wp_insert_post( $job_args );
+    }
+    
     // Check if the post was successfully inserted
     if ( !is_wp_error($post_id) && $job_id > 0 ) {
-        
+        echo 'inserted';
         //Create/update job labour meta
         add_post_meta($job_id, 'labour', $labour_data, true);
-
+        
         //Create/update job part meta
         add_post_meta($job_id, 'parts', $parts_data, true);
-      
+        
         //Create/update job note meta
         add_post_meta($job_id, 'notes', $job_notes, true);
         
@@ -58,18 +67,51 @@ function handle_job_ajax_form() {
         add_post_meta($job_id, 'attachments', $attachments, true);
         
         //Create/update job vin meta
-        add_post_meta($job_id, 'customer-name', $customer_name, true);
+        add_post_meta($job_id, 'customer-data', $customer_data, true);
         
         //Create/update job vin meta
         add_post_meta($job_id, 'vin', $vin, true);
         
         //Create/update job vin meta
-        add_post_meta($job_id, 'vehicle_data', $vehicle_data, true);
+        add_post_meta($job_id, 'vehicle-data', $vehicle_data, true);
         
         //Create/update job registration meta
         add_post_meta($job_id, 'registration', $registration, true);
-
+        
+        //Create/update job registration meta
+        add_post_meta($job_id, 'booking-notes', $booking_fields, true);
+        
     } 
+    if( $existing_job_id != 0 ) {
+        echo 'update';
+        //Create/update job labour meta
+        update_post_meta($existing_job_id, 'labour', $labour_data);
+
+        //Create/update job part meta
+        update_post_meta($existing_job_id, 'parts', $parts_data);
+      
+        //Create/update job note meta
+        update_post_meta($existing_job_id, 'notes', $job_notes);
+        
+        //Create/update job attachments meta
+        update_post_meta($existing_job_id, 'attachments', $attachments);
+        
+        //Create/update job vin meta
+        update_post_meta($existing_job_id, 'customer-data', $customer_data);
+        
+        //Create/update job vin meta
+        update_post_meta($existing_job_id, 'vin', $vin);
+        
+        //Create/update job vin meta
+        update_post_meta($existing_job_id, 'vehicle-data', $vehicle_data);
+        
+        //Create/update job registration meta
+        update_post_meta($existing_job_id, 'registration', $registration);
+        
+        //Create/update job registration meta
+        add_post_meta($existing_job_id, 'booking-notes', $booking_fields);
+
+    }
 
     if(wp_doing_ajax()) die();
 }
