@@ -21,7 +21,7 @@ $date_options = array(
         <?php include( get_stylesheet_directory() . "/inc/templates/global/date-range-drop-down.php"); ?>
     </div>
 
-    <?php echo '<span class="hide-columns" >'.file_get_contents( get_stylesheet_directory() . "/assets/images/FIlter-handles.svg" ).'</span>'; ?>
+    <?php echo '<span class="hide-columns" >'.file_get_contents( get_stylesheet_directory() . "/assets/images/Filter-handles.svg" ).'</span>'; ?>
 
     <div class="column-states" >
         <label for="hide-customer">

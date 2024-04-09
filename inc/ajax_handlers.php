@@ -305,10 +305,12 @@ function get_job_content() {
     $notes = "";
 
     if(isset($_POST['job_id'])) { 
-        $notes = get_post_meta((int)$_POST['job_id'] , 'notes', true);
-        $vehicle_data = get_post_meta((int)$_POST['vehicle_data'] , 'vehicles', true);
+        echo $_POST['job_id'];
+        $notes = parse_str( get_post_meta((int)$_POST['job_id'] , 'notes', true), $notes );
+        $vehicle_data = get_post_meta( $_POST['job_id'] , 'vehicle-data', true );
+        echo '<pre>',print_r($notes,1),'</pre>';
+        echo '<pre>',print_r($vehicle_data,1),'</pre>';
     }
-    echo '<pre>',print_r($vehicle_data),'</pre>';
     $expanded_content = '
         <div>
             <div class="address" > 
@@ -328,7 +330,7 @@ function get_job_content() {
             <div>
                 <div>
                     <p>Customer Notes</p>
-                    <p>'.$notes.'</p>
+                    <p></p>
                 </div>
                 <div>
                     <p>Job History</p>
