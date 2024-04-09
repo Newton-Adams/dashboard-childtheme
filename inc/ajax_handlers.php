@@ -36,7 +36,7 @@ function handle_job_ajax_form() {
 
     //Booking Fields
     isset($_POST['booking-fields']) && $booking_fields = strip_tags( $_POST['booking-fields'] );
-     
+    
     //Add/update the post
     $job_args = array(
         'post_type' => 'jobs',
@@ -46,7 +46,6 @@ function handle_job_ajax_form() {
     );
    
     //Create or edit post
-    echo $existing_job_id;
     if($existing_job_id == 0) {
         $job_id = (int)wp_insert_post( $job_args );
     }
@@ -109,7 +108,7 @@ function handle_job_ajax_form() {
         update_post_meta($existing_job_id, 'registration', $registration);
         
         //Create/update job registration meta
-        add_post_meta($existing_job_id, 'booking-notes', $booking_fields);
+        update_post_meta($existing_job_id, 'booking-notes', $booking_fields);
 
     }
 

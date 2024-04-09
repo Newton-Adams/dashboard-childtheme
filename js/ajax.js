@@ -173,108 +173,112 @@ jQuery(document).ready(function ($) {
 
             }, 1500);
 
-             //Add customer option event listeners
-             $(document).on('click','.job-select-wrapper.customer .options li:not(.add-new-customer):not(.no-customers)',function() {
-                customerResultsActive = false     
-                const customerName = $(this).data('name')
-                const companyName = $(this).data('company-name')
-                const contact = $(this).data('email')
-                const address = $(this).data('address')
-
-                $('.selected-customer-outer .customer-name-val').text(customerName)
-                $('.selected-customer-outer .company-name-val').text(companyName)
-                $('.selected-customer-outer .contact-val').text(contact)
-                $('.selected-customer-outer .address-val').text(address)
-
-                //Complete hidden customer field
-                const customerData = {
-                    "customer-name": customerName,
-                    "company-name": companyName,
-                    "email": contact,
-                    "address": address,
-                }
-                $('input[name="customer-data"]').val(JSON.stringify(customerData))                        
-                
-                //Build out vehicle options
-                vehicleOptions( $(this) )                        
-                $('.job-select-wrapper.vehicle .vehicle-select').fadeIn()
-                $('.job-select-wrapper.vehicle .vehicle-select .pre-vehicle-selection').fadeIn()
-
-                //Append selected customer markup & hide search field.
-                $(this).closest('.job-select-wrapper.customer').find('.customer-select').fadeOut(0,function() {
-                    $('.selected-customer-outer').fadeIn()                            
-                })
-            })
-
-             //Add vehicle option event listeners
-             $(document).on('click','.job-select-wrapper.vehicle .pre-vehicle-selection > .options > li',function() {
-                customerResultsActive = false
-                const selectedVin = $(this).data("vin")
-                const selectedVehicleData = $(this).data("vehicle-all")
-                const selectedMakeModel = $(this).find(".make-model").text()
-                const selectedMileage = $(this).data("mileage")
-                const selectedRegistration = $(this).find(".registration").text()
+                        
             
-                //Complete hidden vehicle fields
-                $('input[name="vehicle-registration"]').val(selectedRegistration)
-                $('input[name="vehicle-vin"]').val(selectedVin)         
-                $('input[name="vehicle-data"]').val(JSON.stringify(selectedVehicleData))         
+        })
 
-                $('.vehicle-select .pre-vehicle-selection').fadeOut(function() {
-                    $('.selected-vehicle-outer .make-model-val').text(selectedMakeModel)
-                    $('.selected-vehicle-outer .vehicle-details .mileage-val').text(selectedMileage)
-                    $('.selected-vehicle-outer .vehicle-details .vin-val').text(selectedVin)
-                    $('.selected-vehicle-outer .vehicle-details .registration-val').text(selectedRegistration)
-                    $('.selected-vehicle-outer').fadeIn()
-                })
+         //Add customer option event listeners
+         $(document).on('click','.job-select-wrapper.customer .options li:not(.add-new-customer):not(.no-customers)',function() {
+            customerResultsActive = false     
+            const customerName = $(this).data('name')
+            const companyName = $(this).data('company-name')
+            const contact = $(this).data('email')
+            const address = $(this).data('address')
+
+            $('.selected-customer-outer .customer-name-val').text(customerName)
+            $('.selected-customer-outer .company-name-val').text(companyName)
+            $('.selected-customer-outer .contact-val').text(contact)
+            $('.selected-customer-outer .address-val').text(address)
+
+            //Complete hidden customer field
+            const customerData = {
+                "customer-name": customerName,
+                "company-name": companyName,
+                "email": contact,
+                "address": address,
+            }
+            $('input[name="customer-data"]').val(JSON.stringify(customerData))                        
+            
+            //Build out vehicle options
+            vehicleOptions( $(this) )                        
+            $('.job-select-wrapper.vehicle .vehicle-select').fadeIn()
+            $('.job-select-wrapper.vehicle .vehicle-select .pre-vehicle-selection').fadeIn()
+
+            //Append selected customer markup & hide search field.
+            $(this).closest('.job-select-wrapper.customer').find('.customer-select').fadeOut(0,function() {
+                $('.selected-customer-outer').fadeIn()                            
             })
+        })
 
-            //Change customer event
-            $(document).on('click','.change-customer, .selected-customer-outer .close',function() {  
-                customerResultsActive = true
-                //Remove selected vehicle & options if they exists
-                $('.job-select-wrapper.vehicle .options > li, .job-select-wrapper.vehicle .pre-vehicle-selection .options li').remove()
-                $('.job-select-wrapper.vehicle .no-customer-selected').fadeIn()
-                $('.job-select-wrapper.vehicle .pre-vehicle-selection, .job-select-wrapper.vehicle .selected-vehicle-outer').fadeOut()
-                                                   
-                //Make search results active again
-                $('.job-select-wrapper.customer .options').addClass('active')
-                $('.job-select-wrapper.customer .options.active li').fadeIn()
+         
 
-                $(this).closest('.job-select-wrapper').find('.customer-select').fadeIn()
-                $(this).closest('.job-select-wrapper').find('.selected-customer-outer').fadeOut()
-                
-            })
+        //Change customer event
+        $(document).on('click','.change-customer, .selected-customer-outer .close',function() {  
+            customerResultsActive = true
+            //Remove selected vehicle & options if they exists
+            $('.job-select-wrapper.vehicle .options > li, .job-select-wrapper.vehicle .pre-vehicle-selection .options li').remove()
+            $('.job-select-wrapper.vehicle .no-customer-selected').fadeIn()
+            $('.job-select-wrapper.vehicle .pre-vehicle-selection, .job-select-wrapper.vehicle .selected-vehicle-outer').fadeOut()
+                                               
+            //Make search results active again
+            $('.job-select-wrapper.customer .options').addClass('active')
+            $('.job-select-wrapper.customer .options.active li').fadeIn()
 
-            //Add change vehicle event listener
-            $(document).on('click','.job-select-wrapper.vehicle .change-vehicle',function changeVehicle() {
-                customerResultsActive = false
-                $('.pre-vehicle-selection').fadeIn(0)
-                $('.selected-vehicle-outer').fadeOut(0)
-            })
+            $(this).closest('.job-select-wrapper').find('.customer-select').fadeIn()
+            $(this).closest('.job-select-wrapper').find('.selected-customer-outer').fadeOut()
+            
+        })
 
-            //Vehicle Options
-            function vehicleOptions(self) {
-                const dataValues = self.data()           
+        //Add change vehicle event listener
+        $(document).on('click','.job-select-wrapper.vehicle .change-vehicle',function changeVehicle() {
+            customerResultsActive = false
+            $('.pre-vehicle-selection').fadeIn(0)
+            $('.selected-vehicle-outer').fadeOut(0)
+        })
+
+        //Vehicle Options
+        function vehicleOptions(self) {
+            const dataValues = self.data()           
+    
+            const vehicleOptions = `<li 
+                                        data-vin="${dataValues['vin']}" 
+                                        data-mileage="${dataValues['mileage']}" 
+                                        data-make="${dataValues['make']}" 
+                                        data-model="${dataValues['model']}" 
+                                        data-vehicle-all='${ JSON.stringify(dataValues['vehicleAll']) }' 
+                                    >
+                                        <p class="make-model" > ${dataValues['make']} / ${dataValues['model']} / ${dataValues['colour']} </p>
+                                        <p class="registration" > ${dataValues['registration']} </p>
+                                    </li>`;
+            
+            $('.no-customer-selected').fadeOut(0)
+            $('.job-select-wrapper.vehicle .options > li').remove()
+            $('.job-select-wrapper.vehicle .options').html( vehicleOptions ) 
+            $('.job-select-wrapper.vehicle .pre-vehicle-selection').fadeIn()    
+
+        }
+
+        //Add vehicle option event listeners
+        $(document).on('click','.job-select-wrapper.vehicle .pre-vehicle-selection > .options > li',function() {
+            customerResultsActive = false
+            const selectedVin = $(this).data("vin")
+            const selectedVehicleData = $(this).data("vehicle-all")
+            const selectedMakeModel = $(this).find(".make-model").text()
+            const selectedMileage = $(this).data("mileage")
+            const selectedRegistration = $(this).find(".registration").text()
         
-                const vehicleOptions = `<li 
-                                            data-vin="${dataValues['vin']}" 
-                                            data-mileage="${dataValues['mileage']}" 
-                                            data-make="${dataValues['make']}" 
-                                            data-model="${dataValues['model']}" 
-                                            data-vehicle-all='${ JSON.stringify(dataValues['vehicleAll']) }' 
-                                        >
-                                            <p class="make-model" > ${dataValues['make']} / ${dataValues['model']} / ${dataValues['colour']} </p>
-                                            <p class="registration" > ${dataValues['registration']} </p>
-                                        </li>`;
-                
-                $('.no-customer-selected').fadeOut(0)
-                $('.job-select-wrapper.vehicle .options > li').remove()
-                $('.job-select-wrapper.vehicle .options').html( vehicleOptions ) 
-                $('.job-select-wrapper.vehicle .pre-vehicle-selection').fadeIn()    
+            //Complete hidden vehicle fields
+            $('input[name="vehicle-registration"]').val(selectedRegistration)
+            $('input[name="vehicle-vin"]').val(selectedVin)         
+            $('input[name="vehicle-data"]').val(JSON.stringify(selectedVehicleData))         
 
-            }            
-            
+            $('.vehicle-select .pre-vehicle-selection').fadeOut(function() {
+                $('.selected-vehicle-outer .make-model-val').text(selectedMakeModel)
+                $('.selected-vehicle-outer .vehicle-details .mileage-val').text(selectedMileage)
+                $('.selected-vehicle-outer .vehicle-details .vin-val').text(selectedVin)
+                $('.selected-vehicle-outer .vehicle-details .registration-val').text(selectedRegistration)
+                $('.selected-vehicle-outer').fadeIn()
+            })
         })
 
         //Todo: add vehicle popup to this event

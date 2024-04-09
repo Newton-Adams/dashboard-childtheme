@@ -33,24 +33,29 @@ if(isset($job_edit_id)) {
     }
     
     //Customer Name & Data    
-    !empty(get_post_meta($job_edit_id, 'customer-data', true) ) && $customer_data = get_post_meta($job_edit_id, 'customer-data', true); 
-    $customer_data_decoded = json_decode( $customer_data );
-    echo '<pre>',print_r($customer_data_decoded->{'customer-name'},1),'</pre>';
-    foreach ($customer_data_decoded as $key => $data) {        
-        echo '<pre>',print_r($data,1),'</pre>';
+    if(!empty(get_post_meta($job_edit_id, 'customer-data', true) )) { 
+        $customer_data = get_post_meta($job_edit_id, 'customer-data', true); 
+        $customer_data_decoded = json_decode( $customer_data );
+        // echo '<pre>',print_r($customer_data_decoded,1),'</pre>';
     }
-    
-    !empty(get_post_meta($job_edit_id, 'vehicle-data', true) ) && $vehicle = json_decode(get_post_meta($job_edit_id, 'vehicle-data', true)); 
-    echo '<pre>',print_r($vehicle,1),'</pre>';
+
+    if(!empty( get_post_meta($job_edit_id, 'vehicle-data', true) )) {
+        $vehicle_json = get_post_meta($job_edit_id, 'vehicle-data', true);
+        $vehicle = json_decode($vehicle_json);
+    } 
+    // echo '<pre>',print_r($vehicle,1),'</pre>';
     
     !empty(get_post_meta($job_edit_id, 'parts', true) ) && $parts = json_decode(get_post_meta($job_edit_id, 'parts', true)); 
-    echo '<pre>',print_r($parts,1),'</pre>';
+    // echo '<pre>',print_r($parts,1),'</pre>';
 
-    !empty(get_post_meta($job_edit_id, 'labour', true) ) && $labour = json_decode(get_post_meta($job_edit_id, 'labour', true)); 
-    echo '<pre>',print_r($labour,1),'</pre>';
+    !empty(get_post_meta($job_edit_id, 'labour', true) ) && $labour = json_decode(get_post_meta($job_edit_id, 'labour', true));
+    // echo '<pre>',print_r($labour,1),'</pre>';
+
+    !empty(get_post_meta($job_edit_id, 'notes', true) ) && parse_str(get_post_meta($job_edit_id, 'notes', true),$job_notes); 
+    // echo '<pre>',print_r($job_notes,1),'</pre>';
 
     !empty(get_post_meta($job_edit_id, 'booking-notes', true) ) && parse_str(get_post_meta($job_edit_id, 'booking-notes', true),$booking_notes); 
-    echo '<pre>',print_r($booking_notes,1),'</pre>';
+    // echo '<pre>',print_r($booking_notes,1),'</pre>';
 
 } 
 

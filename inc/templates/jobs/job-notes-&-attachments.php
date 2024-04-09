@@ -4,7 +4,7 @@
             <p>Job notes</p>
             <div class="fw-100 pr-2" >
                 <label for="job-notes" ></label>
-                <textarea type="text" id="job-notes" name="job-notes" > </textarea>
+                <textarea type="text" id="job-notes" name="job-notes" ><?php echo isset($job_notes) ? $job_notes["job-notes"] : ""; ?></textarea>
             </div>
         </div>
     </div>
