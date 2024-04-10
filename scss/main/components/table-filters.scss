@@ -6,14 +6,60 @@
         }
     }
     .column-states {
-        display: flex;
-        justify-content: space-between;
+        display: flex; 
+        flex-wrap: wrap; 
         background-color: var(--background-secondary);
         border-radius: 16px 16px 0 0;
         padding: 15px;
+        box-shadow: 0px 0px 1px 0px rgba(12, 26, 75, 0.24), 0px 3px 8px -1px rgba(50, 50, 71, 0.05);
         label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 166.667%;
             input {
                 cursor: pointer;
+            }
+        }
+        &.columns-2 {
+            > div {
+                min-width: calc(50% - 30px);
+                margin: 5px 30px 5px 0;
+            }
+        }
+        &.columns-3 { 
+            > div {
+                min-width: calc(33.33% - 30px);
+                margin: 5px 30px 5px 0;
+            }
+        }
+        &.columns-4 { 
+            > div {
+                min-width: calc(25% - 30px);
+                margin: 5px 30px 5px 0;
+            }
+        }
+        &.columns-5 { 
+            > div {
+                min-width: calc(20% - 30px);
+                margin: 5px 30px 5px 0;
+            }
+        }
+        &.columns-6 {
+            > div {
+                min-width: calc(16.66% - 30px);
+                margin: 5px 30px 5px 0;
+            }
+        }
+        &.columns-7 { 
+            > div {
+                min-width: calc(14.28% - 30px);
+                margin: 5px 30px 5px 0;
+            }
+        }
+        &.columns-8 { 
+            > div {
+                min-width: calc(12.5% - 30px);
+                margin: 5px 30px 5px 0;
             }
         }
     }

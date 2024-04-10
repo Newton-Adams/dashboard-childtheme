@@ -204,7 +204,138 @@ jQuery(document).ready(function ($) {
             }
         });
     }
-    instantiateJobsTable()    
+    instantiateJobsTable()
+    
+    // Vehicle Table 
+    function instantiateVehicleTable() {
+        $.ajax({
+            type: "POST",
+            url: workshop_pro_obj.ajaxurl,
+            data: {
+                'action': 'get_user_vehicles',
+            },
+            success: function (response) {
+                const tableData = JSON.parse(response)
+                let vehicleTable = new DataTable('#vehicleTable', { 
+                    data: tableData, 
+                    pageLength: 7, 
+                    columns: [
+                        { data: 'vehicle_customer' }, 
+                        { data: 'vehicle_make' }, 
+                        { data: 'vehicle_model' }, 
+                        { data: 'vehicle_registration' }, 
+                        { data: 'vehicle_vin' }, 
+                        { data: 'actions' }
+                    ], 
+                    layout: { 
+                        ordering: true,
+                        select: true, 
+                        topStart: null, 
+                        bottomEnd: {
+                            paging: {
+                                numbers: 3
+                            }
+                        }
+                    }, 
+                    language: {
+                        paginate: {
+                            first: '', 
+                            last: '', 
+                            next: 'Next', 
+                            previous: 'Prev'
+                        }
+                    }, 
+                    order: [1, 'asc'],
+                    responsive: {
+                        details: {
+                            type: 'column'
+                        }
+                    }
+                })
+
+                //Hide/Show Columns
+                $(document).on('click','.table-filters .column-states input',function() {
+                    const columnNo = $(this).attr('value')
+                    let column = vehicleTable.column(columnNo);
+                
+                    // Toggle the visibility
+                    column.visible(!column.visible());                    
+                })
+
+                //Search Tables
+                $(document).on('keyup','.table-filters input.search',function() {
+                    const searchValue = $(this).val()
+                    vehicleTable.search(searchValue).draw()
+                    //Count Rows
+                    let allRows = $('#jobs-table tbody > tr:not([style="display: none;"])')
+                    let rowCount = 0
+                    for (let i = 0; i < allRows.length; i++) {
+                        $(allRows[i]).find('.dt-empty').length == 0 && rowCount++
+                    }
+                
+                    countVisibleRows(rowCount)
+                })
+
+                //Actions popup
+                if($('table tbody td.actions').length > 0) {
+                    let actionOpen = false
+                    $(document).on('click','table tbody td.actions',function() {
+                        if(!actionOpen) {
+                            $(this).find('ul').fadeIn()
+                            actionOpen = true
+                        } else {
+                            $('table tbody td.actions').find('ul').fadeOut()
+                            actionOpen = false
+                        }
+                    })
+                }
+
+                //Expand/Collapse Job Extra Info
+                $(document).on('click', '#vehicleTable tbody tr td:not(.actions)', function () {
+                    const vehicleID = $(this).text()
+                    let tr = $(this)
+                    let row = vehicleTable.row( tr )
+                
+                    if (row.child.isShown()) {
+                        row.child.hide();
+                        tr.removeClass('shown');
+                    } else {
+                        // Open row.
+                        get_job_content(vehicleID,row)
+                        row.child('<span class="loading" >Loading...</span>').show()
+                        tr.addClass('shown')
+                    }
+                   
+                });
+                
+                //Get Job Content Ajax
+                // function get_job_content(jobID,row) {
+                //     $.ajax({
+                //         type: "POST",
+                //         url: workshop_pro_obj.ajaxurl,
+                //         data: {
+                //             'action': 'get_job_content',
+                //             'job_id': jobID,
+                //         },
+                //         success: function (response) {
+                //             row.child(response)
+                //         }
+                //     })
+                // }
+
+                //Get visible row count
+                function countVisibleRows(rowCount=undefined) {
+                    const tableRows = $('#vehicleTable tbody tr td').length && rowCount === undefined ? $('#vehicleTable tbody tr').length : rowCount 
+                    $('#vehicleTable_wrapper > .dt-layout-row:last-child .row-count .showing').text(tableRows)
+                }
+
+            }
+        });
+    }
+    if($('#vehicleTable').length > 0) {
+        instantiateVehicleTable()
+    }
+
 
     //Hide datatable columns
     if($('.column-states').length > 0) {

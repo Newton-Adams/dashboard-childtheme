@@ -182,7 +182,7 @@
                 line-height: 13px !important;
             }
             .um-field-checkbox {
-                font-size: 12px;
+                font-size: 0.75rem;
                 font-weight: 400;
                 line-height: 20px;
                 color: var(--text-body-light);
@@ -222,7 +222,7 @@
             }
             .um-field-error, .um-notice.err {
                 background: var(--warning);
-                font-size: 12px;
+                font-size: 0.75rem;
                 font-weight: 400;
                 line-height: 16px;
                 padding: 5px !important;

@@ -24,7 +24,6 @@ jQuery(document).ready(function ($) {
                         self.addClass('error');
                         self.closest('.input-label-wrapper').append('<span class="error-message">This field is required</span>');
                     }
-                    console.log('Field is empty')
                     isValid = false; // Set flag to false if any field is empty
                     return false; // Exit the loop
                 } else {
@@ -766,37 +765,55 @@ jQuery(document).ready(function ($) {
         }
     });
 
-
+    // Adding Vehicle
     $('#add-vehicle-form').submit(function(e) {
 
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
 
         const self = $(this); 
 
-        var formData = $(self).serialize();
+        if( validateForm(self) ) {
 
-        console.log('Form data:', formData)
-            
-        addLoader(self); 
+            const formData = $(self).serialize();
+                
+            addOverlayLoader(self); 
 
-        $.ajax({
-            url: workshop_pro_obj.ajaxurl, // AJAX URL provided by WordPress
-            type: 'POST',
-            data: {
-                action: 'save_vehicle_data',
-                formData: formData
-            }, 
-            success: function(response) {
-                removeLoader(self); 
-                // Handle success 
-                console.log('Success')
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                // Handle error
-                console.log('Error')
-            }
-        });
+            $.ajax({
+                url: workshop_pro_obj.ajaxurl, // AJAX URL provided by WordPress
+                type: 'POST',
+                data: {
+                    action: 'save_vehicle_data',
+                    formData: formData
+                }, 
+                success: function(response) {
+                    removeOverlayLoader(self);
+                    setTimeout(() => {
+                        $('.popup').fadeOut('fast', function() {
+                            $(this).removeClass('show');
+                            $('body').css('overflow','auto');
+                        });
+                        $(this).closest('form').clearForm();
+                        function refreshData() {
+                            var table = $('#vehicleTable').dataTable();
+                            table.ajax.reload();
+                        }
+                    }, 500);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    // Handle error
+                    console.log('Error'); 
+                    removeOverlayLoader(self);
+                    setTimeout(() => {
+                        $('.popup').fadeOut('fast', function() {
+                            $(this).removeClass('show');
+                            $('body').css('overflow','auto');
+                        });
+                        $(this).closest('form').clearForm();
+                    }, 500);
+                }, 
+            });
+        }
     });
     
     //Loader - used for ajax
@@ -809,6 +826,19 @@ jQuery(document).ready(function ($) {
             $(this).remove()
         })
     }
+    // overlay loader 
+    function addOverlayLoader(ele) {
+        $(ele).addClass('overlay-loader');
+        const loadingGears = '<div class="svg-loader"></div>'; 
+        $(ele).prepend(loadingGears);
+    }
+    function removeOverlayLoader(ele) {
+        $(ele).find('.svg-loader').fadeOut(300,function() {
+            $(this).remove();
+            $(ele).removeClass('overlay-loader');
+        });
+    }
+
 
     // $.ajax({
     //     url: workshop_pro_obj.ajaxurl,

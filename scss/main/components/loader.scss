@@ -8,3 +8,15 @@
     animation:s2 2s infinite linear;
 }
 @keyframes s2 {to{transform: rotate(1turn)}}
+
+// Overlay loader 
+.overlay-loader { 
+    position: relative;
+    * {
+        opacity: 0.3;
+    }
+    .svg-loader {
+        position: absolute;
+        left: calc(50% - 25px);
+    }
+}

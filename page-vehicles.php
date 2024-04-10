@@ -26,11 +26,15 @@ get_header(); ?>
 			 */
 			do_action( 'generate_before_main_content' );
 
-			echo '<div class="wp-block-button">
-				<a id="add-vehicle" class="wp-block-button__link wp-element-button">+ Add New Vehicle</a>
-			</div>';
+			if ( generate_has_default_loop() ) {
+				while ( have_posts() ) :
 
-			include( get_stylesheet_directory() . "/inc/templates/popups/add-vehicle-popup.php");   
+					the_post();
+
+					generate_do_template_part( 'vehicle' );
+
+				endwhile;
+			}
 
 			/**
 			 * generate_after_main_content hook.

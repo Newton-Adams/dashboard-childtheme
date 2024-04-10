@@ -375,6 +375,21 @@ jQuery(document).ready(function ($) {
 
     }
 
-    
+    // Popup 
+    $(document).on('click','.popup-btn',function() { 
+        const popup = '#'+$(this).attr('data-popup')
+        $(popup).fadeIn('fast', function() {
+            $(popup).addClass('show');
+            $('body').css('overflow','hidden');
+        });
+    });
+
+    $(document).on('click','.popup-overlay, .close-popup, .cancel-popup',function() { 
+        $('.popup').fadeOut('fast', function() {
+            $(this).removeClass('show');
+            $('body').css('overflow','auto');
+        });
+        $(this).closest('form').clearForm();
+    });
 
 })

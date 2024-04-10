@@ -168,4 +168,19 @@ function um_add_profile_fields_replace( $args ) {
 }
 add_action( 'um_main_profile_fields', 'um_add_profile_fields_replace', 100 );
 
+// Datatable columns filter checkboxes
+function datatableFilters( $tableColumns ) { 
+    
+    $index = 0;
 
+    echo '<div class="column-states columns-' . count($tableColumns) . '" >';
+    foreach($tableColumns as $key => $value) {
+        echo '<div class="custom-checkbox">';
+        echo '<input checked="true" type="checkbox" id="hide-'.$key.'" name="hide-'.$key.'" value="'.$index.'" >';
+        echo '<label for="hide-'.$key.'">'.$value.'</label>';
+        echo '</div>';
+        $index++;
+    } 
+    echo '</div>';
+
+}

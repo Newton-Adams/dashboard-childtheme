@@ -344,6 +344,49 @@ function get_job_content() {
     wp_die();
 }
 
+// Get user vehicles 
+add_action('wp_ajax_get_user_vehicles', 'get_user_vehicles');
+add_action('wp_ajax_nopriv_get_user_vehicles', 'get_user_vehicles');
+function get_user_vehicles() {
+    
+    $loggedInUser = get_current_user(); //Current User
+    
+    $args = array(
+        'post_type' => 'vehicles',
+        'numberposts' => -1,
+        'author' => $loggedInUser,
+    );
+
+    $vehicles = get_posts($args);
+
+    $vehicle_data = array();
+
+    foreach ($vehicles as $key => $vehicle) {
+
+        $vehicle_meta_data = json_decode( get_post_meta($vehicle->ID, 'data', true) ); 
+        $vehicle_customer_data = get_post_meta($vehicle->ID, 'customer-data', true);
+        // Remove extra double quotes from $vehicle_customer_data
+        $cleaned_customer_string = trim($vehicle_customer_data, '"');
+        // Decode JSON string to array
+        $customer_data = json_decode($cleaned_customer_string, true);
+
+
+        $vehicle_data[$key] = array( 
+            "vehicle_customer" => $customer_data['customer-name'], 
+            "vehicle_make" => $vehicle_meta_data->vehicle_make, 
+            "vehicle_model" => $vehicle_meta_data->vehicle_model, 
+            "vehicle_registration" => $vehicle_meta_data->vehicle_registration, 
+            "vehicle_vin" => $vehicle_meta_data->vehicle_vin, 
+            "actions" => "...",
+        );
+    };
+
+    // Send JSON response
+    echo json_encode( $vehicle_data );
+
+    wp_die();
+}
+
 
 // Profile Form
 function profile_form() {
@@ -590,10 +633,13 @@ add_action('wp_ajax_nopriv_save_vehicle_data', 'save_vehicle_data');
 
 
 function save_vehicle_data() {
-    if (isset($_POST['formData'])) {
-        parse_str($_POST['formData'], $formFields); // Convert serialized form data to array
 
-        if (isset($formFields['vehicle_make'])) {
+    if (isset($_POST['formData'])) {
+
+        parse_str($_POST['formData'], $formFields); // Convert serialized form data to array 
+
+        if ( isset($formFields['vehicle_make']) && isset($formFields['vehicle_model']) ){
+
             //Add/update the post
             $vehicle_args = array(
                 'post_type' => 'vehicles',
@@ -606,21 +652,17 @@ function save_vehicle_data() {
             $vehicle_id = (int) wp_insert_post($vehicle_args);
 
             // Check if the post was successfully inserted
-            if (!is_wp_error($vehicle_id) && $vehicle_id > 0) {
-                // Update post meta
-                add_post_meta($vehicle_id, 'data', json_encode($formFields));
-                add_post_meta($vehicle_id, 'attachments', json_encode($formFields['vehicle_attachments']));
 
-                // Handle file upload
-                // if (!empty($formFields['vehicle_attachments'])) {
-                //     $attachment_id = vehicle_upload_attachment('vehicle_attachments', $vehicle_id);
-                //     if ($attachment_id) {
-                //         // Get attachment URL
-                //         $attachment_url = wp_get_attachment_url($attachment_id);
-                //         // Add attachment URL to meta field
-                //         add_post_meta($vehicle_id, 'attachment_url', $attachment_url);
-                //     }
-                // }
+            if (!is_wp_error($vehicle_id) && $vehicle_id > 0) {
+
+                $vehicleData = $formFields;
+                unset($vehicleData["customer-data"], $vehicleData["hidden-attachment"]);
+
+                // Update post meta
+                add_post_meta($vehicle_id, 'data', json_encode($vehicleData));
+                add_post_meta($vehicle_id, 'customer-data', json_encode( $formFields['customer-data'] ));
+                add_post_meta($vehicle_id, 'attachment', json_encode( $formFields['hidden-attachment'] ));
+
             }
         }
     }
