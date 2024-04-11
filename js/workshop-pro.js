@@ -391,5 +391,18 @@ jQuery(document).ready(function ($) {
         });
         $(this).closest('form').clearForm();
     });
+    //Job Status
+    $(document).on('click','.select-wrapper.job-status.active .options > span',function() {
+        const value = $(this).data('value')
+        const text = $(this).text()
+        $('#job-status').val(value)
+        
+        Array.from($('.control-status')).forEach(ele => {
+            $(ele).text(text)            
+            console.log(ele);
+        });
+        
+        $(this).closest('.select-wrapper.job-status.active').removeClass('active')
+    })
 
 })

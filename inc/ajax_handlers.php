@@ -36,6 +36,9 @@ function handle_job_ajax_form() {
 
     //Booking Fields
     isset($_POST['booking-fields']) && $booking_fields = strip_tags( $_POST['booking-fields'] );
+
+    //Job Status
+    isset($_POST['job-status']) && $job_status = strip_tags( $_POST['job-status'] );
     
     //Add/update the post
     $job_args = array(
@@ -65,20 +68,23 @@ function handle_job_ajax_form() {
         //Create/update job attachments meta
         add_post_meta($job_id, 'attachments', $attachments, true);
         
-        //Create/update job vin meta
+        //Create/update job customer data
         add_post_meta($job_id, 'customer-data', $customer_data, true);
         
         //Create/update job vin meta
         add_post_meta($job_id, 'vin', $vin, true);
         
-        //Create/update job vin meta
+        //Create/update job vehicle data
         add_post_meta($job_id, 'vehicle-data', $vehicle_data, true);
         
         //Create/update job registration meta
         add_post_meta($job_id, 'registration', $registration, true);
         
-        //Create/update job registration meta
+        //Create/update job booking notes
         add_post_meta($job_id, 'booking-notes', $booking_fields, true);
+        
+        //Create/update job status
+        add_post_meta($job_id, 'status', $job_status, true);
         
     } 
     if( $existing_job_id != 0 ) {
@@ -86,29 +92,32 @@ function handle_job_ajax_form() {
         //Create/update job labour meta
         update_post_meta($existing_job_id, 'labour', $labour_data);
 
-        //Create/update job part meta
+        //update job part meta
         update_post_meta($existing_job_id, 'parts', $parts_data);
       
-        //Create/update job note meta
+        //update job note meta
         update_post_meta($existing_job_id, 'notes', $job_notes);
         
-        //Create/update job attachments meta
+        //update job attachments meta
         update_post_meta($existing_job_id, 'attachments', $attachments);
         
-        //Create/update job vin meta
+        //update job customer data
         update_post_meta($existing_job_id, 'customer-data', $customer_data);
         
-        //Create/update job vin meta
+        //update job vin meta
         update_post_meta($existing_job_id, 'vin', $vin);
         
-        //Create/update job vin meta
+        //update job vehicle data
         update_post_meta($existing_job_id, 'vehicle-data', $vehicle_data);
         
-        //Create/update job registration meta
+        //update job registration meta
         update_post_meta($existing_job_id, 'registration', $registration);
         
-        //Create/update job registration meta
+        //update job booking notes
         update_post_meta($existing_job_id, 'booking-notes', $booking_fields);
+
+        //update job status
+        update_post_meta($existing_job_id, 'status', $job_status);
 
     }
 
@@ -269,17 +278,27 @@ function get_all_jobs() {
 
     $job_data = array();
 
+    
     foreach ($jobs as $key => $job) {
+        parse_str( get_post_meta($job->ID, 'notes', true), $notes );
+        $notes = (strlen($notes["job-notes"]) > 15) ? substr($notes["job-notes"],0,15).'...' : $notes["job-notes"];;
+        // $notes = wp_trim_words($notes["job-notes"]);
+        $vehicle_data = json_decode(get_post_meta( $job->ID , 'vehicle-data', true ));
+        $customer_data = json_decode(get_post_meta( $job->ID, 'customer-data', true ));
+        $job_status = get_post_meta( $job->ID, 'status', true );
+        
+        // echo '<pre>',print_r($customer_data,1),'</pre>';
+        // echo '<pre>',print_r($notes,1),'</pre>';
         $job_data[$key] = array(
-            "name" => "Customer name",
+            "name" => $customer_data->{"customer-name"},
             "date" => "03/0".($key + 2)."/2024",
             "job_no" => $job->post_title,
-            "vehicle" => "Mazda",
-            "registration" => "CAA 123 456",
-            "status" => "<span class='status-light' ></span>Complete",
-            "notes" => get_post_meta($job->ID, 'notes', true),
-            "total" => "R1234",
-            "actions" => "<span class='action-ellipses' ><span></span><span></span><span></span></span>
+            "vehicle" => $vehicle_data->{"make"},
+            "registration" => $vehicle_data->{"registration"},
+            "status" => "<span class='status-light' ></span>".$job_status,
+            "notes" => $notes,
+            "total" => "Not Implemented",
+            "actions" => "<span class='action-ellipses' data-id=".$job->ID." ><span></span><span></span><span></span></span>
                           <ul style='display:none;' >
                               <li><a href=".home_url()."/jobs/?edit=".$job->ID." >Edit</a></li>
                               <li>Delete</li>
@@ -300,40 +319,44 @@ add_action('wp_ajax_get_job_content', 'get_job_content');
 add_action('wp_ajax_nopriv_get_job_content', 'get_job_content');
 function get_job_content() {
     
-    //Current USer
+    //Current User
     $loggedInUser = get_current_user();
     $notes = "";
 
     if(isset($_POST['job_id'])) { 
-        echo $_POST['job_id'];
-        $notes = parse_str( get_post_meta((int)$_POST['job_id'] , 'notes', true), $notes );
-        $vehicle_data = get_post_meta( $_POST['job_id'] , 'vehicle-data', true );
-        echo '<pre>',print_r($notes,1),'</pre>';
-        echo '<pre>',print_r($vehicle_data,1),'</pre>';
+        parse_str( get_post_meta((int)$_POST['job_id'] , 'notes', true), $notes );
+        $notes = $notes["job-notes"] !== "" ? $notes["job-notes"] : "No data";
+        $vehicle_data = json_decode(get_post_meta( $_POST['job_id'] , 'vehicle-data', true ));
+        $customer_data = json_decode(get_post_meta( $_POST['job_id'], 'customer-data', true ));
+
+        $address = explode(',',$customer_data->address);
+        $address = implode('<br>',$address);
     }
+
     $expanded_content = '
-        <div>
-            <div class="address" > 
-                <p>
-                    101 Beach Paradise Way
-                    Durban, 10118
-                </p>
-            </div>
-            <div class="contacts" >
-                <p>
-                    082 345 6789
-                    lance@domain.com
-                </p> 
-            </div>
-            <p class="vin" ><strong>VIN</strong>1234567890123</p>
-            <p class="vehicle" ><strong>VEHICLE YR:</strong> BMW Z5 2015</p>
-            <div>
-                <div>
-                    <p>Customer Notes</p>
-                    <p></p>
+        <div class="hidden-content" >
+            <div class="left-content" >
+                <div class="customer-details" >
+                    <div class="address" > 
+                        <p>
+                            '.$address.'
+                        </p>
+                    </div>
+                    <div class="contacts" >
+                        <p>
+                            <a href="tel:'.$customer_data->phone.'" />'. $customer_data->phone . '</a><br><a href="mailto:'.$customer_data->email.'">' . $customer_data->email .'</a>
+                        </p> 
+                    </div>
                 </div>
-                <div>
-                    <p>Job History</p>
+                <div class="customer-notes" >
+                    <p class="subtitle" >Customer Notes</p>
+                    <p>'.$notes.'</p>
+                </div>
+            </div>
+            <div class="right-content" > 
+                <div class="vehicle-details" >
+                    <p class="vin" ><strong>VIN: </strong>'.$vehicle_data->{"VIN"}.'</p>
+                    <p class="vehicle" ><strong>VEHICLE YR: </strong> '. $vehicle_data->{"make"} . ' ' . $vehicle_data->{"model"} . ' ' . $vehicle_data->{"year"} .'</p>
                 </div>
             </div>
         </div>        
@@ -600,7 +623,7 @@ function fetch_customers() {
         $contacts = json_decode( get_post_meta($customer->ID, 'contacts', true) );
 
         $vehicles = get_object_vars( json_decode( get_post_meta($customer->ID, 'vehicles', true) ));
-
+      
         //Vehicle data
         $VIN = key($vehicles);
         $vehicle_values = $vehicles[$VIN];
@@ -609,6 +632,7 @@ function fetch_customers() {
             "name" => $customer->post_title,
             "company-name" => $details[0]->{"company-name"},
             "email" => $contacts[2]->{"email-1"},
+            "phone" => $contacts[3]->{"cell-number-1"},
             "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"},
             "address" => $details[3]->{"email-1"} .','. $details[4]->{"suburb"} .','. $details[5]->{"city"},
             "vin" => $VIN,

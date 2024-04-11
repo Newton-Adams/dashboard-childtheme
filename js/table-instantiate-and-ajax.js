@@ -44,7 +44,6 @@ jQuery(document).ready(function ($) {
                         select: true,
                         topStart: 'info',
                         bottomStart: null,
-                        // pagingType: 'simple_numbers',
                         bottomEnd: {
                             paging: {
                                 numbers: 1
@@ -159,18 +158,20 @@ jQuery(document).ready(function ($) {
 
                 //Expand/Collapse Job Extra Info
                 $(document).on('click', '#jobs-table tbody tr td:not(.actions)', function () {
-                    const jobID = $(this).text()
+                    const jobID = $(this).closest('tr').find('.action-ellipses').data('id')
                     let tr = $(this)
                     let row = jobsTable.row( tr )
+
+                    $(this).closest('tr').css('background-color',"#f7fafc")
                 
                     if (row.child.isShown()) {
                         row.child.hide();
                         tr.removeClass('shown');
+                        $(this).closest('tr').css('background-color',"#ffffff")
                     } else {
                         // Open row.
                         get_job_content(jobID,row)
                         row.child('<span class="loading" >Loading...</span>').show()
-                        tr.addClass('shown')
                     }
                    
                 });
@@ -352,7 +353,8 @@ jQuery(document).ready(function ($) {
     }
 
     //Drop down open
-    $(document).on('click','.select-wrapper:not(.active)',function() {
+    $(document).on('click','.select-wrapper:not(.active)',function(e) {
         $(this).closest('.select-wrapper').addClass('active')
     })
+
 });

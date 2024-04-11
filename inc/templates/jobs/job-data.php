@@ -19,7 +19,6 @@ $Controls = array(
 //Url param - edit id
 isset($_GET['edit']) ? $job_edit_id = $_GET['edit'] :  $job_edit_id = "";
 
-
 if(isset($job_edit_id)) {
     
     //Job Attachments
@@ -36,7 +35,6 @@ if(isset($job_edit_id)) {
     if(!empty(get_post_meta($job_edit_id, 'customer-data', true) )) { 
         $customer_data = get_post_meta($job_edit_id, 'customer-data', true); 
         $customer_data_decoded = json_decode( $customer_data );
-        // echo '<pre>',print_r($customer_data_decoded,1),'</pre>';
     }
 
     if(!empty( get_post_meta($job_edit_id, 'vehicle-data', true) )) {

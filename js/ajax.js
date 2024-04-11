@@ -116,12 +116,13 @@ jQuery(document).ready(function ($) {
 
                     if(Object.keys(customerData).length > 0) {
                         Object.keys(customerData).forEach(customer => {
-                            console.log(JSON.stringify( customerData[customer]['all-vehicle-values'] ));
+                          
                             options += `<li 
                                             data-company-name='${customerData[customer]["company-name"]}' 
                                             data-address='${customerData[customer]["address"]}' 
                                             data-name='${customerData[customer]["name"]}' 
                                             data-email='${customerData[customer]["email"]}' 
+                                            data-phone='${customerData[customer]["phone"]}' 
                                             data-vin='${customerData[customer]["vin"]}' 
                                             data-make='${customerData[customer]["make"]}'
                                             data-model='${customerData[customer]["model"]}'
@@ -182,6 +183,7 @@ jQuery(document).ready(function ($) {
             const customerName = $(this).data('name')
             const companyName = $(this).data('company-name')
             const contact = $(this).data('email')
+            const phone = $(this).data('phone')
             const address = $(this).data('address')
 
             $('.selected-customer-outer .customer-name-val').text(customerName)
@@ -194,6 +196,7 @@ jQuery(document).ready(function ($) {
                 "customer-name": customerName,
                 "company-name": companyName,
                 "email": contact,
+                "phone": phone,
                 "address": address,
             }
             $('input[name="customer-data"]').val(JSON.stringify(customerData))                        
@@ -349,8 +352,9 @@ jQuery(document).ready(function ($) {
         event.preventDefault()
         const existingJobID = $('input#job-id').val()
 
-        //Job related posts & title
+        //Job related posts & job status
         const jobNumber = $('input#job-number').val()
+        const jobStatus = $('input#job-status').val()
         
         //Customer hidden fields
         const customerData = $('input[name="customer-data"]').val()
@@ -443,6 +447,7 @@ jQuery(document).ready(function ($) {
                 'vehicle-data': vehicleData,
                 'booking-fields': bookingFields,
                 'existing-job-id': existingJobID,
+                'job-status': jobStatus,
             },
             success: function (response) {	
                 console.log(response);

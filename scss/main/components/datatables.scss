@@ -3,6 +3,38 @@
         margin-bottom: 0;
     }
     .dt-layout-row {
+        .hidden-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 53px;
+            padding: 15px;
+            > div {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                p, a {
+                    font-size: 0.875rem;
+                }
+                .customer-notes {
+                    width: 100%;
+                }
+                .customer-details {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                }
+                .vehicle-details {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    > p {
+                        text-transform: uppercase;
+                        width: 50%;
+                    }
+                }
+            }
+        }
         &:last-child {
             display: flex;
             justify-content: space-between;
@@ -68,6 +100,7 @@
             }
             tbody {
                 tr {
+                    background-color: var(--background-secondary);
                     td {
                         border-right: none;
                         border-left: none;
@@ -77,6 +110,9 @@
                         line-height: 142.857%; 
                         padding: 16px; 
                         color: var(--text-1);
+                        &[colspan="9"] {
+                            background-color: var(--background-primary);
+                        }
                         &.actions {
                             cursor: pointer;
                             .action-ellipses {

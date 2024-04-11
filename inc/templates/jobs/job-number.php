@@ -30,4 +30,5 @@ if($job_edit_id) {
         <h3>Job Number </h3>
         <input id="job-number" type="text" value="WP-<?php echo $job_number; ?>" >
     </div>
+    <input type="hidden" id="job-status" >
 </div>

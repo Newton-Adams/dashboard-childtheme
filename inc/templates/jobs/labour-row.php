@@ -3,8 +3,8 @@
     <?php 
     if(isset($labour)) {
         $loop_count = 0;
+        echo '<pre>',print_r($labour,1),'</pre>';
         foreach ($labour as $key => $row) { 
-            echo '<pre>',print_r($row[$loop_count],1),'</pre>';
             ?>
         <div class="form-row" >
             <div class="input-label-wrapper labour-name-wrapper" >

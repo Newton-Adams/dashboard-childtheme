@@ -20,9 +20,7 @@
     <div class="form-row" >
         <div class="input-label-wrapper" >
             <label for="booking-description" >Booking description</label>
-            <textarea id="booking-description" name="booking-description" >
-                <?php echo isset($booking_notes) ? $booking_notes["booking-description"] : ""; ?>
-            </textarea>
+            <textarea id="booking-description" name="booking-description" ><?php echo isset($booking_notes) ? $booking_notes["booking-description"] : ""; ?></textarea>
         </div>
     </div>
 </form>
