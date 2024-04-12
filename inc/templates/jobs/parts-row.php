@@ -1,39 +1,40 @@
 <form id="parts-fields" >
 <?php 
     if(isset($parts)) {
+        $loop_count = 0;
         foreach ($parts as $key => $row) {  ?>
         <div class="form-row" >
             <div class="input-label-wrapper part-name-wrapper" >
                 <label for="part-name" >Part Name</label>
-                <input type="text" id="part-name" name="part-name" value="<?= $row[0]->{"part-name"}; ?>" >
+                <input type="text" class="part-name" name="part-name" value="<?= $row[0]->{"part-name-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper warranty-wrapper" >
                 <label for="warranty" >Warranty</label>
-                <input type="text" id="warranty" name="warranty" value="<?= $row[1]->{"warranty"}; ?>" >
+                <input type="text" class="warranty" name="warranty" value="<?= $row[1]->{"warranty-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper cost-price-wrapper" >
                 <label for="cost-price" >Cost Price</label>
-                <input type="text" id="cost-price" name="cost-price" value="<?= $row[2]->{"cost-price"}; ?>" >
+                <input type="text" class="cost-price" name="cost-price" value="<?= $row[2]->{"cost-price-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper markup-wrapper" >
                 <label for="markup" >Markup (%)</label>
-                <input type="text" id="markup" name="markup" value="<?= $row[3]->{"markup"}; ?>" >
+                <input type="text" class="markup" name="markup" value="<?= $row[3]->{"markup-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper unit-price-wrapper" >
                 <label for="unit-price" >Unit price</label>
-                <input type="text" id="unit-price" name="unit-price" value="<?= $row[4]->{"unit-price"}; ?>" >
+                <input type="text" class="unit-price" name="unit-price" value="<?= $row[4]->{"unit-price-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper quantity-wrapper" >
                 <label for="qty" >Qty</label>
-                <input type="text" id="qty" name="qty" value="<?= $row[5]->{"qty"}; ?>" >
+                <input type="text" class="qty" name="qty" value="<?= $row[5]->{"qty-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper vat-wrapper" >
                 <label for="vat" >Vat</label>
-                <input type="text" id="vat" name="vat" value="<?= $row[6]->{"vat"}; ?>" >
+                <input type="text" class="vat" name="vat" value="<?= $row[6]->{"vat-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper line-total-wrapper" >
                 <label for="line-total" >Line Total</label>
-                <input type="text" id="line-total" name="line-total" value="<?= $row[7]->{"line-total"}; ?>" >
+                <input type="text" class="line-total" name="line-total" value="<?= $row[7]->{"line-total-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper delete-row" >
                 <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -44,40 +45,41 @@
                 </svg>
             </div>
         </div>    
-<?php }
+<?php $loop_count++;
+      }
     } else { ?>
     <div class="form-row" >
         <div class="input-label-wrapper part-name-wrapper" >
             <label for="part-name" >Part Name</label>
-            <input type="text" id="part-name" name="part-name" >
+            <input type="text" class="part-name" name="part-name-0" >
         </div>
         <div class="input-label-wrapper warranty-wrapper" >
             <label for="warranty" >Warranty</label>
-            <input type="text" id="warranty" name="warranty" >
+            <input type="text" class="warranty" name="warranty-0" >
         </div>
         <div class="input-label-wrapper cost-price-wrapper" >
             <label for="cost-price" >Cost Price</label>
-            <input type="text" id="cost-price" name="cost-price" >
+            <input type="text" class="cost-price" name="cost-price-0" >
         </div>
         <div class="input-label-wrapper markup-wrapper" >
             <label for="markup" >Markup (%)</label>
-            <input type="text" id="markup" name="markup" >
+            <input type="text" class="markup" name="markup-0" >
         </div>
         <div class="input-label-wrapper unit-price-wrapper" >
             <label for="unit-price" >Unit price</label>
-            <input type="text" id="unit-price" name="unit-price" >
+            <input type="text" class="unit-price" name="unit-price-0" >
         </div>
         <div class="input-label-wrapper quantity-wrapper" >
             <label for="qty" >Qty</label>
-            <input type="text" id="qty" name="qty" >
+            <input type="text" class="qty" name="qty-0" >
         </div>
         <div class="input-label-wrapper vat-wrapper" >
             <label for="vat" >Vat</label>
-            <input type="text" id="vat" name="vat" >
+            <input type="text" class="vat" name="vat-0" >
         </div>
         <div class="input-label-wrapper line-total-wrapper" >
             <label for="line-total" >Line Total</label>
-            <input type="text" id="line-total" name="line-total" >
+            <input type="text" class="line-total" name="line-total-0" >
         </div>
         <div class="input-label-wrapper delete-row" >
             <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -2,8 +2,7 @@
 //If editing, get existing title else create new job number
 if($job_edit_id) {
     $job_number = get_the_title($job_edit_id);
-} else {
-    $job_count = wp_count_posts( 'jobs' )->publish; 
+} else {    
     switch (true) {
         case strlen($job_count) < 2:
             $job_number = '0000' . $job_count;  
@@ -22,13 +21,12 @@ if($job_edit_id) {
             break;
     }
 }
-
 ?>
 
 <div class="job-number-outer" >
     <div class="job-number-wrapper" >
-        <h3>Job Number </h3>
-        <input id="job-number" type="text" value="WP-<?php echo $job_number; ?>" >
+        <h3>Job Number: wp-<?php echo $job_number; ?></h3>
     </div>
-    <input type="hidden" id="job-status" >
+    <input id="job-number" type="hidden" value="<?php echo $job_number; ?>" >
+    <input id="job-status" type="hidden" value="<?php echo isset($status) ? ucwords($status) : 'draft'; ?>" >
 </div>

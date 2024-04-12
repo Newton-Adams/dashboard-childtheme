@@ -96,17 +96,17 @@ jQuery(document).ready(function ($) {
                     let currentDate = new Date()
                     
                     for (let i = 0; i < dayCount; i++) {
-                        currentDate.setDate(currentDate.getDate()-1)
                         const searchString = currentDate.toLocaleDateString('en-US', {
                             day: '2-digit',
                             month: '2-digit',
                             year: 'numeric'
                         })
                         validDates.push(searchString)                    
+                        currentDate.setDate(currentDate.getDate()-1)
                     }
                                         
                     let columnData = jobsTable.column(1).nodes();
-                    
+                    console.log(validDates);
                     for (let i = 0; i < columnData.length; i++) {
                         const date = $(columnData[i]).text()
                         if(!validDates.includes(date) && dayCount > 0) { 

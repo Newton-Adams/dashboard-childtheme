@@ -3,7 +3,8 @@
 //Top Page Title
 add_shortcode('page_title','page_title_callback');
 function page_title_callback() {
-   return '<h1>'.get_the_title().'</h1>';
+   isset($_GET['edit']) && $edit_id = $_GET['edit'];
+   return isset($edit_id) ? '<h1>Edit ' . get_the_title() . '</h1>' : '<h1>Add ' . get_the_title() . '</h1>';
 }
 
 //Menu Icons

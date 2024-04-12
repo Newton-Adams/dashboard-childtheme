@@ -3,33 +3,32 @@
     <?php 
     if(isset($labour)) {
         $loop_count = 0;
-        echo '<pre>',print_r($labour,1),'</pre>';
         foreach ($labour as $key => $row) { 
             ?>
         <div class="form-row" >
             <div class="input-label-wrapper labour-name-wrapper" >
                 <label for="labour-name" >Labour Name</label>
-                <input type="text" id="labour-name" name="labour-name-0" value="<?= $row[0]->{"labour-name-{$loop_count}"}; ?>" >
+                <input type="text" class="labour-name" name="labour-name-0" value="<?= $row[0]->{"labour-name-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper description-wrapper" >
                 <label for="description" >Description</label>
-                <input type="text" id="description" name="description-0" value="<?= $row[1]->{"description-{$loop_count}"}; ?>" >
+                <input type="text" class="description" name="description-0" value="<?= $row[1]->{"description-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper unit-price-wrapper" >
                 <label for="unit-price" >Unit price</label>
-                <input type="text" id="unit-price" name="unit-price-0" value="<?= $row[2]->{"unit-price-{$loop_count}"}; ?>" >
+                <input type="text" class="unit-price" name="unit-price-0" value="<?= $row[2]->{"unit-price-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper quantity-wrapper" >
                 <label for="qty" >Qty</label>
-                <input type="text" id="qty" name="qty-0" value="<?= $row[3]->{"qty-{$loop_count}"}; ?>" >
+                <input type="text" class="qty" name="qty-0" value="<?= $row[3]->{"qty-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper vat-wrapper" >
                 <label for="vat" >Vat</label>
-                <input type="text" id="vat" name="vat-0" value="<?= $row[4]->{"vat-{$loop_count}"}; ?>" >
+                <input type="text" class="vat" name="vat-0" value="<?= $row[4]->{"vat-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper line-total-wrapper" >
                 <label for="line-total" >Line Total</label>
-                <input type="text" id="line-total" name="line-total-0" value="<?= $row[5]->{"line-total-{$loop_count}"}; ?>" >
+                <input type="text" class="line-total" name="line-total-0" value="<?= $row[5]->{"line-total-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper delete-row" >
                 <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,33 +40,34 @@
             </div>
         </div>
         
-    <?php }
+    <?php 
         $loop_count++;
+        }
     } else { ?>
         <div class="form-row" >
             <div class="input-label-wrapper labour-name-wrapper" >
                 <label for="labour-name" >Labour Name</label>
-                <input type="text" id="labour-name" name="labour-name" >
+                <input type="text" class="labour-name" name="labour-name-0" >
             </div>
             <div class="input-label-wrapper description-wrapper" >
                 <label for="description" >Description</label>
-                <input type="text" id="description" name="description" >
+                <input type="text" class="description" name="description-0" >
             </div>
             <div class="input-label-wrapper unit-price-wrapper" >
                 <label for="unit-price" >Unit price</label>
-                <input type="text" id="unit-price" name="unit-price" >
+                <input type="text" class="unit-price" name="unit-price-0" >
             </div>
             <div class="input-label-wrapper quantity-wrapper" >
                 <label for="qty" >Qty</label>
-                <input type="text" id="qty" name="qty" >
+                <input type="text" class="qty" name="qty-0" >
             </div>
             <div class="input-label-wrapper vat-wrapper" >
                 <label for="vat" >Vat</label>
-                <input type="text" id="vat" name="vat" >
+                <input type="text" class="vat" name="vat-0" >
             </div>
             <div class="input-label-wrapper line-total-wrapper" >
                 <label for="line-total" >Line Total</label>
-                <input type="text" id="line-total" name="line-total" >
+                <input type="text" class="line-total" name="line-total-0" >
             </div>
             <div class="input-label-wrapper delete-row" >
                 <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">

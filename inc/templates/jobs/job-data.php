@@ -16,10 +16,16 @@ $Controls = array(
    "change_warning" => true
 );
 
-//Url param - edit id
-isset($_GET['edit']) ? $job_edit_id = $_GET['edit'] :  $job_edit_id = "";
+$user_id = get_current_user_id();
+$job_count = get_user_meta($user_id, 'job_number', true) ? esc_attr(get_user_meta($user_id, 'job_number', true)) : 0; 
 
+//Url param - edit id & edit status
+isset($_GET['edit']) ? $job_edit_id = $_GET['edit'] : $job_edit_id = "";
+$editing = "";
+    
 if(isset($job_edit_id)) {
+
+    $editing = "editing";
     
     //Job Attachments
     !empty(get_post_meta($job_edit_id, 'attachments', true) ) && $attachments = get_post_meta($job_edit_id, 'attachments', true); 
@@ -36,24 +42,24 @@ if(isset($job_edit_id)) {
         $customer_data = get_post_meta($job_edit_id, 'customer-data', true); 
         $customer_data_decoded = json_decode( $customer_data );
     }
-
+    
+    //Vehicle Data
     if(!empty( get_post_meta($job_edit_id, 'vehicle-data', true) )) {
         $vehicle_json = get_post_meta($job_edit_id, 'vehicle-data', true);
         $vehicle = json_decode($vehicle_json);
     } 
-    // echo '<pre>',print_r($vehicle,1),'</pre>';
-    
+
     !empty(get_post_meta($job_edit_id, 'parts', true) ) && $parts = json_decode(get_post_meta($job_edit_id, 'parts', true)); 
-    // echo '<pre>',print_r($parts,1),'</pre>';
 
     !empty(get_post_meta($job_edit_id, 'labour', true) ) && $labour = json_decode(get_post_meta($job_edit_id, 'labour', true));
-    // echo '<pre>',print_r($labour,1),'</pre>';
 
     !empty(get_post_meta($job_edit_id, 'notes', true) ) && parse_str(get_post_meta($job_edit_id, 'notes', true),$job_notes); 
-    // echo '<pre>',print_r($job_notes,1),'</pre>';
 
     !empty(get_post_meta($job_edit_id, 'booking-notes', true) ) && parse_str(get_post_meta($job_edit_id, 'booking-notes', true),$booking_notes); 
-    // echo '<pre>',print_r($booking_notes,1),'</pre>';
+
+    !empty(get_post_meta($job_edit_id, 'status', true) ) && $status = get_post_meta($job_edit_id, 'status', true); 
+
+    !empty(get_post_meta($job_edit_id, 'grand-total', true) ) && $grand_total = get_post_meta($job_edit_id, 'grand-total', true); 
 
 } 
 

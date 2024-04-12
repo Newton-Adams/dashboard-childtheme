@@ -212,8 +212,6 @@ jQuery(document).ready(function ($) {
             })
         })
 
-         
-
         //Change customer event
         $(document).on('click','.change-customer, .selected-customer-outer .close',function() {  
             customerResultsActive = true
@@ -364,6 +362,9 @@ jQuery(document).ready(function ($) {
         const vehicleVIN = $('input[name="vehicle-vin"]').val()
         const vehicleData = $('input[name="vehicle-data"]').val()
 
+        //Cost
+        let jobGrandTotal = $("input#grand-total-value").val()
+
         //Notes & Attachments Rows
         let jobAttachments = $("#attachments-obj").val()
         const jobJobNotes = $("#job-notes").serialize()
@@ -430,7 +431,7 @@ jQuery(document).ready(function ($) {
 
         //Booking Fields
         const bookingFields = $('#booking-fields').serialize()
-
+        
         $.ajax({
             type: "POST",
             url: workshop_pro_obj.ajaxurl,
@@ -448,6 +449,7 @@ jQuery(document).ready(function ($) {
                 'booking-fields': bookingFields,
                 'existing-job-id': existingJobID,
                 'job-status': jobStatus,
+                'grand-total': jobGrandTotal,
             },
             success: function (response) {	
                 console.log(response);
@@ -536,7 +538,6 @@ jQuery(document).ready(function ($) {
             if(vehicleI < 9) {
                 const pairkey = pair[0]
                 const pairValue = pair[1]
-                console.log(vehicleKeyAndValue,pairkey,pairValue);
                 if (vehicleKeyAndValue[pairkey] === undefined) {
                     vehicleKeyAndValue[pairkey] = "";
                 }

@@ -68,7 +68,7 @@ jQuery(document).ready(function ($) {
 
     //Forms
     //Add Job Form Row
-    $(document).on('click','.jobs-container .add-row-button',function(e) {
+    $(document).on('click','.labour-container .add-row-button',function(e) {
         const rowCount = $('#job-fields').children().length
         const jobRow = `<div class="form-row" >
                             <div class="input-label-wrapper labour-name-wrapper" >
@@ -166,10 +166,8 @@ jQuery(document).ready(function ($) {
         form.find('.form-row:first-child .quantity-wrapper input').change()  
         if(form.children().length === 0) {
             form.closest('.section').find('.sub-total-outer > p > .value').text('R0.00')
-            updateTotalCosts('.section.jobs-container','.section.parts-container')
-        }
-        console.log(form.children().length);
-        
+            updateTotalCosts('.section.labour-container','.section.parts-container')
+        }        
     })
     
     //Calculate Line Total
@@ -193,7 +191,7 @@ jQuery(document).ready(function ($) {
         $(this).closest('.section').find('.sub-total-outer .sub-total .value').text(`R${lineSubtotal.toFixed(2)}`)
         $(this).closest('.section').find('.sub-total-outer .vat .value').text(`R${vatSubtotal.toFixed(2)}`)
         $(this).closest('.section').find('.sub-total-outer .total .value').text(`R${(lineSubtotal + vatSubtotal).toFixed(2)}`)
-        updateTotalCosts('.section.jobs-container','.section.parts-container')
+        updateTotalCosts('.section.labour-container','.section.parts-container')
     }
     
     //Update Total
@@ -203,6 +201,7 @@ jQuery(document).ready(function ($) {
         const total2 = Number($(subtotal2).find('.total .value').text().replace('R',''))
         const vat2 = Number($(subtotal2).find('.vat .value').text().replace('R',''))
        
+        $('.total-outer input#grand-total-value').val(`R${(total1 + total2).toFixed(2)}`)
         $('.total-outer .total-vat .value').text(`R${(vat1 + vat2).toFixed(2)}`)
         $('.total-outer .grand-total .value').text(`R${(total1 + total2).toFixed(2)}`)
     }
@@ -398,11 +397,34 @@ jQuery(document).ready(function ($) {
         $('#job-status').val(value)
         
         Array.from($('.control-status')).forEach(ele => {
-            $(ele).text(text)            
-            console.log(ele);
+            $(ele).text(text)       
         });
         
         $(this).closest('.select-wrapper.job-status.active').removeClass('active')
     })
 
+    //Fille job subtotals on load if editing
+    if($("#main > .editing").length > 0) {
+        let labourVat = 0
+        let labourLineTotal = 0
+        Array.from($('#job-fields .form-row')).forEach(ele => {
+            labourVat += Number($(ele).find('.vat-wrapper > input').val())
+            labourLineTotal += Number($(ele).find('.line-total-wrapper > input').val())
+        });
+        $('.section.labour-container .sub-total-outer .sub-total .value').text(`R${labourLineTotal.toFixed(2)}`)
+        $('.section.labour-container .sub-total-outer .vat .value').text(`R${labourVat.toFixed(2)}`)
+        $('.section.labour-container .sub-total-outer .total .value').text(`R${(labourLineTotal + labourVat).toFixed(2)}`)
+        
+        let partVat = 0
+        let partLineTotal = 0
+        Array.from($('#parts-fields .form-row')).forEach(ele => {
+            partVat += Number($(ele).find('.vat-wrapper > input').val())
+            partLineTotal += Number($(ele).find('.line-total-wrapper > input').val())
+        });
+        $('.section.parts-container .sub-total-outer .sub-total .value').text(`R${partLineTotal.toFixed(2)}`)
+        $('.section.parts-container .sub-total-outer .vat .value').text(`R${partVat.toFixed(2)}`)
+        $('.section.parts-container .sub-total-outer .total .value').text(`R${(partLineTotal + partVat).toFixed(2)}`)
+      
+        updateTotalCosts('.section.labour-container','.section.parts-container')
+    } 
 })

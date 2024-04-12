@@ -35,3 +35,16 @@
         }
     }
 }
+button {
+    border-radius: 8px;
+    padding: 10px 30px;
+    &.outline {
+        background: transparent !important;
+        border: 1px solid var(--accent-1) !important;
+        color: var(--accent-1) !important;
+        &:hover, &:focus {
+            background: var(--accent-1) !important;
+            color: var(--background-secondary) !important;
+        }
+    }
+}

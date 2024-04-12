@@ -28,7 +28,7 @@ $tableColumns = array(
             Search
             <input class="search" type="text" value="" >
         </label>        
-        <?php include( get_stylesheet_directory() . "/inc/templates/global/status-drop-down.php"); ?>
+        <?php include( get_stylesheet_directory() . "/inc/templates/jobs/status-drop-down.php"); ?>
         <?php include( get_stylesheet_directory() . "/inc/templates/global/date-range-drop-down.php"); ?>
     </div>
 

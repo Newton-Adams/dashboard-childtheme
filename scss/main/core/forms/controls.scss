@@ -1,58 +1,86 @@
-.control-fields {
-    .form-row {
-        h3 {
-            margin-right: auto;
-        }
-        > div, p, button {
-            padding: 5px 26px;
-            margin-bottom: 0;
-            &:not(:last-child) {
-                margin-right: 20px;
-            }
-        }
-        .select-wrapper {
-            &.job-status {
-                display: flex;
-                align-items: center;
-            }
-            position: relative;
-            cursor: pointer;
-            .value {
-                display: flex;
-                align-items: center;
-                background: #fff;
-                border: 1px solid var(--input-border-color);
-                border-radius: 6px;
-                box-shadow: var(--input-shadow);
-                width: 100%;
-                height: 36px;
-                padding: 11px 16px;
-                font-size: 13px;
-                font-weight: 500;
-                line-height: 13px;
-            }
-            p {
+.controls {
+    margin-bottom: 19px;
+    .control-fields {
+        .form-row {
+            margin: 0;
+            h3 {
+                margin-right: auto;
                 margin-bottom: 0;
             }
-            .options {
-                display: flex;
-                flex-direction: column;
-                max-height: 0;
-                overflow: hidden;
-                position: absolute;
-                background-color: #fff;
-                padding: 0 10px;
-                border-radius: 6px;
-                box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.1);
-                z-index: 9999;
-                width: 100%;
-                cursor: pointer;
+            > div, p, button {                
+                margin-bottom: 0;
+                &:not(:last-child):not(:first-child) {
+                    margin-right: 20px;
+                }
             }
-            &.active {
+            .job-number-outer, .select-wrapper.job-status {
+                display: flex;
+                align-items: center;
+            }
+            .select-wrapper {
+                &.job-status {
+                    .selected {
+                        display: flex;
+                        align-items: center;
+                        .control-status {
+                            margin-left: 8px;
+                            position: relative;
+                            padding-right: 21px;
+                            color: var(--text-2);
+                            &::after {
+                                content: "";
+                                background-image: url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.15286 8.5324L0.757103 2.36582C0.120623 1.63841 0.637198 0.5 1.60375 0.5H12.3953C13.3618 0.5 13.8784 1.63841 13.2419 2.36582L7.84616 8.5324C7.39795 9.04464 6.60108 9.04465 6.15286 8.5324Z' fill='%237A7A9D'/%3E%3C/svg%3E");
+                                width: 13px;
+                                height: 9px;
+                                position: absolute;
+                                right: 0;
+                                top: calc(50% - 1px);
+                                transform: translateY(-50%);
+                                background-position: center;
+                                background-repeat: no-repeat;
+                            }
+                        }
+                    }
+                }
+                position: relative;
+                cursor: pointer;
+                .value {
+                    display: flex;
+                    align-items: center;
+                    background: #fff;
+                    border: 1px solid var(--input-border-color);
+                    border-radius: 6px;
+                    box-shadow: var(--input-shadow);
+                    width: 100%;
+                    height: 36px;
+                    padding: 11px 16px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    line-height: 13px;
+                }
+                p {
+                    margin-bottom: 0;
+                }
                 .options {
-                    transition: max-height 0.3s ease-in-out;
-                    padding: 10px;
-                    max-height: 500px;
+                    display: flex;
+                    flex-direction: column;
+                    max-height: 0;
+                    overflow: hidden;
+                    position: absolute;
+                    background-color: #fff;
+                    padding: 0 10px;
+                    border-radius: 6px;
+                    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.1);
+                    z-index: 9999;
+                    width: 100%;
+                    cursor: pointer;
+                }
+                &.active {
+                    .options {
+                        transition: max-height 0.3s ease-in-out;
+                        padding: 10px;
+                        max-height: 500px;
+                    }
                 }
             }
         }

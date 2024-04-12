@@ -39,11 +39,14 @@ function handle_job_ajax_form() {
 
     //Job Status
     isset($_POST['job-status']) && $job_status = strip_tags( $_POST['job-status'] );
+
+    //Job Grand Total
+    isset($_POST['grand-total']) && $grand_total = strip_tags( $_POST['grand-total'] );
     
     //Add/update the post
     $job_args = array(
         'post_type' => 'jobs',
-        'post_title'    => $job_number,
+        'post_title'    => 'wp-' . $job_number,
         'post_status'   => 'publish',
         'post_author'   => 1,
     );
@@ -55,6 +58,12 @@ function handle_job_ajax_form() {
     
     // Check if the post was successfully inserted
     if ( !is_wp_error($post_id) && $job_id > 0 ) {
+        //Claim job number & incriment count in profile
+        $job_number++;
+        $user_id = get_current_user_id();
+        update_user_meta( $user_id, 'job_number', $job_number );
+        // delete_user_meta( $user_id, 'job_number' );
+
         echo 'inserted';
         //Create/update job labour meta
         add_post_meta($job_id, 'labour', $labour_data, true);
@@ -85,6 +94,9 @@ function handle_job_ajax_form() {
         
         //Create/update job status
         add_post_meta($job_id, 'status', $job_status, true);
+        
+        //Create/update job grand total
+        add_post_meta($job_id, 'grand-total', $grand_total, true);
         
     } 
     if( $existing_job_id != 0 ) {
@@ -118,6 +130,9 @@ function handle_job_ajax_form() {
 
         //update job status
         update_post_meta($existing_job_id, 'status', $job_status);
+        
+        //Create/update job grand total
+        update_post_meta($existing_job_id, 'grand-total', $grand_total);
 
     }
 
@@ -273,6 +288,8 @@ function get_all_jobs() {
         'post_type' => 'jobs',
         'numberposts' => -1,
         'author' => $loggedInUser,
+        'oderby' => 'date',
+        'order' => 'DESC'
     );
     $jobs = get_posts($args);
 
@@ -287,11 +304,14 @@ function get_all_jobs() {
         $customer_data = json_decode(get_post_meta( $job->ID, 'customer-data', true ));
         $job_status = get_post_meta( $job->ID, 'status', true );
         
-        // echo '<pre>',print_r($customer_data,1),'</pre>';
+        $date = date_create($job->post_date);
+        $formatted_date = date_format($date,"m/d/Y");
+        
+        // echo '<pre>',print_r($job->post_date,1),'</pre>';
         // echo '<pre>',print_r($notes,1),'</pre>';
         $job_data[$key] = array(
             "name" => $customer_data->{"customer-name"},
-            "date" => "03/0".($key + 2)."/2024",
+            "date" => $formatted_date,
             "job_no" => $job->post_title,
             "vehicle" => $vehicle_data->{"make"},
             "registration" => $vehicle_data->{"registration"},
