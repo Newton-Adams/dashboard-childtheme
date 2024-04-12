@@ -400,7 +400,6 @@ jQuery(document).ready(function ($) {
             $(ele).text(text)       
         });
         
-        $(this).closest('.select-wrapper.job-status.active').removeClass('active')
     })
 
     //Fille job subtotals on load if editing

@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 const tableData = JSON.parse(response)
               
-                //Create Table
+                //Create Table 
                 let jobsTable = new DataTable('#jobs-table', { 
                     data: tableData,
                     pageLength: 7,                  
@@ -42,7 +42,8 @@ jQuery(document).ready(function ($) {
                     layout: { 
                         ordering: true,
                         select: true, 
-                        topStart: null, 
+                        topStart: null,  
+                        topEnd: null, 
                         bottomEnd: {
                             paging: {
                                 numbers: 3
@@ -57,11 +58,46 @@ jQuery(document).ready(function ($) {
                             previous: 'Prev'
                         }
                     }, 
+                    order: [1, 'asc'],
+                    responsive: true, 
                     columnDefs: [
-                        {
+                        { 
+                            responsivePriority: 2, 
+                            targets: 0 
+                        },
+                        { 
+                            responsivePriority: 3, 
+                            targets: 1 
+                        },
+                        { 
+                            responsivePriority: 4, 
+                            targets: 2 
+                        },
+                        { 
+                            responsivePriority: 5, 
+                            targets: 3 
+                        }, 
+                        { 
+                            responsivePriority: 6, 
+                            targets: 4 
+                        }, 
+                        { 
+                            responsivePriority: 7, 
+                            targets: 5 
+                        }, 
+                        { 
+                            responsivePriority: 8, 
+                            targets: 6 
+                        }, 
+                        { 
+                            responsivePriority: 9, 
+                            targets: 7 
+                        }, 
+                        { 
+                            responsivePriority: 1, 
                             targets: 8, 
-                            className: 'actions' 
-                        }
+                            className: 'actions', 
+                        },
                     ]
                 })
 
@@ -88,7 +124,7 @@ jQuery(document).ready(function ($) {
                 //Filter Date
                 $(document).on('click','.select-wrapper.date-range .options > span',function() {
                     //Selected option
-                    $('.select-wrapper.date-range > .value').text($(this).text())
+                    $('.select-wrapper.date-range .value').text($(this).text())
 
                     //Selected value
                     const dayCount = $(this).data('value')
@@ -251,7 +287,8 @@ jQuery(document).ready(function ($) {
             responsive: true,
             columnDefs: [
                 {
-                    targets: '_all', width: "16.666%"
+                    targets: '_all', 
+                    width: "16.666%"
                 }, 
                 { 
                     responsivePriority: 2, 
@@ -273,7 +310,10 @@ jQuery(document).ready(function ($) {
                     responsivePriority: 5, 
                     targets: 4 
                 },
-                {             
+                { 
+                    responsivePriority: 1, 
+                    targets: 5, 
+                    className: 'actions', 
                     "render": function (data, type, row) {
                         let actions = '';
                         actions += '<span class="action-ellipses" data-id="150"><span></span><span></span><span></span></span>';
@@ -285,9 +325,6 @@ jQuery(document).ready(function ($) {
                         actions += '</ul>';
                         return actions;
                     },
-                    responsivePriority: 1, 
-                    targets: 5, 
-                    className: 'actions' 
                 },
             ]
         });
@@ -316,11 +353,6 @@ jQuery(document).ready(function ($) {
         };
     }
 
-    
-    
-    
-
-
     //Hide datatable columns
     if($('.column-states').length > 0) {
         let colStateVis = true
@@ -338,6 +370,15 @@ jQuery(document).ready(function ($) {
     //Drop down open
     $(document).on('click','.select-wrapper:not(.active)',function(e) {
         $(this).closest('.select-wrapper').addClass('active')
+    })
+    $(document).on('click','.select-wrapper.active',function(e) {
+        $(this).closest('.select-wrapper').removeClass('active')
+    })
+    // click anywhere then remove active from select-wrapper 
+    $(document).on('click',function(e) {
+        if(!$(e.target).closest('.select-wrapper').length) {
+            $('.select-wrapper').removeClass('active')
+        }
     })
 
 });

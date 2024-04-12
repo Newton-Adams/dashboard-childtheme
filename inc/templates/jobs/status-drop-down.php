@@ -1,6 +1,9 @@
 <?php $status = isset($status) ? ucwords($status) : "Draft"; ?>
 <div class="select-wrapper job-status" >
-    <div class="selected" > <strong>Status:</strong> <div class="control-status" ><strong> <?= $status; ?></strong></div> </div>
+    <div class="selected" > 
+        <label>Status</label> 
+        <span class="control-status value" ><?= $status; ?></span> 
+    </div>
     <div class="options" >
         <?php
         if(isset( $status_options )) {
@@ -10,4 +13,4 @@
         } 
         ?>
     </div>
-</div>
+</div> 

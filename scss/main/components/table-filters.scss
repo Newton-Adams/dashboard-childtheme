@@ -1,5 +1,5 @@
 .table-filters {
-    margin: 0;
+    margin: 0; 
     .hide-columns {
         svg {
             cursor: pointer;
@@ -72,12 +72,16 @@
     .select-wrapper {
         position: relative;
         cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: capitalize;
         &:nth-child(2) {
             margin: 0 8px;
         }
         .value {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             background: #fff;
             border: 1px solid var(--input-border-color);
             border-radius: 6px;
@@ -85,12 +89,20 @@
             width: 100%;
             height: 36px;
             padding: 11px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            line-height: 13px;
-        }
-        p {
-            margin-bottom: 0;
+            color: var(--input-placeholder-color);
+            user-select: none;
+            &::after {
+                content: "";
+                display: block;
+                width: 11px;
+                height: 11px;
+                margin-left: 10px; 
+                background-image: url("data:image/svg+xml,%3Csvg width='12' height='11' viewBox='0 0 12 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.64903 7.65869L2.35162 3.89022C1.96266 3.4457 2.27834 2.75 2.86901 2.75H9.46383C10.0545 2.75 10.3702 3.4457 9.98123 3.89022L6.68382 7.65869C6.40991 7.97173 5.92293 7.97173 5.64903 7.65869Z' fill='%23B5B5BD'/%3E%3C/svg%3E");
+                background-repeat: no-repeat; 
+                background-position: center;
+                background-size: contain;
+                transition: transform 0.3s ease-in-out;
+            }
         }
         .options {
             display: flex;
@@ -98,21 +110,37 @@
             max-height: 0;
             overflow: hidden;
             position: absolute;
+            top: calc(100% + 10px);
             background-color: #fff;
             padding: 0 10px;
             border-radius: 6px;
             box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.1);
             z-index: 9999;
             width: 100%;
-            cursor: pointer;
+            cursor: pointer; 
         }
         &.active {
+            .value {
+                &::after { 
+                    transform: rotate(180deg);
+                }
+            }
             .options {
                 transition: max-height 0.3s ease-in-out;
                 padding: 10px;
                 max-height: 500px;
             }
         }
+    }
+    
+    label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: normal;
+        user-select: none;
+    } 
+    input {
+        margin-top: 8px;
     }
 }
 

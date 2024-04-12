@@ -1,5 +1,8 @@
 <div class="select-wrapper date-range" >
-    <p class="selected" >Date Range <div class="value" >All</div></p>
+    <div class="selected" >
+        <label>Date Range</label> 
+        <span class="value" >All</span>
+    </div>
     <div class="options" >
         <?php
         echo "<span data-value='0' >All</span>"; 
@@ -8,4 +11,4 @@
         }
         ?>
     </div>
-</div>
+</div> 

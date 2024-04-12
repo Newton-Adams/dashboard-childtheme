@@ -24,9 +24,9 @@ $tableColumns = array(
 ?>
 <form id="" class="table-filters" >
     <div class="filter-dropdowns" >
-        <label for="">
-            Search
-            <input class="search" type="text" value="" >
+        <label for="filter-customer">
+            Filter
+            <input id="filter-customer" class="search" type="text" value="" placeholder="Filter by customer">
         </label>        
         <?php include( get_stylesheet_directory() . "/inc/templates/jobs/status-drop-down.php"); ?>
         <?php include( get_stylesheet_directory() . "/inc/templates/global/date-range-drop-down.php"); ?>
