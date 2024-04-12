@@ -38,18 +38,25 @@ jQuery(document).ready(function ($) {
                         { data: 'notes' },
                         { data: 'total' },
                         { data: 'actions' },
-                    ],
+                    ], 
                     layout: { 
                         ordering: true,
-                        select: true,
-                        topStart: 'info',
-                        bottomStart: null,
+                        select: true, 
+                        topStart: null, 
                         bottomEnd: {
                             paging: {
-                                numbers: 1
+                                numbers: 3
                             }
-                        },
-                    },
+                        }
+                    }, 
+                    language: {
+                        paginate: {
+                            first: '', 
+                            last: '', 
+                            next: 'Next', 
+                            previous: 'Prev'
+                        }
+                    }, 
                     columnDefs: [
                         {
                             targets: 8, 
@@ -198,144 +205,120 @@ jQuery(document).ready(function ($) {
                 }
 
                 //Result Count
-                const loadRows = $('#jobs-table tbody tr').length
-                $('#jobs-table_wrapper > .dt-layout-row:last-child').prepend(`<p class="row-count" >Showing <span class="showing">${loadRows}</span> of <span class="results" >${jobsTable.rows().count()}</span> results found</p>`)
+                // const loadRows = $('#jobs-table tbody tr').length
+                // $('#jobs-table_wrapper > .dt-layout-row:last-child').prepend(`<p class="row-count" >Showing <span class="showing">${loadRows}</span> of <span class="results" >${jobsTable.rows().count()}</span> results found</p>`)
               
 
             }
         });
     }
-    instantiateJobsTable()
+    instantiateJobsTable();
     
     // Vehicle Table 
-    function instantiateVehicleTable() {
-        $.ajax({
-            type: "POST",
-            url: workshop_pro_obj.ajaxurl,
-            data: {
-                'action': 'get_user_vehicles',
-            },
-            success: function (response) {
-                const tableData = JSON.parse(response)
-                let vehicleTable = new DataTable('#vehicleTable', { 
-                    data: tableData, 
-                    pageLength: 7, 
-                    columns: [
-                        { data: 'vehicle_customer' }, 
-                        { data: 'vehicle_make' }, 
-                        { data: 'vehicle_model' }, 
-                        { data: 'vehicle_registration' }, 
-                        { data: 'vehicle_vin' }, 
-                        { data: 'actions' }
-                    ], 
-                    layout: { 
-                        ordering: true,
-                        select: true, 
-                        topStart: null, 
-                        bottomEnd: {
-                            paging: {
-                                numbers: 3
-                            }
-                        }
-                    }, 
-                    language: {
-                        paginate: {
-                            first: '', 
-                            last: '', 
-                            next: 'Next', 
-                            previous: 'Prev'
-                        }
-                    }, 
-                    order: [1, 'asc'],
-                    responsive: {
-                        details: {
-                            type: 'column'
-                        }
-                    }
-                })
-
-                //Hide/Show Columns
-                $(document).on('click','.table-filters .column-states input',function() {
-                    const columnNo = $(this).attr('value')
-                    let column = vehicleTable.column(columnNo);
-                
-                    // Toggle the visibility
-                    column.visible(!column.visible());                    
-                })
-
-                //Search Tables
-                $(document).on('keyup','.table-filters input.search',function() {
-                    const searchValue = $(this).val()
-                    vehicleTable.search(searchValue).draw()
-                    //Count Rows
-                    let allRows = $('#jobs-table tbody > tr:not([style="display: none;"])')
-                    let rowCount = 0
-                    for (let i = 0; i < allRows.length; i++) {
-                        $(allRows[i]).find('.dt-empty').length == 0 && rowCount++
-                    }
-                
-                    countVisibleRows(rowCount)
-                })
-
-                //Actions popup
-                if($('table tbody td.actions').length > 0) {
-                    let actionOpen = false
-                    $(document).on('click','table tbody td.actions',function() {
-                        if(!actionOpen) {
-                            $(this).find('ul').fadeIn()
-                            actionOpen = true
-                        } else {
-                            $('table tbody td.actions').find('ul').fadeOut()
-                            actionOpen = false
-                        }
-                    })
-                }
-
-                //Expand/Collapse Job Extra Info
-                $(document).on('click', '#vehicleTable tbody tr td:not(.actions)', function () {
-                    const vehicleID = $(this).text()
-                    let tr = $(this)
-                    let row = vehicleTable.row( tr )
-                
-                    if (row.child.isShown()) {
-                        row.child.hide();
-                        tr.removeClass('shown');
-                    } else {
-                        // Open row.
-                        get_job_content(vehicleID,row)
-                        row.child('<span class="loading" >Loading...</span>').show()
-                        tr.addClass('shown')
-                    }
-                   
-                });
-                
-                //Get Job Content Ajax
-                // function get_job_content(jobID,row) {
-                //     $.ajax({
-                //         type: "POST",
-                //         url: workshop_pro_obj.ajaxurl,
-                //         data: {
-                //             'action': 'get_job_content',
-                //             'job_id': jobID,
-                //         },
-                //         success: function (response) {
-                //             row.child(response)
-                //         }
-                //     })
-                // }
-
-                //Get visible row count
-                function countVisibleRows(rowCount=undefined) {
-                    const tableRows = $('#vehicleTable tbody tr td').length && rowCount === undefined ? $('#vehicleTable tbody tr').length : rowCount 
-                    $('#vehicleTable_wrapper > .dt-layout-row:last-child .row-count .showing').text(tableRows)
-                }
-
-            }
-        });
-    }
     if($('#vehicleTable').length > 0) {
-        instantiateVehicleTable()
+        var vehicleTable = $('#vehicleTable').DataTable({
+            ajax: {
+              url: workshop_pro_obj.ajaxurl + '?action=get_user_vehicles'
+            },
+            columns: [
+                { data: 'vehicle_customer' }, 
+                { data: 'vehicle_make' }, 
+                { data: 'vehicle_model' }, 
+                { data: 'vehicle_registration' }, 
+                { data: 'vehicle_vin' }, 
+                { data: 'actions' }
+            ],
+            layout: { 
+                ordering: true,
+                select: true, 
+                topStart: null,  
+                topEnd: null, 
+                bottomEnd: {
+                    paging: {
+                        numbers: 3
+                    }
+                }
+            }, 
+            language: {
+                paginate: {
+                    first: '', 
+                    last: '', 
+                    next: 'Next', 
+                    previous: 'Prev'
+                }
+            }, 
+            order: [1, 'asc'],
+            responsive: true,
+            columnDefs: [
+                {
+                    targets: '_all', width: "16.666%"
+                }, 
+                { 
+                    responsivePriority: 2, 
+                    targets: 0 
+                },
+                { 
+                    responsivePriority: 2, 
+                    targets: 1 
+                },
+                { 
+                    responsivePriority: 3, 
+                    targets: 2 
+                },
+                { 
+                    responsivePriority: 4, 
+                    targets: 3 
+                },
+                { 
+                    responsivePriority: 5, 
+                    targets: 4 
+                },
+                {             
+                    "render": function (data, type, row) {
+                        let actions = '';
+                        actions += '<span class="action-ellipses" data-id="150"><span></span><span></span><span></span></span>';
+                        actions += '<ul style="display:none;">';
+                        actions += '<li><a href="http://workshoppro.local/jobs/?edit=150">Edit</a></li>';
+                        actions += '<li><a href="' + data + '">Delete</a></li>';
+                        actions += '<li>Send Quote</li>';
+                        actions += '<li>Send Invoice</li>';
+                        actions += '</ul>';
+                        return actions;
+                    },
+                    responsivePriority: 1, 
+                    targets: 5, 
+                    className: 'actions' 
+                },
+            ]
+        });
+
+        //Hide/Show Columns
+        $(document).on('click','.table-filters .column-states input',function() {
+            const columnNo = $(this).attr('value')
+            let column = vehicleTable.column(columnNo);
+        
+            // Toggle the visibility
+            column.visible(!column.visible());                    
+        });
+
+        //Actions popup
+        if($('table tbody td.actions').length > 0) {
+            let actionOpen = false
+            $(document).on('click','table tbody td.actions',function() {
+                if(!actionOpen) {
+                    $(this).find('ul').fadeIn()
+                    actionOpen = true
+                } else {
+                    $('table tbody td.actions').find('ul').fadeOut()
+                    actionOpen = false
+                }
+            })
+        };
     }
+
+    
+    
+    
 
 
     //Hide datatable columns

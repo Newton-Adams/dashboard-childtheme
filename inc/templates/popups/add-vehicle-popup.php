@@ -40,7 +40,7 @@ function add_vehicle_popup() {
                         <input type="text" name="vehicle_make" id="vehicle_make" value="" placeholder="Make" class="required"  />
                     </div>
                     <div class="input-label-wrapper" >
-                        <label for="model" >Model</label>
+                        <label for="vehicle_model" >Model</label>
                         <input type="text" name="vehicle_model" id="vehicle_model" value="" placeholder="Model" class="required" />               
                     </div>
                     <div class="input-label-wrapper" >

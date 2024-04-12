@@ -42,10 +42,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="wp-block-columns are-vertically-aligned-center is-layout-flex wp-container-core-columns-layout-1 wp-block-columns-is-layout-flex">
 				<div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow">
-					<h2 class="wp-block-heading mb-md-0">Vehicle list</h2>
+					<h2 class="wp-block-heading mb-0">Vehicle list</h2>
 				</div>
 				<div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow">
-					<div class="wp-block-buttons is-content-justification-right is-layout-flex wp-container-core-buttons-layout-1 wp-block-buttons-is-layout-flex">
+					<div class="wp-block-buttons justified-md-end is-layout-flex wp-container-core-buttons-layout-1 wp-block-buttons-is-layout-flex">
 						<div class="wp-block-button">
 							<a data-popup="add-vehicle-popup" class="wp-block-button__link wp-element-button popup-btn">+ Add New Vehicle</a>
 						</div>
@@ -79,13 +79,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			echo '<div class="datatable-wrapper">';
 
-			echo '<table id="vehicleTable" class="data-table">';
+			echo '<table id="vehicleTable" class="">';
 
 			echo '<thead>';
 			echo '<tr>';
-			foreach($tableColumns as $key => $value) {
-				echo '<th>'.$value.'</th>';
-			}
+			echo '<th>Customer</th>';
+			echo '<th>Make</th>';
+			echo '<th>Model</th>';
+			echo '<th>Registration</th>';
+			echo '<th>VIN</th>';
+			echo '<th>Actions</th>';
 			echo '</tr>';
 			echo '</thead>';
 

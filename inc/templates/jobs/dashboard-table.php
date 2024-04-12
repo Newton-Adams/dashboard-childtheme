@@ -10,6 +10,17 @@ $date_options = array(
     "Last 21 days" => 21, 
     "Last 28 days" => 28,
 );
+$tableColumns = array( 
+    "customer" => "Customer", 
+    "date" => "Date",
+    "jobno" => "Job No.", 
+    "vehicle" => "Vehicle", 
+    "registration" => "Registration", 
+    "status" => "Status", 
+    "notes" => "Notes", 
+    "total" => "Total",
+);
+
 ?>
 <form id="" class="table-filters" >
     <div class="filter-dropdowns" >
@@ -21,44 +32,14 @@ $date_options = array(
         <?php include( get_stylesheet_directory() . "/inc/templates/global/date-range-drop-down.php"); ?>
     </div>
 
-    <?php echo '<span class="hide-columns" >'.file_get_contents( get_stylesheet_directory() . "/assets/images/Filter-handles.svg" ).'</span>'; ?>
+    <?php 
+    
+    echo '<span class="hide-columns" >'.file_get_contents( get_stylesheet_directory() . "/assets/images/Filter-handles.svg" ).'</span>'; 
+    datatableFilters($tableColumns);
 
-    <div class="column-states" >
-        <label for="hide-customer">
-            <input checked="true" type="checkbox" id="hide-customer" name="hide-customer" value="0" >
-            Customer
-        </label>
-        <label for="hide-date">
-            <input checked="true" type="checkbox" id="hide-date" name="hide-date" value="1" >
-            Date
-        </label>
-        <label for="hide-jobno">
-            <input checked="true" type="checkbox" id="hide-jobno" name="hide-jobno" value="2" >
-            Job No.
-        </label>
-        <label for="hide-vehicle" >
-            <input checked="true" type="checkbox" id="hide-vehicle" name="hide-vehicle" value="3" >
-            Vehicle
-        </label>
-        <label for="hide-registration" >
-            <input checked="true" type="checkbox" id="hide-registration" name="hide-registration" value="4" >
-            Registration
-        </label>
-        <label for="hide-status" >
-            <input checked="true" type="checkbox" id="hide-status" name="hide-status" value="5" >
-            Status
-        </label>
-        <label for="hide-notes" >
-            <input checked="true" type="checkbox" id="hide-notes" name="hide-notes" value="6" >
-            Notes
-        </label>
-        <label for="hide-total" >
-            <input checked="true" type="checkbox" id="hide-total" name="hide-total" value="7" >
-            Total
-        </label>
-    </div>
+    ?>
 </form>
-
+<div class="datatable-wrapper">
 <table id="jobs-table" >
     <thead>
         <tr>
@@ -77,3 +58,4 @@ $date_options = array(
     
     </body>
 </table>
+</div>

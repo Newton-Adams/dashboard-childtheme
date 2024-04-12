@@ -769,6 +769,7 @@ jQuery(document).ready(function ($) {
             });
         }
     });
+    
 
     // Adding Vehicle
     $('#add-vehicle-form').submit(function(e) {
@@ -791,20 +792,26 @@ jQuery(document).ready(function ($) {
                     formData: formData
                 }, 
                 success: function(response) {
+
                     removeOverlayLoader(self);
                     setTimeout(() => {
+
                         $('.popup').fadeOut('fast', function() {
                             $(this).removeClass('show');
                             $('body').css('overflow','auto');
                         });
-                        $(this).closest('form').clearForm();
-                        function refreshData() {
-                            var table = $('#vehicleTable').dataTable();
-                            table.ajax.reload();
-                        }
+
+                        $(this).closest('form').clearForm(); 
+
+                        // Reload the vehicle table 
+                        var table = $('#vehicleTable').DataTable();
+                        table.ajax.reload();
+                        
+                        
                     }, 500);
                 },
                 error: function(xhr, status, error) {
+
                     console.error(xhr.responseText);
                     // Handle error
                     console.log('Error'); 
@@ -831,6 +838,7 @@ jQuery(document).ready(function ($) {
             $(this).remove()
         })
     }
+
     // overlay loader 
     function addOverlayLoader(ele) {
         $(ele).addClass('overlay-loader');

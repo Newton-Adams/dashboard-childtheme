@@ -405,7 +405,7 @@ function get_user_vehicles() {
     };
 
     // Send JSON response
-    echo json_encode( $vehicle_data );
+    echo json_encode(array('data' => $vehicle_data));
 
     wp_die();
 }
@@ -427,38 +427,6 @@ function profile_form() {
     $userAddress = esc_attr(get_user_meta($user_id, 'address', true));
     $vatNumber = esc_attr(get_user_meta($user_id, 'vat_number', true));
     $companyRegistrationNumber = esc_attr(get_user_meta($user_id, 'company_registration_number', true));
-
-
-    // todo: handle profile picture upload
-    // if (isset($_FILES['profile_picture'])) {
-    //     $user_id = get_current_user_id();
-    //     $file = $_FILES['profile_picture'];
-
-    //     if (!empty($file['name'])) {
-    //         $upload_overrides = array('test_form' => false);
-    //         $uploaded_file = wp_handle_upload($file, $upload_overrides);
-
-    //         if (isset($uploaded_file['url'])) {
-    //             // Add the image to the media library
-    //             $file_path = $uploaded_file['file'];
-    //             $file_name = basename($file_path);
-    //             $attachment = array(
-    //                 'guid'           => $uploaded_file['url'],
-    //                 'post_mime_type' => $uploaded_file['type'],
-    //                 'post_title'     => preg_replace('/\.[^.]+$/', '', $file_name),
-    //                 'post_content'   => '',
-    //                 'post_status'    => 'inherit'
-    //             );
-    //             $attach_id = wp_insert_attachment($attachment, $file_path);
-
-    //             // Set user's avatar to the uploaded image
-    //             if (!is_wp_error($attach_id)) {
-    //                 update_user_meta($user_id, 'profile_picture_attachment_id', $attach_id);
-    //                 set_post_thumbnail($attach_id, $attach_id);
-    //             }
-    //         }
-    //     }
-    // }
 
     if ( isset($_POST['formData']) ) {
         parse_str($_POST['formData'], $form_data);

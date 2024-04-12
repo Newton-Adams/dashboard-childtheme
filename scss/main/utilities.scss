@@ -15,7 +15,7 @@ body {
             .m#{$margin_abbr}-#{$i}-negative {
                 margin-#{$margin_name}: -5px * $i!important;
             }
-            @media only screen and (min-width: 781px) {
+            @media only screen and (min-width: 1080px) {
                 .m#{$margin_abbr}-md-#{$i} {
                     margin-#{$margin_name}: 5px * $i!important;
                 }
@@ -83,7 +83,7 @@ body {
     .text-left { text-align: left; }
     .text-center { text-align: center; }
     .text-right { text-align: right; } 
-    @media only screen and (min-width: 781px) {
+    @media only screen and (min-width: 1080px) {
         .text-md-left { text-align: left; }
         .text-md-center { text-align: center; }
         .text-md-right { text-align: right; }
@@ -133,7 +133,7 @@ body {
         justify-content: flex-end;
     }
 
-    @media only screen and (min-width: 781px) {
+    @media only screen and (min-width: 1080px) {
         .d-md-none { 
             display: none; 
         }
@@ -215,7 +215,7 @@ body {
         .wp-block-buttons > .wp-block-button.max-w-#{$max_width_abbr} {
             max-width: #{$max_width_name};
         }
-        @media only screen and (min-width: 781px) {
+        @media only screen and (min-width: 1080px) {
             .max-w-md-#{$max_width_abbr} {
                 max-width: #{$max_width_name};
             }
@@ -246,13 +246,13 @@ body {
     }
     .desktop-only {
         display: none;
-        @media only screen and (min-width: 781px) {
+        @media only screen and (min-width: 1080px) {
             display: block;
         }
     }
     .mobile-only {
         display: block;
-        @media only screen and (min-width: 781px) {
+        @media only screen and (min-width: 1080px) {
             display: none;
         }
     }

@@ -1,7 +1,7 @@
 html {
     body {
         //datatables
-        .dt-search,#jobs-table_info {
+        .dt-search {
             display: none;
         }
         &:not(.um-page-login), &:not(.um-page-register), &:not(.um-page-password-reset) {
