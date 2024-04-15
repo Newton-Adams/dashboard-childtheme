@@ -318,7 +318,7 @@ jQuery(document).ready(function ($) {
                         let actions = '';
                         actions += '<span class="action-ellipses" data-id="150"><span></span><span></span><span></span></span>';
                         actions += '<ul style="display:none;">';
-                        actions += '<li><a href="http://workshoppro.local/jobs/?edit=150">Edit</a></li>';
+                        actions += '<li><a href="http://workshoppro.local/job/?edit=150">Edit</a></li>';
                         actions += '<li><a href="' + data + '">Delete</a></li>';
                         actions += '<li>Send Quote</li>';
                         actions += '<li>Send Invoice</li>';

@@ -77,6 +77,6 @@
     </div>
 
     <!-- //Hidden fields -->
-    <input type="hidden" name="customer-data" value="<?php echo $customer_data; ?>" >
+    <input type="hidden" name="customer-data" value="<?php echo isset($customer_data) ? $customer_data : ""; ?>" >
     
 </div>

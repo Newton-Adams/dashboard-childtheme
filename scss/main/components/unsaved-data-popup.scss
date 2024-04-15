@@ -1,4 +1,4 @@
-.unsaved-data-popup-outer {    
+.alert-popup-outer {    
     width: 100vw;
     height: 100vh;
     background-color: rgba(0,0,0,.2);
@@ -6,7 +6,7 @@
     left: 0;
     top: 0;
     z-index: 10000;
-    .unsaved-data-popup-inner {
+    .alert-popup-inner {
         background-color: var(--background-tertiary);
         position: absolute;
         left: 50%;
@@ -19,12 +19,29 @@
             margin-bottom: 25px;
             padding-bottom: 10px;
         }
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            column-gap: 15px;
-            button {
-                width: 100%;
+    }
+    &.error {
+        .alert-popup-inner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            h3 {
+                margin-bottom: 20px;
+            }
+            .buttons button {
+                max-width: 300px;
+            }
+        }
+    }
+    &.unsaved {
+        .alert-popup-inner {
+            .buttons {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 15px;
+                button {
+                    width: 100%;
+                }
             }
         }
     }

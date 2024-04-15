@@ -42,6 +42,9 @@ function handle_job_ajax_form() {
 
     //Job Grand Total
     isset($_POST['grand-total']) && $grand_total = strip_tags( $_POST['grand-total'] );
+
+    //Assigned Mechancis
+    isset($_POST['mechanics']) && $mechanics = strip_tags( $_POST['mechanics']) ;
     
     //Add/update the post
     $job_args = array(
@@ -58,13 +61,11 @@ function handle_job_ajax_form() {
     
     // Check if the post was successfully inserted
     if ( !is_wp_error($post_id) && $job_id > 0 ) {
-        //Claim job number & incriment count in profile
-        $job_number++;
+
+        //Claim job number
         $user_id = get_current_user_id();
         update_user_meta( $user_id, 'job_number', $job_number );
-        // delete_user_meta( $user_id, 'job_number' );
 
-        echo 'inserted';
         //Create/update job labour meta
         add_post_meta($job_id, 'labour', $labour_data, true);
         
@@ -97,6 +98,9 @@ function handle_job_ajax_form() {
         
         //Create/update job grand total
         add_post_meta($job_id, 'grand-total', $grand_total, true);
+        
+        //Create/update job grand total
+        add_post_meta($job_id, 'mechanics', $mechanics, true);
         
     } 
     if( $existing_job_id != 0 ) {
@@ -131,8 +135,11 @@ function handle_job_ajax_form() {
         //update job status
         update_post_meta($existing_job_id, 'status', $job_status);
         
-        //Create/update job grand total
+        //update job grand total
         update_post_meta($existing_job_id, 'grand-total', $grand_total);
+        
+        //update selected staff
+        update_post_meta($existing_job_id, 'mechanics', $mechanics);
 
     }
 
@@ -320,7 +327,7 @@ function get_all_jobs() {
             "total" => "Not Implemented",
             "actions" => "<span class='action-ellipses' data-id=".$job->ID." ><span></span><span></span><span></span></span>
                           <ul style='display:none;' >
-                              <li><a href=".home_url()."/jobs/?edit=".$job->ID." >Edit</a></li>
+                              <li><a href=".home_url()."/job/?edit=".$job->ID." >Edit</a></li>
                               <li>Delete</li>
                               <li>Send Quote</li>
                               <li>Send Invoice</li>
@@ -590,8 +597,8 @@ add_action('wp_ajax_fetch_customers', 'fetch_customers');
 add_action('wp_ajax_nopriv_fetch_customers', 'fetch_customers');
 function fetch_customers() {
     //Fetch Customers based off of search
-    if(isset($_POST['fetch_customers'])) { 
-        $search_value = $_POST['fetch_customers'];
+    if(isset($_POST['search-val'])) { 
+        $search_value = $_POST['search-val'];
     } else {
         $search_value = '';
     }
@@ -601,7 +608,6 @@ function fetch_customers() {
         'numberposts' => -1,
         's' => $search_value
     );
-
     $customers = get_posts($args);
     
     //Sort data to pass back to JS

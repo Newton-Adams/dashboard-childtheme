@@ -1,5 +1,5 @@
 <?php
-$status_options =array( 
+$status_options = array( 
    "draft" => "Draft",
    "complete" => "Complete",
    "invoice" => "Invoice",
@@ -9,6 +9,7 @@ $status_options =array(
 //Conrol object
 $Controls = array(
    "save" => true,
+   "job_number" => true,
    "status" => true,
    "invoice" => true,
    "send" => true,
@@ -17,11 +18,15 @@ $Controls = array(
 );
 
 $user_id = get_current_user_id();
-$job_count = get_user_meta($user_id, 'job_number', true) ? esc_attr(get_user_meta($user_id, 'job_number', true)) : 0; 
+$job_count = get_user_meta($user_id, 'job_number', true) !== null ? (int)esc_attr(get_user_meta($user_id, 'job_number', true)) + 1 : 0; 
 
 //Url param - edit id & edit status
 isset($_GET['edit']) ? $job_edit_id = $_GET['edit'] : $job_edit_id = "";
 $editing = "";
+    
+//Url param - edit id & edit status
+get_user_meta($user_id, 'mechanics', true) && $mechanic_options = json_decode(get_user_meta($user_id, 'mechanics', true));
+// $mechanic_options = array();
     
 if(isset($job_edit_id)) {
 
@@ -52,6 +57,8 @@ if(isset($job_edit_id)) {
     !empty(get_post_meta($job_edit_id, 'parts', true) ) && $parts = json_decode(get_post_meta($job_edit_id, 'parts', true)); 
 
     !empty(get_post_meta($job_edit_id, 'labour', true) ) && $labour = json_decode(get_post_meta($job_edit_id, 'labour', true));
+
+    !empty(get_post_meta($job_edit_id, 'mechanics', true) ) && $mechanics = json_decode(get_post_meta($job_edit_id, 'mechanics', true));
 
     !empty(get_post_meta($job_edit_id, 'notes', true) ) && parse_str(get_post_meta($job_edit_id, 'notes', true),$job_notes); 
 

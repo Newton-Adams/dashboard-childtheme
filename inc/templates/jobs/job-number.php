@@ -25,7 +25,7 @@ if($job_edit_id) {
 
 <div class="job-number-outer" >
     <div class="job-number-wrapper" >
-        <h3>Job Number: wp-<?php echo $job_number; ?></h3>
+        <h3>Job Number: WP-<?php echo $job_number; ?></h3>
     </div>
     <input id="job-number" type="hidden" value="<?php echo $job_number; ?>" >
     <input id="job-status" type="hidden" value="<?php echo isset($status) ? ucwords($status) : 'draft'; ?>" >

@@ -12,20 +12,24 @@ jQuery(document).ready(function ($) {
             navURL = $(e.target).closest('a:not([target="_blank"])').attr('href')            
             if($('input[name="content-changed"]').prop('checked')) {
                 e.preventDefault()
-                $('.unsaved-data-popup-outer').fadeIn()                    
+                $('.alert-popup-outer.unsaved').fadeIn()                    
             } 
         })     
 
-        //Yes/No event leave page popup
-        $(document).on('click','.unsaved-data-popup-outer a.wp-block-button__link',function(e) {  
-            console.log(navURL);         
+        //Accept/Reject event leave page popup
+        $(document).on('click','.alert-popup-outer.unsaved button',function(e) {        
             if( $(this).attr('value') !== 'false' && navURL.length > 0 ) {     
-                $('.unsaved-data-popup-outer').fadeOut(function() {
+                $('.alert-popup-outer.unsaved').fadeOut(function() {
                     window.location.href = navURL
                 })  
             } else {
-                $('.unsaved-data-popup-outer').fadeOut()                  
+                $('.alert-popup-outer.unsaved').fadeOut()                  
             }
+        })
+        
+        //Close error popup
+        $(document).on('click','.alert-popup-outer.error button',function(e) {        
+            $('.alert-popup-outer.error').fadeOut() 
         })
 
         $(document).on('keyup','input', pageChanged)
@@ -34,7 +38,6 @@ jQuery(document).ready(function ($) {
         function pageChanged() {
             $('input[name="content-changed"]').prop('checked',true)
         }
-
     }
 
     //Toggle Sidebar View
@@ -390,6 +393,7 @@ jQuery(document).ready(function ($) {
         });
         $(this).closest('form').clearForm();
     });
+
     //Job Status
     $(document).on('click','.select-wrapper.job-status.active .options > span',function() {
         const value = $(this).data('value')
@@ -401,8 +405,24 @@ jQuery(document).ready(function ($) {
         });
         
     })
+    
+    //Add Mechanic
+    $(document).on('click','.select-wrapper.mechanics .options > span',function() {
+        const self = $(this)
+        let selectedMechanics = $('#selected-mechanics').val() 
+        selectedMechanics.length > 0 ? selectedMechanics += `,${self.text()}` : selectedMechanics = self.text()
+        $('#selected-mechanics').val(selectedMechanics) 
 
-    //Fille job subtotals on load if editing
+        let selectedMechanicMarkup = self.html()
+        self.fadeOut(function() {
+            self.closest('.select-wrapper.mechanics').find('.selected .value').append(selectedMechanicMarkup)
+        })
+        
+        console.log(selectedMechanicMarkup);
+        // $('.select-wrapper.mechanics .selected').append(`<span class="mechanic" >${mechanic}<span class="remove" >X</span></span>`)
+    })
+
+    //Fill job sub-totals on load if editing
     if($("#main > .editing").length > 0) {
         let labourVat = 0
         let labourLineTotal = 0

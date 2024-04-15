@@ -34,7 +34,7 @@ get_header(); ?>
 				<div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow">
 					<div class="wp-block-buttons justified-md-end is-layout-flex wp-container-core-buttons-layout-1 wp-block-buttons-is-layout-flex">
 						<div class="wp-block-button">
-							<a href="/jobs/" class="wp-block-button__link wp-element-button popup-btn">+ New Job</a>
+							<a href="/job/" class="wp-block-button__link wp-element-button popup-btn">+ New Job</a>
 						</div>
 					</div>
 				</div>

@@ -79,7 +79,6 @@ jQuery(document).ready(function ($) {
         $(document).on('keyup','.selected-value',function() {
             const searchValue = $(this).val()            
             const self = $(this)
-            let selectedVehicle = false
 
             //Prevent search from running until we stop typing for 2 seconds
             clearTimeout(keyupTimeout);
@@ -98,9 +97,9 @@ jQuery(document).ready(function ($) {
                     'search-val': searchValue,
                 },
                 success: function (response) {	
+                    console.log(response);
                     customerResultsActive = true
                     const customerData = JSON.parse(response)
-                    console.log(customerData);
                     let options = `<li class="add-new-customer" >
                                         <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="46" height="46" rx="23" fill="#EDFFEB"/>
@@ -348,11 +347,17 @@ jQuery(document).ready(function ($) {
     //Job Save/Edit Ajax
     $(document).on('click','#save-post.job-save',function(event) {
         event.preventDefault()
+        
+        //Job single data
         const existingJobID = $('input#job-id').val()
-
-        //Job related posts & job status
         const jobNumber = $('input#job-number').val()
         const jobStatus = $('input#job-status').val()
+
+        let mechanics = []
+        $('.select-wrapper.mechanics .options > span').each((index,mechanic) => {
+            console.log(index,mechanic);
+            mechanics.push($(mechanic).text())
+        });
         
         //Customer hidden fields
         const customerData = $('input[name="customer-data"]').val()
@@ -450,9 +455,18 @@ jQuery(document).ready(function ($) {
                 'existing-job-id': existingJobID,
                 'job-status': jobStatus,
                 'grand-total': jobGrandTotal,
+                'mechanics': mechanics,
             },
             success: function (response) {	
                 console.log(response);
+                $('input[name="content-changed"]').prop('checked',false)
+                window.location.href = window.location.host + "/dashboard-jobs/"
+            },
+            error: function (xhr) {
+                xhr.status === 500 ? $('.alert-popup-outer.error .warning-title').html(`There was a 500 internal server error and the post did not save, please contact support @ <a href="mailto:sfjha@fdsf.com">sfjha@fdsf.com</a> or call <a href="tel:1231231234">1231231234</a>`) : $('.alert-popup-outer.error .warning-title').text("There was an error and the post did not save, please retry saving")
+                $('.alert-popup-outer.error').fadeIn(function() {
+
+                })           
             }
         });
 
@@ -468,9 +482,8 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {
                 //Update JSON
-                console.log(response);
                 removeLoader(self)
-            }
+            },
         });
     })
 
