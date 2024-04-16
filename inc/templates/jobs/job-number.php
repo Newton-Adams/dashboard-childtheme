@@ -1,7 +1,8 @@
 <?php
 //If editing, get existing title else create new job number
 if($job_edit_id) {
-    $job_number = get_the_title($job_edit_id);
+    // $job_number = get_the_title($job_edit_id);
+    $job_number = str_replace( "wp-","",get_the_title($job_edit_id) );
 } else {    
     switch (true) {
         case strlen($job_count) < 2:

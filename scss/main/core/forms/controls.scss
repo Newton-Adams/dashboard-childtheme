@@ -1,5 +1,5 @@
 .controls {
-    margin-bottom: 19px;
+    margin-bottom: 10px;
     .control-fields {
         .form-row {
             margin: 0;
@@ -24,6 +24,7 @@
                         display: flex;
                         align-items: center;
                         font-weight: bold;
+                        font-size: 1.125rem;
                         .control-status {
                             margin-left: 8px;
                             position: relative;
@@ -31,6 +32,9 @@
                             color: var(--text-2);
                             padding-left: 0;
                             font-weight: bold;
+                            border: none;
+                            background: none;
+                            box-shadow: none;
                             &::after {
                                 content: "";
                                 background-image: url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.15286 8.5324L0.757103 2.36582C0.120623 1.63841 0.637198 0.5 1.60375 0.5H12.3953C13.3618 0.5 13.8784 1.63841 13.2419 2.36582L7.84616 8.5324C7.39795 9.04464 6.60108 9.04465 6.15286 8.5324Z' fill='%237A7A9D'/%3E%3C/svg%3E");
@@ -77,6 +81,11 @@
                     z-index: 9999;
                     width: 100%;
                     cursor: pointer;
+                    > span {
+                        display: block;
+                        line-height: 23px;
+                        font-size: 0.813rem;
+                    }
                 }
                 &.active {
                     .options {

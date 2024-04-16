@@ -1,7 +1,7 @@
 <form id="notes-attachment-fields" >
     <div class="form-row" >
         <div class="d-flex flex-column fw-100" >
-            <p>Job notes</p>
+            <h3>Job notes</h3>
             <div class="fw-100 pr-2" >
                 <label for="job-notes" ></label>
                 <textarea type="text" id="job-notes" name="job-notes" ><?php echo isset($job_notes) ? $job_notes["job-notes"] : ""; ?></textarea>
@@ -10,7 +10,7 @@
     </div>
     <div class="form-row attachments" >
         <div class="d-flex flex-column fw-100" >
-            <p>Attachments</p>
+            <h3>Attachments</h3>
             <div class="fw-100" >
                 <label for="attachment" >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

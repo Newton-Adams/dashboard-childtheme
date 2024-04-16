@@ -1,3 +1,4 @@
+<h3>Parts</h3>
 <form id="parts-fields" >
 <?php 
     if(isset($parts)) {

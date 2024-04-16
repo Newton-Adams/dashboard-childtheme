@@ -12,7 +12,7 @@ echo '<div class="forms-container" >
       echo '</div>
    </div>
    <div class="forms-container" >
-         <div class="section labour-container" >';            
+         <div class="section labour-container" >';         
          include( get_stylesheet_directory() . "/inc/templates/jobs/labour-row.php");
          include( get_stylesheet_directory() . "/inc/templates/jobs/subtotal.php");
    echo '</div>
@@ -35,6 +35,5 @@ echo '<div class="controls" >';
    include( get_stylesheet_directory() . "/inc/templates/jobs/controls.php");          
 echo '</div></span>';
 include( get_stylesheet_directory() . "/inc/templates/popups/unsaved-data-popup.php");      
-include( get_stylesheet_directory() . "/inc/templates/popups/ajax-error-popup.php");      
-include( get_stylesheet_directory() . "/inc/templates/add-mechanics.php");      
+include( get_stylesheet_directory() . "/inc/templates/popups/ajax-error-popup.php");    
  

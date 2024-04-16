@@ -171,8 +171,6 @@ jQuery(document).ready(function ($) {
             });
 
             }, 1500);
-
-                        
             
         })
 
@@ -339,7 +337,6 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {	
                 removeLoader('.add-staff-outer .add-row-button-outer')
-                console.log(response);
             }
         });
     })
@@ -352,12 +349,6 @@ jQuery(document).ready(function ($) {
         const existingJobID = $('input#job-id').val()
         const jobNumber = $('input#job-number').val()
         const jobStatus = $('input#job-status').val()
-
-        let mechanics = []
-        $('.select-wrapper.mechanics .options > span').each((index,mechanic) => {
-            console.log(index,mechanic);
-            mechanics.push($(mechanic).text())
-        });
         
         //Customer hidden fields
         const customerData = $('input[name="customer-data"]').val()
@@ -436,6 +427,9 @@ jQuery(document).ready(function ($) {
 
         //Booking Fields
         const bookingFields = $('#booking-fields').serialize()
+
+        //Mechanics Field
+        const mechanicField = $('#selected-mechanics').val()
         
         $.ajax({
             type: "POST",
@@ -455,7 +449,7 @@ jQuery(document).ready(function ($) {
                 'existing-job-id': existingJobID,
                 'job-status': jobStatus,
                 'grand-total': jobGrandTotal,
-                'mechanics': mechanics,
+                'mechanics': mechanicField,
             },
             success: function (response) {	
                 console.log(response);

@@ -58,7 +58,10 @@ if(isset($job_edit_id)) {
 
     !empty(get_post_meta($job_edit_id, 'labour', true) ) && $labour = json_decode(get_post_meta($job_edit_id, 'labour', true));
 
-    !empty(get_post_meta($job_edit_id, 'mechanics', true) ) && $mechanics = json_decode(get_post_meta($job_edit_id, 'mechanics', true));
+    if( !empty(get_post_meta($job_edit_id, 'mechanics', true) ) )  {
+        $mechanics = get_post_meta( $job_edit_id, 'mechanics', true );
+        $mechanics_decoded = explode( ",", json_decode( $mechanics ) );
+    }
 
     !empty(get_post_meta($job_edit_id, 'notes', true) ) && parse_str(get_post_meta($job_edit_id, 'notes', true),$job_notes); 
 

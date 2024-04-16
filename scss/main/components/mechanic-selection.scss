@@ -1,0 +1,41 @@
+.assigned-mechanics-outer {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    > p {
+        margin: 0 15px 0 0;
+    }
+    .assigned-mechanics {
+        .mechanic-inner {
+            .mechanic {
+                background-color: var(--background-primary);
+                color: var(--text-1);
+                padding: 0 12px;
+                border-radius: 2em;
+                line-height: 32px;
+                display: inline-block;
+                font-size: 0.75rem;
+                .close {
+                    cursor: pointer;
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    background-repeat: no-repeat;
+                    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='8' height='8' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M.646.646a.5.5 0 0 1 .708 0L4 3.293 6.646.646a.5.5 0 1 1 .708.708L4.707 4l2.647 2.646a.5.5 0 1 1-.708.708L4 4.707 1.354 7.354a.5.5 0 1 1-.708-.708L3.293 4 .646 1.354a.5.5 0 0 1 0-.708z' fill='%23425466'/%3E%3C/svg%3E");
+                }
+            }
+            &:not(:last-child) {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+.select-wrapper.mechanics {
+    margin: 0;
+    max-width: 250px;
+    .options {
+        .close {
+            display: none;
+        }
+    }
+}

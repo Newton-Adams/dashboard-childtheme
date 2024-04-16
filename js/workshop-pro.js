@@ -426,17 +426,41 @@ jQuery(document).ready(function ($) {
     //Add Mechanic
     $(document).on('click','.select-wrapper.mechanics .options > span',function() {
         const self = $(this)
-        let selectedMechanics = $('#selected-mechanics').val() 
-        selectedMechanics.length > 0 ? selectedMechanics += `,${self.text()}` : selectedMechanics = self.text()
-        $('#selected-mechanics').val(selectedMechanics) 
+        let selectedMechanics = $('#selected-mechanics').val().length > 0 ? JSON.parse( $('#selected-mechanics').val() ) : ''
+        selectedMechanics.length > 0 ? selectedMechanics += `,${self.text().trim()}` : selectedMechanics = self.text().trim()
+        $('#selected-mechanics').val() 
+        $('#selected-mechanics').val(JSON.stringify(selectedMechanics)) 
 
         let selectedMechanicMarkup = self.html()
-        self.fadeOut(function() {
-            self.closest('.select-wrapper.mechanics').find('.selected .value').append(selectedMechanicMarkup)
-        })
+        self.closest('.select-wrapper-outer').find('.assigned-mechanics').append(selectedMechanicMarkup)
+        self.closest('.select-wrapper-outer').find('.assigned-mechanics .mechanic-inner').off()
+        self.closest('.mechanic-outer').fadeOut()
+    })
+
+    //Remove selected mechanic
+    $(document).on('click','.select-wrapper-outer .assigned-mechanics-outer .assigned-mechanics .mechanic-inner .close',function() {
+        const self = $(this)
+        let selectedMechanics = JSON.parse( $('#selected-mechanics').val() )
+        const removedMechanic = self.closest('.mechanic').data('mechanic').trim()
+
+        if(selectedMechanics.indexOf(removedMechanic) > -1) {      
+            if(selectedMechanics.indexOf(','+removedMechanic) > -1) {
+                selectedMechanics = selectedMechanics.replace(','+removedMechanic,'')
+                console.log('front');
+            } else if(selectedMechanics.indexOf(removedMechanic+',')  > -1) {
+                selectedMechanics = selectedMechanics.replace(removedMechanic+',','')
+                console.log('back');
+            } else {
+                selectedMechanics = selectedMechanics.replace(removedMechanic,'')
+            } 
+        }
         
-        console.log(selectedMechanicMarkup);
-        // $('.select-wrapper.mechanics .selected').append(`<span class="mechanic" >${mechanic}<span class="remove" >X</span></span>`)
+        $('#selected-mechanics').val() 
+        $('#selected-mechanics').val(JSON.stringify(selectedMechanics)) 
+
+        const mechanicName = $(this).closest('.mechanic').data('mechanic')
+        $(this).closest('.select-wrapper-outer').find(`.options > .mechanic-outer[data-mechanic="${mechanicName}"]`).fadeIn()
+        $(this).closest('.mechanic-inner').remove()
     })
 
     //Fill job sub-totals on load if editing
