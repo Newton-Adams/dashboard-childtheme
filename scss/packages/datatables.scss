@@ -287,35 +287,6 @@
    text-align: center;
    vertical-align: top;
  }
- table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date,
- table.dataTable td.dt-type-numeric,
- table.dataTable td.dt-type-date {
-   text-align: right;
- }
- table.dataTable thead th,
- table.dataTable thead td,
- table.dataTable tfoot th,
- table.dataTable tfoot td {
-   text-align: left;
- }
- table.dataTable thead th.dt-head-left,
- table.dataTable thead td.dt-head-left,
- table.dataTable tfoot th.dt-head-left,
- table.dataTable tfoot td.dt-head-left {
-   text-align: left;
- }
- table.dataTable thead th.dt-head-center,
- table.dataTable thead td.dt-head-center,
- table.dataTable tfoot th.dt-head-center,
- table.dataTable tfoot td.dt-head-center {
-   text-align: center;
- }
- table.dataTable thead th.dt-head-right,
- table.dataTable thead td.dt-head-right,
- table.dataTable tfoot th.dt-head-right,
- table.dataTable tfoot td.dt-head-right {
-   text-align: right;
- }
  table.dataTable thead th.dt-head-justify,
  table.dataTable thead td.dt-head-justify,
  table.dataTable tfoot th.dt-head-justify,

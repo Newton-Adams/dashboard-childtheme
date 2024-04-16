@@ -10,7 +10,7 @@ function add_vehicle_popup() {
 
             
             <!-- Popup Content -->
-            <form id="add-vehicle-form" class="vehicle-form <?= $vehicle_post_id ?>" method="post" enctype="multipart/form-data">
+            <form id="add-vehicle-form" class="vehicle-form" method="post" enctype="multipart/form-data">
 
 
                 <div class="d-flex flex-align-center justified-between">

@@ -487,6 +487,13 @@ jQuery(document).ready(function ($) {
       
         updateTotalCosts('.section.labour-container','.section.parts-container')
     } 
+    
+    // Edit Vehicle Popop remove customer list options
+    $(document).on('click', '.edit-vehicle-popup .customer .change-customer, .edit-vehicle-popup .customer .close', function(e) {
+        $('input.selected-value, input[name="customer-data"]').val('').focus();
+        $('.edit-vehicle-popup .customer .options.active li').fadeOut();
+        $('.edit-vehicle-popup .customer .options.active').removeClass('active');
+    });
 
 
 })

@@ -643,8 +643,9 @@ function save_vehicle_data() {
     if (isset($_POST['formData'])) {
 
         parse_str($_POST['formData'], $formFields); // Convert serialized form data to array 
+        parse_str($_POST['attachments'], $attachments); // Convert serialized form data to array
 
-        if ( isset($formFields['vehicle_make']) && isset($formFields['vehicle_model']) ){
+        if ( isset($formFields['vehicle_make']) && isset($formFields['vehicle_model']) ) {
 
             //Add/update the post
             $vehicle_args = array(
@@ -670,7 +671,9 @@ function save_vehicle_data() {
                 // Update post meta
                 update_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
                 update_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
-                update_post_meta( $vehicle_id, 'attachment', json_encode( $formFields['hidden-attachment'] ) );
+                if ( isset($attachments) ) {
+                    update_post_meta( $vehicle_id, 'attachment', json_encode( $attachments ) );
+                }
 
             } else {
 
@@ -680,13 +683,15 @@ function save_vehicle_data() {
                 // Update post meta
                 add_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
                 add_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
-                add_post_meta( $vehicle_id, 'attachment', json_encode( $formFields['hidden-attachment'] ) );
+                if ( isset($attachments) ) {
+                    add_post_meta( $vehicle_id, 'attachment', json_encode( $attachments ) );
+                }
 
             }
 
         }
 
-        echo json_encode($formFields);
+        echo json_encode($attachments);
     }
 
     if (wp_doing_ajax()) {
@@ -704,11 +709,11 @@ function edit_vehicle_data() {
     if($edit_post_id > 0) {
         $vehicle_data = get_post_meta($edit_post_id, 'data', true);
         $customer_data = get_post_meta($edit_post_id, 'customer-data', true);
-        $attachment_data = get_post_meta($edit_post_id, 'attachment', true);
+        // $attachment_data = get_post_meta($edit_post_id, 'attachment', true);
         
-        $vehicle_data = json_decode($vehicle_data);
-        $customer_data = json_decode($customer_data);
-        $attachment_data = json_decode($attachment_data);
+        $vehicle_data = json_decode($vehicle_data) ?? array();
+        $customer_data = json_decode($customer_data) ?? array();
+        $attachment_data = json_decode($attachment_data) ?? array();
 
         // merge data with keys 
         $vehicle_data = array_merge( (array)$vehicle_data, (array)$customer_data, (array)$attachment_data );
@@ -716,6 +721,22 @@ function edit_vehicle_data() {
         echo json_encode($vehicle_data);
     }
     
+
+    if (wp_doing_ajax()) {
+        die();
+    }
+}
+
+// Delete Vehicle Data 
+add_action('wp_ajax_delete_vehicle_data', 'delete_vehicle_data');
+add_action('wp_ajax_nopriv_delete_vehicle_data', 'delete_vehicle_data'); 
+function delete_vehicle_data() {
+
+    $delete_post_id = isset($_POST['delete_post_id']) ? (int)$_POST['delete_post_id'] : 0;
+
+    if($delete_post_id > 0) {
+        wp_delete_post($delete_post_id, true);
+    }
 
     if (wp_doing_ajax()) {
         die();

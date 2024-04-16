@@ -234,7 +234,9 @@ jQuery(document).ready(function ($) {
             }
         });
     }
-    instantiateJobsTable();
+    if($('#jobs-table').length > 0) {
+        instantiateJobsTable();
+    }
     
     // Vehicle Table 
     if($('#vehicleTable').length > 0) {
@@ -305,7 +307,7 @@ jQuery(document).ready(function ($) {
                         actions += '<div class="action-ellipses" data-id="150"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
                         actions += '<li><a href="#" data-popup="add-vehicle-popup" class="popup-btn edit-vehicle-action">Edit</a></li>';
-                        actions += '<li><a href="' + data + '">Delete</a></li>';
+                        actions += '<li><a href="#" class="delete-vehicle-action">Delete</a></li>';
                         actions += '<li>Send Quote</li>';
                         actions += '<li>Send Invoice</li>';
                         actions += '</ul>';

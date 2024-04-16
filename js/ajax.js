@@ -76,7 +76,7 @@ jQuery(document).ready(function ($) {
 
         let keyupTimeout
         let customerResultsActive = false
-        $(document).on('keyup change','.selected-value',function() {
+        $(document).on('keyup','.selected-value',function() {
             const searchValue = $(this).val()            
             const self = $(this)
 
@@ -789,6 +789,7 @@ jQuery(document).ready(function ($) {
         if( validateForm(self) ) {
 
             const formData = $(self).serialize();
+            const attachments = $('#attachments-obj').val();
                 
             addOverlayLoader(self); 
 
@@ -797,11 +798,10 @@ jQuery(document).ready(function ($) {
                 type: 'POST',
                 data: {
                     action: 'save_vehicle_data',
-                    formData: formData
+                    formData: formData, 
+                    attachments: attachments
                 }, 
                 success: function(response) {
-
-                    console.log(response);
 
                     removeOverlayLoader(self);
                     setTimeout(() => {
@@ -816,6 +816,8 @@ jQuery(document).ready(function ($) {
                         // Reload the vehicle table 
                         var table = $('#vehicleTable').DataTable();
                         table.ajax.reload();
+
+                        self.clearForm();
                         
                         
                     }, 500);
@@ -862,21 +864,35 @@ jQuery(document).ready(function ($) {
                 // decode the JSON response
                 const vehicleData = JSON.parse(response);
                 
-                // console.log(vehicleData);
-
-                // Populate the form fields with the data
+                // Pass the post id to the form
                 $('#add-vehicle-form input[name="vehicle_post_id"]').val(edit_post_id);
-                const customerData = '{"customer-name":"'+vehicleData['customer-name']+'","company-name":"'+vehicleData['company-name']+'","email":"'+vehicleData['calvinjdavey@gmail.com']+'","phone":'+vehicleData['1231231234']+',"address":"'+vehicleData['address']+'"}';
-                $('#add-vehicle-form .customer-select input').val(vehicleData['customer-name']);
-                $('#add-vehicle-form input[name="customer-data"]').val(customerData);
-                $('#add-vehicle-form input[name="vehicle_make"]').val(vehicleData.vehicle_make); 
-                $('#add-vehicle-form input[name="vehicle_model"]').val(vehicleData.vehicle_model); 
-                $('#add-vehicle-form input[name="vehicle_year"]').val(vehicleData.vehicle_year); 
-                $('#add-vehicle-form input[name="vehicle_vin"]').val(vehicleData.vehicle_vin); 
-                $('#add-vehicle-form input[name="vehicle_registration"]').val(vehicleData.vehicle_registration); 
-                $('#add-vehicle-form input[name="vehicle_colour"]').val(vehicleData.vehicle_colour); 
-                $('#add-vehicle-form input[name="vehicle_mileage"]').val(vehicleData.vehicle_mileage); 
-                $('#add-vehicle-form input[name="vehicle-description"]').val(vehicleData['vehicle-description']);
+
+                // Customer field update
+                const customerData = '{"customer-name":"'+vehicleData['customer-name']+'","company-name":"'+vehicleData['company-name']+'","email":"'+vehicleData['email']+'","phone":'+vehicleData['phone']+',"address":"'+vehicleData['address']+'"}';
+                $('#add-vehicle-form .customer-select input').val(vehicleData['customer-name'])
+
+                $('.customer').find('.customer-select').fadeOut(0,function() {
+                    $('.selected-customer-outer').fadeIn();                            
+                })
+                
+                  
+                $('.selected-customer-outer .customer-name-val').text(vehicleData['customer-name'])
+                $('.selected-customer-outer .company-name-val').text(vehicleData['company-name'])
+                $('.selected-customer-outer .contact-val').text(vehicleData['phone'])
+                $('.selected-customer-outer .address-val').text(vehicleData['address'])
+                
+                // Populate the vehicle fields with the data
+                $('.edit-vehicle-popup input[name="customer-data"]').val(customerData);
+                $('.edit-vehicle-popup input[name="vehicle_make"]').val(vehicleData.vehicle_make); 
+                $('.edit-vehicle-popup input[name="vehicle_model"]').val(vehicleData.vehicle_model); 
+                $('.edit-vehicle-popup input[name="vehicle_year"]').val(vehicleData.vehicle_year); 
+                $('.edit-vehicle-popup input[name="vehicle_vin"]').val(vehicleData.vehicle_vin); 
+                $('.edit-vehicle-popup input[name="vehicle_registration"]').val(vehicleData.vehicle_registration); 
+                $('.edit-vehicle-popup input[name="vehicle_colour"]').val(vehicleData.vehicle_colour); 
+                $('.edit-vehicle-popup input[name="vehicle_mileage"]').val(vehicleData.vehicle_mileage); 
+                $('.edit-vehicle-popup input[name="vehicle-description"]').val(vehicleData['vehicle-description']);
+
+
 
             },
             error: function(xhr, status, error) {
@@ -884,8 +900,35 @@ jQuery(document).ready(function ($) {
             }
         });
 
-    });
+    }); 
     
+    // Delete Vehicle 
+    $(document).on('click', '.delete-vehicle-action', function(e) {
+        e.preventDefault();
+        
+        const tr_post_id = $(this).closest('tr').attr('class');
+        // Strip 'post-id-' from tr_post_id 
+        const delete_post_id = tr_post_id.replace('post-id-','');
+        
+        $.ajax({ 
+            url: workshop_pro_obj.ajaxurl, 
+            type: 'POST', 
+            data: {
+                action: 'delete_vehicle_data',
+                delete_post_id: delete_post_id
+            },
+            success: function(response) { 
+                // Reload the vehicle table 
+                var table = $('#vehicleTable').DataTable();
+                table.ajax.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+
+    });
+
     //Loader - used for ajax
     function addLoader(ele) {
         const loadingGears = '<div class="svg-loader"></div>';

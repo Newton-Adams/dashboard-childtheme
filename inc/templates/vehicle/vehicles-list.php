@@ -18,7 +18,7 @@
         <label for="">Filter <input class="search" type="text" value="" placeholder="Sort by customer, vehicle, VIN or registration"></label> 
     </div>
     <?php 
-        echo '<span class="hide-columns" >'.file_get_contents( get_stylesheet_directory() . "/assets/images/FIlter-handles.svg" ).'</span>';
+        echo '<span class="hide-columns" >'.file_get_contents( get_stylesheet_directory() . "/assets/images/Filter-handles.svg" ).'</span>';
 
         $tableColumns = array( 
             "customer" => "Customer", 
