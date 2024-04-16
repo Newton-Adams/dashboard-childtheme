@@ -61,16 +61,6 @@
    overflow: hidden !important;
  }
  
- :root {
-   --dt-row-selected: 13, 110, 253;
-   --dt-row-selected-text: 255, 255, 255;
-   --dt-row-selected-link: 9, 10, 11;
-   --dt-row-stripe: 0, 0, 0;
-   --dt-row-hover: 0, 0, 0;
-   --dt-column-ordering: 0, 0, 0;
-   --dt-html-background: white;
- }
- 
  table.dataTable td.dt-control {
    text-align: center;
    cursor: pointer;
@@ -602,7 +592,7 @@
  }
  div.dt-container .dt-paging .dt-paging-button.current, div.dt-container .dt-paging .dt-paging-button.current:hover {
    color: inherit !important;
-   border: 1px solid rgba(0, 0, 0, 0.3);
+   border: 1px solid rgba(0, 0, 0, 0.1);
    background-color: rgba(0, 0, 0, 0.05);
    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(230, 230, 230, 0.05)), color-stop(100%, rgba(0, 0, 0, 0.05))); /* Chrome,Safari4+ */
    background: -webkit-linear-gradient(top, rgba(230, 230, 230, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%); /* Chrome10+,Safari5.1+ */
@@ -668,10 +658,10 @@
    padding: 0 !important;
  }
  div.dt-container.dt-empty-footer tbody > tr:last-child > * {
-   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
  }
  div.dt-container.dt-empty-footer .dt-scroll-body {
-   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
  }
  div.dt-container.dt-empty-footer .dt-scroll-body tbody > tr:last-child > * {
    border-bottom: none;

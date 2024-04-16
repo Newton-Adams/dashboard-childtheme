@@ -76,7 +76,7 @@ jQuery(document).ready(function ($) {
 
         let keyupTimeout
         let customerResultsActive = false
-        $(document).on('keyup','.selected-value',function() {
+        $(document).on('keyup change','.selected-value',function() {
             const searchValue = $(this).val()            
             const self = $(this)
 
@@ -807,6 +807,8 @@ jQuery(document).ready(function ($) {
                 }, 
                 success: function(response) {
 
+                    console.log(response);
+
                     removeOverlayLoader(self);
                     setTimeout(() => {
 
@@ -840,6 +842,54 @@ jQuery(document).ready(function ($) {
                 }, 
             });
         }
+    });
+
+    // Edit Vehicle 
+    $(document).on('click', '.edit-vehicle-action', function(e) {
+        e.preventDefault();
+        
+        const tr_post_id = $(this).closest('tr').attr('class');
+        // Strip 'post-id-' from tr_post_id 
+        const edit_post_id = tr_post_id.replace('post-id-','');
+        
+        $.ajax({ 
+            url: workshop_pro_obj.ajaxurl, 
+            type: 'POST', 
+            data: {
+                action: 'edit_vehicle_data',
+                edit_post_id: edit_post_id
+            },
+            success: function(response) { 
+
+                // Change popup title and add class to identify edit vehicle 
+                $('#add-vehicle-popup').addClass('edit-vehicle-popup');
+                $('#add-vehicle-popup').find('.popup-title').text('Edit Vehicle');
+
+                // decode the JSON response
+                const vehicleData = JSON.parse(response);
+                
+                // console.log(vehicleData);
+
+                // Populate the form fields with the data
+                $('#add-vehicle-form input[name="vehicle_post_id"]').val(edit_post_id);
+                const customerData = '{"customer-name":"'+vehicleData['customer-name']+'","company-name":"'+vehicleData['company-name']+'","email":"'+vehicleData['calvinjdavey@gmail.com']+'","phone":'+vehicleData['1231231234']+',"address":"'+vehicleData['address']+'"}';
+                $('#add-vehicle-form .customer-select input').val(vehicleData['customer-name']);
+                $('#add-vehicle-form input[name="customer-data"]').val(customerData);
+                $('#add-vehicle-form input[name="vehicle_make"]').val(vehicleData.vehicle_make); 
+                $('#add-vehicle-form input[name="vehicle_model"]').val(vehicleData.vehicle_model); 
+                $('#add-vehicle-form input[name="vehicle_year"]').val(vehicleData.vehicle_year); 
+                $('#add-vehicle-form input[name="vehicle_vin"]').val(vehicleData.vehicle_vin); 
+                $('#add-vehicle-form input[name="vehicle_registration"]').val(vehicleData.vehicle_registration); 
+                $('#add-vehicle-form input[name="vehicle_colour"]').val(vehicleData.vehicle_colour); 
+                $('#add-vehicle-form input[name="vehicle_mileage"]').val(vehicleData.vehicle_mileage); 
+                $('#add-vehicle-form input[name="vehicle-description"]').val(vehicleData['vehicle-description']);
+
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+
     });
     
     //Loader - used for ajax

@@ -42,9 +42,6 @@ function handle_job_ajax_form() {
 
     //Job Grand Total
     isset($_POST['grand-total']) && $grand_total = strip_tags( $_POST['grand-total'] );
-
-    //Assigned Mechancis
-    isset($_POST['mechanics']) && $mechanics = strip_tags( $_POST['mechanics']) ;
     
     //Add/update the post
     $job_args = array(
@@ -61,11 +58,13 @@ function handle_job_ajax_form() {
     
     // Check if the post was successfully inserted
     if ( !is_wp_error($post_id) && $job_id > 0 ) {
-
-        //Claim job number
+        //Claim job number & incriment count in profile
+        $job_number++;
         $user_id = get_current_user_id();
         update_user_meta( $user_id, 'job_number', $job_number );
+        // delete_user_meta( $user_id, 'job_number' );
 
+        echo 'inserted';
         //Create/update job labour meta
         add_post_meta($job_id, 'labour', $labour_data, true);
         
@@ -98,9 +97,6 @@ function handle_job_ajax_form() {
         
         //Create/update job grand total
         add_post_meta($job_id, 'grand-total', $grand_total, true);
-        
-        //Create/update job grand total
-        add_post_meta($job_id, 'mechanics', $mechanics, true);
         
     } 
     if( $existing_job_id != 0 ) {
@@ -135,11 +131,8 @@ function handle_job_ajax_form() {
         //update job status
         update_post_meta($existing_job_id, 'status', $job_status);
         
-        //update job grand total
+        //Create/update job grand total
         update_post_meta($existing_job_id, 'grand-total', $grand_total);
-        
-        //update selected staff
-        update_post_meta($existing_job_id, 'mechanics', $mechanics);
 
     }
 
@@ -327,7 +320,7 @@ function get_all_jobs() {
             "total" => "Not Implemented",
             "actions" => "<span class='action-ellipses' data-id=".$job->ID." ><span></span><span></span><span></span></span>
                           <ul style='display:none;' >
-                              <li><a href=".home_url()."/job/?edit=".$job->ID." >Edit</a></li>
+                              <li><a href=".home_url()."/jobs/?edit=".$job->ID." >Edit</a></li>
                               <li>Delete</li>
                               <li>Send Quote</li>
                               <li>Send Invoice</li>
@@ -414,15 +407,11 @@ function get_user_vehicles() {
     foreach ($vehicles as $key => $vehicle) {
 
         $vehicle_meta_data = json_decode( get_post_meta($vehicle->ID, 'data', true) ); 
-        $vehicle_customer_data = get_post_meta($vehicle->ID, 'customer-data', true);
-        // Remove extra double quotes from $vehicle_customer_data
-        $cleaned_customer_string = trim($vehicle_customer_data, '"');
-        // Decode JSON string to array
-        $customer_data = json_decode($cleaned_customer_string, true);
-
+        $customer_data = json_decode( get_post_meta($vehicle->ID, 'customer-data', true) );
 
         $vehicle_data[$key] = array( 
-            "vehicle_customer" => $customer_data['customer-name'], 
+            "vehicle_post_id" => $vehicle->ID,
+            "vehicle_customer" => $customer_data->{'customer-name'}, 
             "vehicle_make" => $vehicle_meta_data->vehicle_make, 
             "vehicle_model" => $vehicle_meta_data->vehicle_model, 
             "vehicle_registration" => $vehicle_meta_data->vehicle_registration, 
@@ -439,6 +428,8 @@ function get_user_vehicles() {
 
 
 // Profile Form
+add_action('wp_ajax_update_profile', 'profile_form');
+add_action('wp_ajax_nopriv_update_profile', 'profile_form');
 function profile_form() {
     
     $user = wp_get_current_user();
@@ -589,16 +580,14 @@ function profile_form() {
     };
 
 }
-add_action('wp_ajax_update_profile', 'profile_form');
-add_action('wp_ajax_nopriv_update_profile', 'profile_form');
 
 //Fetch Searched Customers
 add_action('wp_ajax_fetch_customers', 'fetch_customers');
 add_action('wp_ajax_nopriv_fetch_customers', 'fetch_customers');
 function fetch_customers() {
     //Fetch Customers based off of search
-    if(isset($_POST['search-val'])) { 
-        $search_value = $_POST['search-val'];
+    if(isset($_POST['fetch_customers'])) { 
+        $search_value = $_POST['fetch_customers'];
     } else {
         $search_value = '';
     }
@@ -608,6 +597,7 @@ function fetch_customers() {
         'numberposts' => -1,
         's' => $search_value
     );
+
     $customers = get_posts($args);
     
     //Sort data to pass back to JS
@@ -648,8 +638,6 @@ function fetch_customers() {
 // Save Vehicle Data
 add_action('wp_ajax_save_vehicle_data', 'save_vehicle_data');
 add_action('wp_ajax_nopriv_save_vehicle_data', 'save_vehicle_data');
-
-
 function save_vehicle_data() {
 
     if (isset($_POST['formData'])) {
@@ -666,24 +654,68 @@ function save_vehicle_data() {
                 'post_author' => 1,
             );
 
+            if (isset($formFields['vehicle_post_id']) && $formFields['vehicle_post_id'] > 0) {
+                $vehicle_args['ID'] = $formFields['vehicle_post_id'];
+            }
+
             //Create or edit post
             $vehicle_id = (int) wp_insert_post($vehicle_args);
 
-            // Check if the post was successfully inserted
-
-            if (!is_wp_error($vehicle_id) && $vehicle_id > 0) {
+            // Check if post exist and update  
+            if ( !is_wp_error($vehicle_id) && isset($formFields['vehicle_post_id']) && $formFields['vehicle_post_id'] > 0) {
 
                 $vehicleData = $formFields;
                 unset($vehicleData["customer-data"], $vehicleData["hidden-attachment"]);
 
                 // Update post meta
-                add_post_meta($vehicle_id, 'data', json_encode($vehicleData));
-                add_post_meta($vehicle_id, 'customer-data', json_encode( $formFields['customer-data'] ));
-                add_post_meta($vehicle_id, 'attachment', json_encode( $formFields['hidden-attachment'] ));
+                update_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
+                update_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
+                update_post_meta( $vehicle_id, 'attachment', json_encode( $formFields['hidden-attachment'] ) );
+
+            } else {
+
+                $vehicleData = $formFields;
+                unset($vehicleData["customer-data"], $vehicleData["hidden-attachment"]);
+
+                // Update post meta
+                add_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
+                add_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
+                add_post_meta( $vehicle_id, 'attachment', json_encode( $formFields['hidden-attachment'] ) );
 
             }
+
         }
+
+        echo json_encode($formFields);
     }
+
+    if (wp_doing_ajax()) {
+        die();
+    }
+}
+
+// Edit Vehicle Data 
+add_action('wp_ajax_edit_vehicle_data', 'edit_vehicle_data'); 
+add_action('wp_ajax_nopriv_edit_vehicle_data', 'edit_vehicle_data'); 
+function edit_vehicle_data() {
+
+    $edit_post_id = isset($_POST['edit_post_id']) ? (int)$_POST['edit_post_id'] : 0;
+    
+    if($edit_post_id > 0) {
+        $vehicle_data = get_post_meta($edit_post_id, 'data', true);
+        $customer_data = get_post_meta($edit_post_id, 'customer-data', true);
+        $attachment_data = get_post_meta($edit_post_id, 'attachment', true);
+        
+        $vehicle_data = json_decode($vehicle_data);
+        $customer_data = json_decode($customer_data);
+        $attachment_data = json_decode($attachment_data);
+
+        // merge data with keys 
+        $vehicle_data = array_merge( (array)$vehicle_data, (array)$customer_data, (array)$attachment_data );
+        
+        echo json_encode($vehicle_data);
+    }
+    
 
     if (wp_doing_ajax()) {
         die();

@@ -2,17 +2,19 @@
 function add_vehicle_popup() {
     ?>
     <!-- Popup -->
-    <div id="add-vehicle-popup" class="popup">
+    <div id="add-vehicle-popup" class="popup vehicle-form">
 
         <div class="popup-overlay"></div>
 
         <div class="popup-content">
 
+            
             <!-- Popup Content -->
-            <form id="add-vehicle-form" class="" method="post" enctype="multipart/form-data">
+            <form id="add-vehicle-form" class="vehicle-form <?= $vehicle_post_id ?>" method="post" enctype="multipart/form-data">
+
 
                 <div class="d-flex flex-align-center justified-between">
-                    <h2 class="mb-0">Add Vehicle</h2>
+                    <h2 class="popup-title mb-0">Add Vehicle</h2>
                     <div class="close-popup"> 
                         Close
                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"> 
@@ -30,9 +32,13 @@ function add_vehicle_popup() {
                     </div> 
                 </div>
 
-                <h5 class="mb-0">Vehicle Details</h5>
+                <div class="form-row" >
+                    <div class="input-label-wrapper" > 
+                        <h5 class="mb-0">Vehicle Details</h5>
+                    </div>
+                </div>
 
-                <div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
+                <input type="hidden" name="vehicle_post_id" id="vehicle_id" value="" >    
 
                 <div class="form-row" >
                     <div class="input-label-wrapper" >

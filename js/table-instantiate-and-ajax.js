@@ -185,20 +185,6 @@ jQuery(document).ready(function ($) {
                     countVisibleRows(rowCount)
                 })
 
-                //Actions popup
-                if($('table tbody td.actions').length > 0) {
-                    let actionOpen = false
-                    $(document).on('click','table tbody td.actions',function() {
-                        if(!actionOpen) {
-                            $(this).find('ul').fadeIn()
-                            actionOpen = true
-                        } else {
-                            $('table tbody td.actions').find('ul').fadeOut()
-                            actionOpen = false
-                        }
-                    })
-                }
-
                 //Expand/Collapse Job Extra Info
                 $(document).on('click', '#jobs-table tbody tr td:not(.actions)', function () {
                     const jobID = $(this).closest('tr').find('.action-ellipses').data('id')
@@ -316,9 +302,9 @@ jQuery(document).ready(function ($) {
                     className: 'actions', 
                     "render": function (data, type, row) {
                         let actions = '';
-                        actions += '<span class="action-ellipses" data-id="150"><span></span><span></span><span></span></span>';
+                        actions += '<div class="action-ellipses" data-id="150"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
-                        actions += '<li><a href="http://workshoppro.local/job/?edit=150">Edit</a></li>';
+                        actions += '<li><a href="#" data-popup="add-vehicle-popup" class="popup-btn edit-vehicle-action">Edit</a></li>';
                         actions += '<li><a href="' + data + '">Delete</a></li>';
                         actions += '<li>Send Quote</li>';
                         actions += '<li>Send Invoice</li>';
@@ -326,7 +312,10 @@ jQuery(document).ready(function ($) {
                         return actions;
                     },
                 },
-            ]
+            ], 
+            createdRow: function (row, data, index) {
+                $(row).addClass('post-id-'+data.vehicle_post_id);
+            }
         });
 
         //Hide/Show Columns
@@ -337,20 +326,6 @@ jQuery(document).ready(function ($) {
             // Toggle the visibility
             column.visible(!column.visible());                    
         });
-
-        //Actions popup
-        if($('table tbody td.actions').length > 0) {
-            let actionOpen = false
-            $(document).on('click','table tbody td.actions',function() {
-                if(!actionOpen) {
-                    $(this).find('ul').fadeIn()
-                    actionOpen = true
-                } else {
-                    $('table tbody td.actions').find('ul').fadeOut()
-                    actionOpen = false
-                }
-            })
-        };
     }
 
     //Hide datatable columns
@@ -378,6 +353,18 @@ jQuery(document).ready(function ($) {
     $(document).on('click',function(e) {
         if(!$(e.target).closest('.select-wrapper').length) {
             $('.select-wrapper').removeClass('active')
+        }
+    })
+
+    //Actions popup 
+    let actionOpen = false
+    $(document).on('click','table tbody td.actions',function() {
+        if(!actionOpen) {
+            $(this).find('ul').fadeIn()
+            actionOpen = true
+        } else {
+            $('table tbody td.actions').find('ul').fadeOut()
+            actionOpen = false
         }
     })
 

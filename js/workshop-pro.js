@@ -394,6 +394,23 @@ jQuery(document).ready(function ($) {
         $(this).closest('form').clearForm();
     });
 
+    // Vehicle Edit popup 
+    $(document).on(
+        'click', 
+        '.edit-vehicle-popup .popup-overlay, .edit-vehicle-popup .close-popup, .edit-vehicle-popup .cancel-popup', 
+        function() { 
+            setTimeout(() => {
+                $('.popup').fadeOut('fast', function() {
+                    $(this).removeClass('show');
+                    $('body').css('overflow','auto');
+                });
+                $(this).closest('form').clearForm();
+                $('#add-vehicle-popup').removeClass('edit-vehicle-popup');
+                $('.edit-vehicle-popup ').find('.popup-title').text('Add Vehicle'); 
+            }, 1500);
+        }
+    );
+
     //Job Status
     $(document).on('click','.select-wrapper.job-status.active .options > span',function() {
         const value = $(this).data('value')
@@ -446,4 +463,6 @@ jQuery(document).ready(function ($) {
       
         updateTotalCosts('.section.labour-container','.section.parts-container')
     } 
+
+
 })

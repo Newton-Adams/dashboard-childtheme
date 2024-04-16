@@ -117,7 +117,7 @@ form {
         color: var(--warning);
         margin-top: 8px;
     }
-    &#add-vehicle-form {
+    &.vehicle-form {
         .form-row {
             .input-label-wrapper {
                 label {
