@@ -114,14 +114,6 @@ function new_account_checklist_callback() {
                <input type="checkbox" id="has-vehicle" name="has-vehicle" >
                <label for="has-vehicle" >Add a vehicle</label>
             </div>
-            <div class="checklist-item" >
-               <input type="checkbox" id="has-customers" name="has-customers" >
-               <label for="has-customers" >Add a new customer</label>
-            </div>
-            <div class="checklist-item" >
-               <input type="checkbox" id="watch-intro" name="watch-intro" >
-               <label for="watch-intro" >Watch the intro video</label>
-            </div>
          </form>
       ';
    return ob_get_clean();
