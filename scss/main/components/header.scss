@@ -18,7 +18,7 @@
     }
     .inside-header {
         flex-wrap: wrap;
-        padding: 0 25px;
+        padding: 0 0 0 25px;
         height: 100%;
         align-items: flex-start;
         .site-branding-container {
@@ -46,6 +46,7 @@
             .header-scroll-content {
                 overflow-y: auto;
                 height: calc(100% - 180px);
+                padding-right: 25px;
             }
             .menu-main-menu-container {
                 margin-left: 0;

@@ -295,3 +295,9 @@
     margin: 0 auto;
     box-shadow: var(--input-shadow);
 }
+.um-toggle-password:hover i {
+    color: #666!important;
+}
+.um .um-field-checkbox.active:not(.um-field-radio-state-disabled) i, .um .um-tip:hover {
+    color: var(--accent-1)!important;  
+}

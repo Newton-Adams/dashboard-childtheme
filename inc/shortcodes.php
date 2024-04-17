@@ -80,10 +80,10 @@ function new_account_checklist_callback() {
                      <path fill-rule="evenodd" clip-rule="evenodd" d="M5.57021 0.632554C5.79903 0.403732 6.17003 0.403732 6.39885 0.632554C6.62487 0.858571 6.62764 1.22329 6.40717 1.45271L3.28826 5.35135C3.28375 5.35698 3.27894 5.36235 3.27385 5.36744C3.04503 5.59627 2.67403 5.59627 2.44521 5.36744L0.377672 3.29991C0.148849 3.07109 0.148849 2.70009 0.377672 2.47127C0.606495 2.24244 0.97749 2.24244 1.20631 2.47127L2.84187 4.10683L5.55467 0.650082C5.55949 0.643934 5.56468 0.638081 5.57021 0.632554Z" fill="white"/>
                   </svg>
                </div>
-               <div class="title-and-count" ><p>Get started checklist</p> <div class="fraction">'.$completed_count.'/7</div></div>
-               <p class="percentage" >'.(Round($completed_count / 7 * 100)).'%</p>
+               <div class="title-and-count" ><p>Get started checklist</p> <div class="fraction">'.$completed_count.'/6</div></div>
+               <p class="percentage" >'.(Round($completed_count / 6 * 100)).'%</p>
                <div class="checklist-progress-bar" >';
-               for ($i=0; $i < 6 ; $i++) { 
+               for ($i=0; $i < 5 ; $i++) { 
                   echo '<span class="'. ($completed_count > $i ? 'active' : ' ') . ($completed_count - 1 == $i ? ' final' : ' ') .'" ></span>';
                }
       echo '   </div>
