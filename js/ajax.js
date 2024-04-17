@@ -485,80 +485,13 @@ jQuery(document).ready(function ($) {
     $(document).on('click','#save-post.customer-save',function() {
 
         //Details Fields
-        const customerDetailsFieldForm = document.getElementById("customer-fields");
-        const detailsFormData = new FormData(customerDetailsFieldForm);
-       
-        let detailsArray = []
-        let detailsKeyAndValue = {}
-        let detailsI = 0
-        //The loop count is based on the number of fields in the form
-        for (const pair of detailsFormData.entries()) {                
-            if(detailsI < 10) {
-                detailsKeyAndValue = {}
-                const pairkey = pair[0]
-                const pairValue = pair[1]
-                if (detailsKeyAndValue[pairkey] === undefined) {
-                    detailsKeyAndValue[pairkey] = "";
-                }
-                detailsKeyAndValue[pairkey] += pairValue
-                detailsArray.push(detailsKeyAndValue)
-                detailsI++
-            } 
-        }
-
-        //Contact Fields
-        const customerContactFieldForm = document.getElementById("contact-fields");
-        const contactFormData = new FormData(customerContactFieldForm);
+        const customerDetails = $('#customer-fields').serialize()
         
-        let customerName = ""
-        let contactArray = []
-        let contactKeyAndValue = {}
-        let contactI = 0
-        //The loop count is based on the number of fields in the form
-        for (const pair of contactFormData.entries()) {                
-            if(contactI < 10) {
-                contactKeyAndValue = {}
-                const pairkey = pair[0]
-                const pairValue = pair[1]
-                if (contactKeyAndValue[pairkey] === undefined) {
-                    contactKeyAndValue[pairkey] = "";
-                }
-                if(pairkey === "first-name-1" || pairkey === "last-name-1") {
-                    customerName += pairValue + " "
-                }
-                contactKeyAndValue[pairkey] += pairValue
-                contactArray.push(contactKeyAndValue)
-                contactI++
-            } 
-        }
+        //Contact Fields
+        const customerContact = $('#contact-fields').serialize()
 
-         //Vehicle Fields
-         const vehicleFieldForm = document.getElementById("vehicle-fields");
-         const vehicleFormData = new FormData(vehicleFieldForm);
-         
-         let vehicleVin = ""
-         let vehicleObject = {}
-         let vehicleKeyAndValue = {}
-         let vehicleI = 0
-         //The loop count is based on the number of fields in the form
-         for (const pair of vehicleFormData.entries()) {                
-            if(vehicleI < 9) {
-                const pairkey = pair[0]
-                const pairValue = pair[1]
-                if (vehicleKeyAndValue[pairkey] === undefined) {
-                    vehicleKeyAndValue[pairkey] = "";
-                }
-                if(pairkey === "VIN" ) {
-                    vehicleVin = pairValue
-                }
-                vehicleKeyAndValue[pairkey] += pairValue
-                if(vehicleVin.length > 1 && vehicleI === 8) {
-                    vehicleObject[vehicleVin] = vehicleKeyAndValue
-                    // vehicleObject = JSON.stringify(vehicleObject)
-                }
-                vehicleI++
-            } 
-        }
+        //Vehicle Fields
+        const customerVehicle = $('#vehicle-fields').serialize()
         
         //Notes Fields
         const customerNotes = $('#customer-notes textarea').val()
@@ -569,13 +502,13 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': 'post_customers',
                 'customer-name': customerName,
-                'customer-details': detailsArray,
-                'customer-contacts': contactArray,
-                'customer-vehicles': vehicleObject,
+                'customer-details': customerDetails,
+                'customer-contacts': customerContact,
+                'customer-vehicles': customerVehicle,
                 'customer-notes': customerNotes,
             },
             success: function (response) {	                
-                alert('Customer added!')
+                console.log(response);
             }
         });
     })

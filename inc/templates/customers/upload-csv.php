@@ -16,8 +16,6 @@
 	</label>
 </div>
 
-
-
 <div id="csvData" class="csv-upload-popup"> 
     <span class="overlay"></span>
     <div class="popup-container">

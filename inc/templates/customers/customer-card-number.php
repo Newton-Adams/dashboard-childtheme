@@ -16,12 +16,11 @@ switch (true) {
     default:
         $customer_number = $customer_count; 
         break;
-}
-
-?>
+}?>
 
 <div class="customer-card-number-outer" >
     <div class="customer-card-number-wrapper" >
         <p>Customer card: WPC-<?= $customer_number; ?></p>
     </div>
+    <input id="customer-card-number" type="hidden" value="<?php echo $customer_number; ?>" >
 </div>

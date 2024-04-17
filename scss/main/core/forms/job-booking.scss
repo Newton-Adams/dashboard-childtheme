@@ -1,0 +1,16 @@
+#booking-fields {
+    > .form-row {
+        display: flex;
+        justify-content: space-between;
+        &:first-child {
+            .input-label-wrapper {
+                &:last-child {
+                    max-width: 100px;
+                }
+            }
+        }
+        .input-label-wrapper {
+            width: 100%;
+        }
+    }
+}

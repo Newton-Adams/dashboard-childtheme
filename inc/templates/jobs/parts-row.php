@@ -1,4 +1,4 @@
-<h3>Parts</h3>
+<h3 class="mb-4" >Parts</h3>
 <form id="parts-fields" >
 <?php 
     if(isset($parts)) {

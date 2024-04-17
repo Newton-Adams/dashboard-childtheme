@@ -148,17 +148,17 @@ function handle_customer_ajax_form() {
     isset($_POST['customer-name']) && $customer_name = strip_tags($_POST['customer-name']);
 
     //Details Data
-    isset($_POST['customer-details']) && $details = strip_tags( json_encode($_POST['customer-details']) );
+    isset($_POST['customer-details']) &&  $details = strip_tags( $_POST['customer-details']);
  
     //Contact Data
-    isset($_POST['customer-contacts']) && $contacts = strip_tags( json_encode($_POST['customer-contacts']) );
+    isset($_POST['customer-contacts']) && $contacts = strip_tags( $_POST['customer-contacts'] );
 
     //Vehicle Data
-    isset($_POST['customer-vehicles']) && $vehicles = strip_tags( json_encode($_POST['customer-vehicles']) );
+    isset($_POST['customer-vehicles']) && $vehicles = strip_tags( $_POST['customer-vehicles'] );
     
     //Notes Data
     isset($_POST['customer-notes']) && $notes = strip_tags( json_encode($_POST['customer-notes']) );
-
+    
     //Add/update the post
     $customer_args = array(
         'post_type' => 'customers',
@@ -586,8 +586,8 @@ add_action('wp_ajax_fetch_customers', 'fetch_customers');
 add_action('wp_ajax_nopriv_fetch_customers', 'fetch_customers');
 function fetch_customers() {
     //Fetch Customers based off of search
-    if(isset($_POST['fetch_customers'])) { 
-        $search_value = $_POST['fetch_customers'];
+    if(isset($_POST['search-val'])) { 
+        $search_value = $_POST['search-val'];
     } else {
         $search_value = '';
     }

@@ -1,3 +1,4 @@
+<h3>Customer details</h3>
 <form id="customer-fields" >
     <div class="form-row d-flex flex-wrap" >
         <div class="fw-100 input-label-wrapper" >

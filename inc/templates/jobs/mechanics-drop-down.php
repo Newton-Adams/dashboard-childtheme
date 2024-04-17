@@ -1,6 +1,6 @@
 <span class="select-wrapper-outer" >
     <div class="assigned-mechanics-outer">
-        <p>Assign staff members</p>
+        <p class="mt-1" >Assign staff members</p>
         <?php 
             if(isset($mechanics_decoded)) {
                 echo '<span class="assigned-mechanics" >';

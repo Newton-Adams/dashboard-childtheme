@@ -1,5 +1,5 @@
 
-<h3>Labour</h3>
+<h3 class="mb-4" >Labour</h3>
 <form id="job-fields" >
     <?php 
     if(isset($labour)) {

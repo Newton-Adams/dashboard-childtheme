@@ -1,5 +1,5 @@
 <form id="customer-notes" >
-    <p>Customer notes</p>
+    <h3>Customer notes</h3>
     <div class="form-row d-flex flex-wrap" >
         <div class="fw-100 input-label-wrapper" >
             <label for="notes" >Notes</label>

@@ -1,4 +1,4 @@
-<h3>Booking</h3>
+<h3 class="mb-4" >Booking</h3>
 <form id="booking-fields" class="validate-form" >
     <div class="form-row" >
         <div class="input-label-wrapper" >

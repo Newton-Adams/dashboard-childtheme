@@ -1,7 +1,7 @@
 <form id="contact-fields" >
     <div class="form-row" >
         <div class="d-flex flex-column fw-100" >
-            <p>Contact 1</p>
+            <h3>Contact 1</h3>
             <div class="fw-100 pr-2" >
                 <label for="first-name-1" >First Name</label>
                 <input type="text" id="first-name-1" name="first-name-1" >
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="d-flex flex-column fw-100" >
-            <p>Contact 2</p>
+            <h3>Contact 2</h3>
             <div class="fw-100" >
                 <label for="first-name-2" >First Name</label>
                 <input type="text" id="first-name-2" name="first-name-2" >
