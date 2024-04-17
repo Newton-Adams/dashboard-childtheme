@@ -35,5 +35,7 @@ echo '<div class="controls" >';
    include( get_stylesheet_directory() . "/inc/templates/jobs/controls.php");          
 echo '</div></span>';
 include( get_stylesheet_directory() . "/inc/templates/popups/unsaved-data-popup.php");      
-include( get_stylesheet_directory() . "/inc/templates/popups/ajax-error-popup.php");    
+include( get_stylesheet_directory() . "/inc/templates/popups/ajax-error-popup.php");
+
+include( get_stylesheet_directory() . "/inc/templates/add-mechanics.php");    
  

@@ -143,7 +143,10 @@ function handle_job_ajax_form() {
 add_action('wp_ajax_post_customers', 'handle_customer_ajax_form');
 add_action('wp_ajax_nopriv_post_customers', 'handle_customer_ajax_form');
 function handle_customer_ajax_form() {   
-    
+     
+    //Existing Customer Post ID
+    isset($_POST['customer-post-id']) && $existing_customer_post_id = (int)strip_tags($_POST['customer-post-id']);
+
     //Customer Name
     isset($_POST['customer-name']) && $customer_name = strip_tags($_POST['customer-name']);
 
@@ -168,11 +171,12 @@ function handle_customer_ajax_form() {
     );    
     
     //Create or edit post
-    $customer_id = (int)wp_insert_post( $customer_args );
+    if($existing_customer_post_id == 0) {
+        $customer_id = (int)wp_insert_post( $customer_args );
+    }    
     
     // Check if the post was successfully inserted
-    if ( !is_wp_error($post_id) && $customer_id > 0 ) {
-        
+    if ( !is_wp_error($post_id) && $customer_id > 0 ) {        
         //Create/update customer details meta
         add_post_meta($customer_id, 'details', $details, true);
         
@@ -184,9 +188,34 @@ function handle_customer_ajax_form() {
         
         //Create/update customer notes meta
         add_post_meta($customer_id, 'notes', $notes, true);
-        
-        echo '<pre>',print_r($note,1),'</pre>';
     } 
+
+    if( $existing_customer_post_id != 0 ) {
+        echo 'update';
+
+        if(get_the_post_title($existing_customer_post_id) !== $customer_name) {
+            wp_update_post(
+                array (
+                    'ID'        => $existing_customer_post_id,
+                    'post_name' => $customer_name
+                )
+            );
+        } 
+
+        //Update job labour meta
+        update_post_meta($existing_customer_post_id, 'details', $details);
+      
+        //Update job labour meta
+        update_post_meta($existing_customer_post_id, 'contacts', $contacts);
+      
+        //Update job labour meta
+        update_post_meta($existing_customer_post_id, 'vehicles', $vehicles);
+      
+        //Update job labour meta
+        update_post_meta($existing_customer_post_id, 'notes', $notes);
+    }
+
+    echo 'Saved??';
 
     if(wp_doing_ajax()) die();
 }

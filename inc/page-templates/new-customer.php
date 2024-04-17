@@ -2,7 +2,7 @@
 include( get_stylesheet_directory() . "/inc/templates/customers/customer-data.php"); 
 
 echo '<span class="'.$editing.'" ><div class="controls" >
-         <input type="hidden" id="customer-id" name="customer-id" value="">';
+         <input type="hidden" id="customer-post-id" name="customer-post-id" value="'.$customer_edit_id.'" >';
          include( get_stylesheet_directory() . "/inc/templates/customers/controls.php");          
 echo '</div>';  
 echo '<div class="forms-container" >
@@ -18,8 +18,6 @@ echo '<div class="forms-container" >
    <div class="forms-container" >
       <div class="vehicle-container" >'; 
           include( get_stylesheet_directory() . "/inc/templates/customers/vehicles.php"); 
-          include( get_stylesheet_directory() . "/inc/templates/customers/customer-vehicle-attachments.php"); 
-
 echo '</div>
    </div>
    <div class="forms-container" >

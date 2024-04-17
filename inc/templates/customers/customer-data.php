@@ -19,16 +19,15 @@ $editing = "";
 if(isset($customer_edit_id)) {
 
     $editing = "editing";
+
     
-    //Vehicle Data
-    // if(!empty( get_post_meta($job_edit_id, 'vehicle-data', true) )) {
-    //     $vehicle_json = get_post_meta($job_edit_id, 'vehicle-data', true);
-    //     $vehicle = json_decode($vehicle_json);
-    // } 
+    !empty(get_post_meta($customer_edit_id, 'notes', true) ) && $notes = json_decode(get_post_meta($customer_edit_id, 'notes', true)); 
 
-    // !empty(get_post_meta($job_edit_id, 'parts', true) ) && $parts = json_decode(get_post_meta($job_edit_id, 'parts', true)); 
+    !empty(get_post_meta($customer_edit_id, 'details', true) ) && parse_str(get_post_meta($customer_edit_id, 'details', true),$details); 
 
-    // !empty(get_post_meta($job_edit_id, 'notes', true) ) && parse_str(get_post_meta($job_edit_id, 'notes', true),$job_notes); 
+    !empty(get_post_meta($customer_edit_id, 'vehicles', true) ) && parse_str(get_post_meta($customer_edit_id, 'vehicles', true),$vehicles); 
+
+    !empty(get_post_meta($customer_edit_id, 'contacts', true) ) && parse_str(get_post_meta($customer_edit_id, 'contacts', true),$contacts); 
 
 } 
 

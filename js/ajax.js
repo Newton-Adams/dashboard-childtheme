@@ -482,7 +482,12 @@ jQuery(document).ready(function ($) {
     })
 
     //New Customer Save/Edit Ajax
-    $(document).on('click','#save-post.customer-save',function() {
+    $(document).on('click','#save-post.customer-save',function(event) {
+        event.preventDefault()
+
+        //Customer Name
+        const customerName = $('#first-name-1').val()
+        const existingCustomerPostID = $('input#customer-post-id').val()
 
         //Details Fields
         const customerDetails = $('#customer-fields').serialize()
@@ -496,12 +501,14 @@ jQuery(document).ready(function ($) {
         //Notes Fields
         const customerNotes = $('#customer-notes textarea').val()
 
+
         $.ajax({
             type: "POST",
             url: workshop_pro_obj.ajaxurl,
             data: {
                 'action': 'post_customers',
                 'customer-name': customerName,
+                'customer-post-id': existingCustomerPostID,
                 'customer-details': customerDetails,
                 'customer-contacts': customerContact,
                 'customer-vehicles': customerVehicle,
@@ -824,8 +831,6 @@ jQuery(document).ready(function ($) {
                 $('.edit-vehicle-popup input[name="vehicle_colour"]').val(vehicleData.vehicle_colour); 
                 $('.edit-vehicle-popup input[name="vehicle_mileage"]').val(vehicleData.vehicle_mileage); 
                 $('.edit-vehicle-popup input[name="vehicle-description"]').val(vehicleData['vehicle-description']);
-
-
 
             },
             error: function(xhr, status, error) {
