@@ -43,7 +43,7 @@
     ?>  
 </form> 
 <div class="datatable-wrapper"> 
-    <table id="vehicleTable" class=""> 
+    <table id="vehicleTable" class="dt-table"> 
         <thead> 
             <tr>
                 <?php 
@@ -57,4 +57,4 @@
     </table> 
 </div>
 
-<?php  include( get_stylesheet_directory() . "/inc/templates/vehicle/add-vehicle-popup.php" ); ?>
+<?php  include( get_stylesheet_directory() . "/inc/templates/popups/add-vehicle-popup.php" ); ?>

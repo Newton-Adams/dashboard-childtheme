@@ -2,7 +2,7 @@
 function add_vehicle_popup() {
     ?>
     <!-- Popup -->
-    <div id="add-vehicle-popup" class="popup vehicle-form">
+    <div id="add-vehicle-popup" class="popup">
 
         <div class="popup-overlay"></div>
 
@@ -10,7 +10,7 @@ function add_vehicle_popup() {
 
             
             <!-- Popup Content -->
-            <form id="add-vehicle-form" class="vehicle-form" method="post" enctype="multipart/form-data">
+            <form id="add-vehicle-form" class="vehicle-form validate-form" method="post" enctype="multipart/form-data">
 
 
                 <div class="d-flex flex-align-center justified-between">

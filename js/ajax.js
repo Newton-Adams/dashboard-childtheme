@@ -1,75 +1,6 @@
 'use strict'
 
 jQuery(document).ready(function ($) {
-    
-    // Form Validation 
-    function validateForm(form) {
-
-        let isValid = true; // Initialize flag
-    
-        // Check if the form exists and has the validate-form class
-        if (form) {
-
-            // Select all required fields within the form
-            const formFields = form.find('input.required, select.required, textarea.required');
-            
-            // Loop through each required field
-            formFields.each( function() {
-                const self = $(this); 
-                const selfVal = self.val();
-
-                // Check if the field is empty
-                if( selfVal === '' ) {
-                    if( !self.hasClass('error') ) {
-                        self.addClass('error');
-                        self.closest('.input-label-wrapper').append('<span class="error-message">This field is required</span>');
-                    }
-                    isValid = false; // Set flag to false if any field is empty
-                    return false; // Exit the loop
-                } else {
-                    self.removeClass('error');
-                    self.siblings('.error-message').remove();
-                }
-
-                // Email validation 
-                if (self.attr('type') === 'email') {
-                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailPattern.test(selfVal)) {
-                        self.addClass('error');
-                        self.closest('.input-label-wrapper').append('<span class="error-message">Enter a valid email address</span>');
-                        isValid = false; // Set flag to false if email is invalid
-                        return false; // Exit the loop
-                    }
-                }
-
-                // Cellphone validation 
-                if (self.attr('type') === 'tel') {
-                    const cellphonePattern = /^\d{10}$/; // Assuming 10 digit cellphone format
-                    if (!cellphonePattern.test(selfVal)) {
-                        self.addClass('error');
-                        self.closest('.input-label-wrapper').append('<span class="error-message">Enter a valid cellphone number (10 digits)</span>');
-                        isValid = false; // Set flag to false if cellphone is invalid
-                        return false; // Exit the loop
-                    }
-                }
-            });
-            
-            // Return isValid flag
-            return isValid;
-        } else {
-            // Form with validate-form class not found, allow submission
-            return true;
-        }
-    }
-    
-    if( $('.validate-form').length ) {
-        $(document).on('submit','.validate-form',function(e) {
-
-            e.preventDefault();
-            validateForm( $(this) );
-            
-        })
-    }
 
     //Customer Select Dropdown
     if($('.job-select-wrapper.customer .customer-select').length > 0) {       
@@ -342,8 +273,14 @@ jQuery(document).ready(function ($) {
     })
 
     //Job Save/Edit Ajax
-    $(document).on('click','#save-post.job-save',function(event) {
-        event.preventDefault()
+    $(document).on('click','#save-post.job-save',function(event) { 
+
+        event.preventDefault(); 
+        
+        // Validate 
+        if( !validateFormSubmit() ) {
+            return false
+        }
         
         //Job single data
         const existingJobID = $('input#job-id').val()
@@ -484,6 +421,11 @@ jQuery(document).ready(function ($) {
     //New Customer Save/Edit Ajax
     $(document).on('click','#save-post.customer-save',function(event) {
         event.preventDefault()
+
+        // Validate 
+        if( !validateFormSubmit() ) {
+            return false
+        }
 
         //Customer Name
         const customerName = $('#first-name-1').val()
@@ -690,32 +632,32 @@ jQuery(document).ready(function ($) {
 
         const self = $(this); 
 
-        if(validateForm(self)) {
-
-            console.log('Profile form is valid')
-            
-            addLoader(self); 
-
-            var formData = $(this).serialize();
-
-            $.ajax({
-                type: 'POST',
-                url: workshop_pro_obj.ajaxurl,
-                data: {
-                    action: 'update_profile',
-                    formData: formData
-                },
-                success: function(response) {
-                    // alert('Profile updated successfully!');
-                    removeLoader(self); 
-                    // $(this).html(response).fadeIn()
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    // Handle errors here
-                }
-            });
+        // Validate 
+        if( !validateFormSubmit() ) {
+            return false
         }
+            
+        addLoader(self); 
+
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: workshop_pro_obj.ajaxurl,
+            data: {
+                action: 'update_profile',
+                formData: formData
+            },
+            success: function(response) {
+                // alert('Profile updated successfully!');
+                removeLoader(self); 
+                // $(this).html(response).fadeIn()
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                // Handle errors here
+            }
+        });
     });
     
 
@@ -724,64 +666,68 @@ jQuery(document).ready(function ($) {
 
         e.preventDefault();
 
+        // Validate 
+        if( !validateFormSubmit() ) {
+            return false
+        }
+
         const self = $(this); 
 
-        if( validateForm(self) ) {
+        const formData = $(self).serialize();
+        const attachments = $('#attachments-obj').val();
+            
+        addOverlayLoader(self); 
 
-            const formData = $(self).serialize();
-            const attachments = $('#attachments-obj').val();
-                
-            addOverlayLoader(self); 
+        $.ajax({
+            url: workshop_pro_obj.ajaxurl, // AJAX URL provided by WordPress
+            type: 'POST',
+            data: {
+                action: 'save_vehicle_data',
+                formData: formData, 
+                attachments: attachments
+            }, 
+            success: function(response) {
 
-            $.ajax({
-                url: workshop_pro_obj.ajaxurl, // AJAX URL provided by WordPress
-                type: 'POST',
-                data: {
-                    action: 'save_vehicle_data',
-                    formData: formData, 
-                    attachments: attachments
-                }, 
-                success: function(response) {
+                removeOverlayLoader(self);
+                setTimeout(() => {
 
-                    removeOverlayLoader(self);
-                    setTimeout(() => {
+                    $('.popup').fadeOut('fast', function() {
+                        $(this).removeClass('show');
+                        $('body').css('overflow','auto');
+                    });
 
-                        $('.popup').fadeOut('fast', function() {
-                            $(this).removeClass('show');
-                            $('body').css('overflow','auto');
-                        });
+                    $(this).closest('form').clearForm(); 
 
-                        $(this).closest('form').clearForm(); 
+                    // Reload the vehicle table 
+                    var table = $('#vehicleTable').DataTable();
+                    table.ajax.reload();
 
-                        // Reload the vehicle table 
-                        var table = $('#vehicleTable').DataTable();
-                        table.ajax.reload();
+                    self.clearForm();
+                    
+                    
+                }, 500);
+            },
+            error: function(xhr, status, error) {
 
-                        self.clearForm();
-                        
-                        
-                    }, 500);
-                },
-                error: function(xhr, status, error) {
-
-                    console.error(xhr.responseText);
-                    // Handle error
-                    console.log('Error'); 
-                    removeOverlayLoader(self);
-                    setTimeout(() => {
-                        $('.popup').fadeOut('fast', function() {
-                            $(this).removeClass('show');
-                            $('body').css('overflow','auto');
-                        });
-                        $(this).closest('form').clearForm();
-                    }, 500);
-                }, 
-            });
-        }
+                console.error(xhr.responseText);
+                // Handle error
+                console.log('Error'); 
+                removeOverlayLoader(self);
+                setTimeout(() => {
+                    $('.popup').fadeOut('fast', function() {
+                        $(this).removeClass('show');
+                        $('body').css('overflow','auto');
+                    });
+                    $(this).closest('form').clearForm();
+                }, 500);
+            }, 
+        });
+        
     });
 
     // Edit Vehicle 
     $(document).on('click', '.edit-vehicle-action', function(e) {
+        
         e.preventDefault();
         
         const tr_post_id = $(this).closest('tr').attr('class');
@@ -840,13 +786,11 @@ jQuery(document).ready(function ($) {
 
     }); 
     
-    // Delete Vehicle 
-    $(document).on('click', '.delete-vehicle-action', function(e) {
-        e.preventDefault();
-        
-        const tr_post_id = $(this).closest('tr').attr('class');
-        // Strip 'post-id-' from tr_post_id 
-        const delete_post_id = tr_post_id.replace('post-id-','');
+    // Delete Post Action
+    $(document).on('click', '[data-delete-post]', function(e) {
+        e.preventDefault(); 
+
+        const delete_post_id = $(this).data('delete-post');
         
         $.ajax({ 
             url: workshop_pro_obj.ajaxurl, 
@@ -857,7 +801,7 @@ jQuery(document).ready(function ($) {
             },
             success: function(response) { 
                 // Reload the vehicle table 
-                var table = $('#vehicleTable').DataTable();
+                var table = $('.dt-table').DataTable();
                 table.ajax.reload();
             },
             error: function(xhr, status, error) {

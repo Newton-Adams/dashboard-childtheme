@@ -61,7 +61,7 @@ $date_options = array(
     </div>
 </form>
 <div class="datatable-wrapper">
-<table id="jobs-table" >
+<table id="jobs-table" class="dt-table">
     <thead>
         <tr>
             <th>Customer</th>

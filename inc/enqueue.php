@@ -3,6 +3,7 @@
 add_action( 'wp_enqueue_scripts', function() {
 	
 	wp_enqueue_script( 'chart', get_stylesheet_directory_uri(). '/js/min/chart.umd.min.js', array(), false, true );
+	wp_enqueue_script( 'validation', get_stylesheet_directory_uri(). '/js/min/validation.js', array(), false, true );
 	wp_enqueue_script( 'workshop_pro', get_stylesheet_directory_uri(). '/js/min/build.min.js' , array('jquery'), true );
 	wp_localize_script(
 		'workshop_pro',

@@ -15,7 +15,7 @@
             </div>
             <div class="input-label-wrapper cost-price-wrapper" >
                 <label for="cost-price" >Cost Price</label>
-                <input type="text" class="cost-price" name="cost-price" value="<?= $row[2]->{"cost-price-{$loop_count}"}; ?>" >
+                <input type="number" class="cost-price" name="cost-price" value="<?= $row[2]->{"cost-price-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper markup-wrapper" >
                 <label for="markup" >Markup (%)</label>
@@ -23,11 +23,11 @@
             </div>
             <div class="input-label-wrapper unit-price-wrapper" >
                 <label for="unit-price" >Unit price</label>
-                <input type="text" class="unit-price" name="unit-price" value="<?= $row[4]->{"unit-price-{$loop_count}"}; ?>" >
+                <input type="number" class="unit-price" name="unit-price" value="<?= $row[4]->{"unit-price-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper quantity-wrapper" >
                 <label for="qty" >Qty</label>
-                <input type="text" class="qty" name="qty" value="<?= $row[5]->{"qty-{$loop_count}"}; ?>" >
+                <input type="number" class="qty" name="qty" value="<?= $row[5]->{"qty-{$loop_count}"}; ?>" >
             </div>
             <div class="input-label-wrapper vat-wrapper" >
                 <label for="vat" >Vat</label>
@@ -60,7 +60,7 @@
         </div>
         <div class="input-label-wrapper cost-price-wrapper" >
             <label for="cost-price" >Cost Price</label>
-            <input type="text" class="cost-price" name="cost-price-0" >
+            <input type="number" class="cost-price" name="cost-price-0" >
         </div>
         <div class="input-label-wrapper markup-wrapper" >
             <label for="markup" >Markup (%)</label>
@@ -68,7 +68,7 @@
         </div>
         <div class="input-label-wrapper unit-price-wrapper" >
             <label for="unit-price" >Unit price</label>
-            <input type="text" class="unit-price" name="unit-price-0" >
+            <input type="number" class="unit-price" name="unit-price-0" >
         </div>
         <div class="input-label-wrapper quantity-wrapper" >
             <label for="qty" >Qty</label>

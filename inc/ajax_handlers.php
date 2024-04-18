@@ -339,6 +339,7 @@ function get_all_jobs() {
         // echo '<pre>',print_r($job->post_date,1),'</pre>';
         // echo '<pre>',print_r($notes,1),'</pre>';
         $job_data[$key] = array(
+            "job_post_id" => $job->ID,
             "name" => $customer_data->{"customer-name"},
             "date" => $formatted_date,
             "job_no" => $job->post_title,
@@ -347,20 +348,15 @@ function get_all_jobs() {
             "status" => "<span class='status-light' ></span>".$job_status,
             "notes" => $notes,
             "total" => "Not Implemented",
-            "actions" => "<span class='action-ellipses' data-id=".$job->ID." ><span></span><span></span><span></span></span>
-                          <ul style='display:none;' >
-                              <li><a href=".home_url()."/jobs/?edit=".$job->ID." >Edit</a></li>
-                              <li>Delete</li>
-                              <li>Send Quote</li>
-                              <li>Send Invoice</li>
-                          </ul>",
+            "actions" => "...",
         );
     };
 
     // Send JSON response
-    echo json_encode($job_data);
+    echo json_encode(array('data' => $job_data));
 
     wp_die();
+
 }
 
 //Get Jobs Content

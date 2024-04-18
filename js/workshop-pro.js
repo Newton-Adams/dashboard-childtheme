@@ -69,7 +69,6 @@ jQuery(document).ready(function ($) {
         document.documentElement.style.setProperty('--background-primary','#F7FAFC')
     } 
 
-    //Forms
     //Add Job Form Row
     $(document).on('click','.labour-container .add-row-button',function(e) {
         const rowCount = $('#job-fields').children().length
@@ -209,6 +208,7 @@ jQuery(document).ready(function ($) {
         $('.total-outer .grand-total .value').text(`R${(total1 + total2).toFixed(2)}`)
     }
 
+    // Onboard Slider
     if ($(".onboarding-aside-slider").length) {
 		$(".onboarding-aside-slider .wp-block-group__inner-container").slick({
 			infinite: true,
@@ -394,7 +394,7 @@ jQuery(document).ready(function ($) {
         $(this).closest('form').clearForm();
     });
 
-    // Vehicle Edit popup 
+    // Vehicle Edit popup extras
     $(document).on(
         'click', 
         '.edit-vehicle-popup .popup-overlay, .edit-vehicle-popup .close-popup, .edit-vehicle-popup .cancel-popup', 
@@ -494,6 +494,5 @@ jQuery(document).ready(function ($) {
         $('.edit-vehicle-popup .customer .options.active li').fadeOut();
         $('.edit-vehicle-popup .customer .options.active').removeClass('active');
     });
-
 
 })
