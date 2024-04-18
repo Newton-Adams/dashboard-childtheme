@@ -46,7 +46,7 @@ function display_custom_user_profile_fields( $user ) {
         </tr>
         <tr>
             <th><label for="cell_number">Cell Number</label></th>
-            <td><input type="text" name="cell_number" id="cell_number" value="<?php echo esc_attr(get_user_meta($user->ID, 'cell_number', true)); ?>" class="regular-text" /></td>
+            <td><input type="tel" name="cell_number" id="cell_number" value="<?php echo esc_attr(get_user_meta($user->ID, 'cell_number', true)); ?>" class="regular-text" /></td>
         </tr>
         <tr>
             <th><label for="whatsapp_number">Whatsapp Number</label></th>

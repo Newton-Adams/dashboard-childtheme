@@ -556,7 +556,7 @@ function profile_form() {
             </div>
             <div class="input-label-wrapper" >
                 <label for="cellnumber" >Cell number</label>
-                <input type="text" name="cell_number" id="cell_number" value="<?= $user_phone ?>" class="required" />
+                <input type="tel" name="cell_number" id="cell_number" value="<?= $user_phone ?>" class="required" />
             </div>
             <div class="input-label-wrapper" >
                 <label for="whatsapp_number" >WhatsApp number</label>
