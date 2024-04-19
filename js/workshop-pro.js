@@ -488,6 +488,16 @@ jQuery(document).ready(function ($) {
         updateTotalCosts('.section.labour-container','.section.parts-container')
     } 
     
+    // Add Vehicle Popup 
+    $(document).on('click','[data-popup="add-vehicle-popup"]',function() {
+        // Change popup title and remove edit-vehicle-popup
+        $('#add-vehicle-popup').removeClass('edit-vehicle-popup').find('.popup-title').text('Add Vehicle');
+        $('#add-vehicle-popup').find('form').clearForm();
+        $('.customer').find('.selected-customer-outer').fadeOut(0,function() {
+            $('.customer-select').fadeIn();                            
+        })
+    });
+
     // Edit Vehicle Popop remove customer list options
     $(document).on('click', '.edit-vehicle-popup .customer .change-customer, .edit-vehicle-popup .customer .close', function(e) {
         $('input.selected-value, input[name="customer-data"]').val('').focus();

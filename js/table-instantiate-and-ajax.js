@@ -15,11 +15,15 @@ jQuery(document).ready(function ($) {
 
     // Jobs Table 
     if($('#jobs-table').length > 0) {
-        var vehicleTable = $('#jobs-table').DataTable({
+
+        let jobsToShow = $('body').hasClass('home') ? 5 : 10;
+
+        var jobsTable = $('#jobs-table').DataTable({
             ajax: {
                 url: workshop_pro_obj.ajaxurl + '?action=get_all_jobs'
             },
-            pageLength: 7,                  
+            pageLength: jobsToShow,  
+            pagingType: 'simple_numbers',                 
             columns: [
                 { data: 'name' },
                 { data: 'date' },
@@ -90,7 +94,6 @@ jQuery(document).ready(function ($) {
                     targets: 8, 
                     className: 'actions', 
                     "render": function (data, type, row) {
-                        console.log('data ', row);
                         let actions = '';
                         actions += '<div class="action-ellipses" data-id="' + row['job_post_id'] + '"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
@@ -149,7 +152,7 @@ jQuery(document).ready(function ($) {
             }
                                 
             let columnData = jobsTable.column(1).nodes();
-            console.log(validDates);
+            // console.log(validDates);
             for (let i = 0; i < columnData.length; i++) {
                 const date = $(columnData[i]).text()
                 if(!validDates.includes(date) && dayCount > 0) { 

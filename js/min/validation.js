@@ -19,7 +19,7 @@ function validateFormSubmit() {
 }
 
 // Validate required input
-function validateInput() {
+function validateInput() { 
     if (this.value.length === 0) { 
         removeErrorMessage(this);
         addErrorMessage(this, 'This field is required');

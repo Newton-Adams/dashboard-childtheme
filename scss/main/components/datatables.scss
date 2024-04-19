@@ -37,9 +37,9 @@
                 padding: 19px 24px;
                 button {
                     background-color: transparent;
-                    color: var(--text-1);
+                    color: var(--text-2);
                     &:not(.first):not(.last):not(.previous):not(.next) {
-                        padding: 0 10px;
+                        padding: 0 5px;
                     }
                     &.current {
                         color: var(--accent-1);
@@ -56,11 +56,16 @@
                         font-weight: 700;
                         line-height: 100%; 
                         letter-spacing: -0.05px; 
+                        margin-left: 5px;
+                        margin-right: 5px;
                         transition: all 0.3s ease;
                         &:hover {
                             background-color: var(--accent);
                             color: var(--background-secondary);
                         }
+                    }
+                    &[aria-current="page"] {
+                        color: var(--accent);
                     }
                 }
             }

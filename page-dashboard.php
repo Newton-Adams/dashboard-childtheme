@@ -26,10 +26,27 @@ get_header(); ?>
 			 */
 			do_action( 'generate_before_main_content' ); 
 
+			// Welcome Section
 			include( get_stylesheet_directory() . "/inc/templates/welcome-section.php" ); 
 
+			// Snapshot 
 			include( get_stylesheet_directory() . "/inc/templates/snapshot.php" );
 
+			// Jobs List 
+			$jobs = get_posts( array(
+				'post_type' => 'jobs',
+				'posts_per_page' => -1,
+				'post_status' => 'publish',
+				'author' => get_current_user_id()
+			) );
+
+			if( count($jobs) > 0 ) {
+				include( get_stylesheet_directory() . "/inc/page-templates/dashboard-jobs.php");   
+			} 
+
+			echo '<div style="height:8px" aria-hidden="true" class="wp-block-spacer mb-0"></div>';
+
+			// Get Started Guide
 			include( get_stylesheet_directory() . "/inc/templates/get-started-guide.php" ); 
 
 			/**

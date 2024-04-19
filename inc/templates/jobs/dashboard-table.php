@@ -10,18 +10,42 @@ $date_options = array(
     "Last 21 days" => 21, 
     "Last 28 days" => 28,
 );
-
 ?>
 <form id="" class="table-filters" >
+
+    <?php 
+        echo '<div class="wp-block-columns are-vertically-aligned-center is-layout-flex wp-container-core-columns-layout-1 wp-block-columns-is-layout-flex mb-1">';
+        echo ' <div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow mb-1">';
+        if( !is_front_page() ) { 
+            echo '<h2 class="wp-block-heading mb-0">Job list</h2>'; 
+        } else {
+            echo '<h3 class="wp-block-heading mb-0">Job list</h3>';
+        }
+        echo '</div>';
+        echo '<div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow mb-1">';
+        echo '<div class="wp-block-buttons justified-md-end is-layout-flex wp-container-core-buttons-layout-1 wp-block-buttons-is-layout-flex">';
+        echo ' <div class="wp-block-button">';
+        echo '<a href="/job/" class="wp-block-button__link wp-element-button popup-btn">+ New Job</a>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+
+        // Filters not needed on the front page
+        if( !is_front_page() ) {
+
+            echo '<div class="filter-dropdowns" >';
+            echo '<label for="filter-customer">';
+            echo 'Filter';
+            echo '<input id="filter-customer" class="search" type="text" value="" placeholder="Filter by customer">';
+            echo '</label>      ';
+            include( get_stylesheet_directory() . "/inc/templates/jobs/status-drop-down.php");
+            include( get_stylesheet_directory() . "/inc/templates/global/date-range-drop-down.php"); 
+            echo '</div>';
+
+        }
+    ?>
     
-    <div class="filter-dropdowns" >
-        <label for="filter-customer">
-            Filter
-            <input id="filter-customer" class="search" type="text" value="" placeholder="Filter by customer">
-        </label>        
-        <?php include( get_stylesheet_directory() . "/inc/templates/jobs/status-drop-down.php"); ?>
-        <?php include( get_stylesheet_directory() . "/inc/templates/global/date-range-drop-down.php"); ?>
-    </div>
 
     <?php echo '<span class="hide-columns" >'.file_get_contents( get_stylesheet_directory() . "/assets/images/Filter-handles.svg" ).'</span>'; ?>
 

@@ -651,7 +651,7 @@ jQuery(document).ready(function ($) {
             return false
         }
             
-        addLoader(self); 
+        addOverlayLoader(self); 
 
         var formData = $(this).serialize();
 
@@ -663,8 +663,8 @@ jQuery(document).ready(function ($) {
                 formData: formData
             },
             success: function(response) {
-                // alert('Profile updated successfully!');
-                removeLoader(self); 
+                // alert('Profile updated successfully!'); 
+                removeOverlayLoader(self);
                 // $(this).html(response).fadeIn()
             },
             error: function(xhr, status, error) {

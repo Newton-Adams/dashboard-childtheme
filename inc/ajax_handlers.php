@@ -547,7 +547,7 @@ function profile_form() {
 
                     <div class="image-uploader">
                         <input type="file" name="profile_picture" id="profile_picture" accept="image/png, image/jpeg">
-                        <label for="profile_picture" class="custom-file-upload d-flex flex-align-center">
+                        <label for="profile_picture" class="custom-file-upload">
                             <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.375 6.55984C0.582107 6.55984 0.75 6.71289 0.75 6.90169V9.29466C0.75 9.67226 1.08579 9.97837 1.5 9.97837H10.5C10.9142 9.97837 11.25 9.67226 11.25 9.29466V6.90169C11.25 6.71289 11.4179 6.55984 11.625 6.55984C11.8321 6.55984 12 6.71289 12 6.90169V9.29466C12 10.0499 11.3284 10.6621 10.5 10.6621H1.5C0.671573 10.6621 0 10.0499 0 9.29466V6.90169C0 6.71289 0.167893 6.55984 0.375 6.55984Z" fill="#18181A"/>
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M3.74999 4.40859C3.89644 4.5421 4.13388 4.5421 4.28032 4.40859L5.99999 2.84093L7.71967 4.40861C7.86611 4.54211 8.10355 4.54211 8.24999 4.40861C8.39644 4.27511 8.39644 4.05866 8.24999 3.92516L6.26516 2.11575C6.11871 1.98225 5.88128 1.98225 5.73483 2.11575L3.74999 3.92514C3.60355 4.05864 3.60355 4.27509 3.74999 4.40859Z" fill="#18181A"/>
