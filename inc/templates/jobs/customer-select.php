@@ -1,4 +1,3 @@
-
 <div class="job-select-wrapper customer" >
     <h3>Customer</h3>
     <div class="customer-select" style="<?php echo isset($customer_data_decoded->{"customer-name"}) ? "display: none;" : ""; ?>" >
@@ -22,13 +21,13 @@
                 data-address='<?php echo isset($customer_data_decoded->{"address"}) ? $customer_data_decoded->{"address"} : "";  ?>' 
                 data-name='<?php echo isset($customer_data_decoded->{"customer-name"}) ? $customer_data_decoded->{"customer-name"} : "";  ?>' 
                 data-email='<?php echo isset($customer_data_decoded->{"email"}) ? $customer_data_decoded->{"email"} : "";  ?>' 
-                data-vin='<?php echo isset($vehicle->{"VIN"}) ? $vehicle->{"VIN"} : "";  ?>' 
-                data-make='<?php echo isset($vehicle->{"make"}) ? $vehicle->{"make"} : "";  ?>}'
-                data-model='<?php echo isset($vehicle->{"model"}) ? $vehicle->{"model"} : "";  ?>'
-                data-registration='<?php echo isset($vehicle->{"registration"}) ? $vehicle->{"registration"} : "";  ?>'
-                data-mileage='<?php echo isset($vehicle->{"mileage"}) ? $vehicle->{"mileage"} : "";  ?>'
-                data-colour='<?php echo isset($vehicle->{"colour"}) ? $vehicle->{"colour"} : "";  ?>'
-                data-vehicle-all='<?php echo isset($vehicle_json) ? $vehicle_json : ""; ?>'
+                data-vin="<?php echo isset($vehicle["VIN"]) ? $vehicle["VIN"] : "";  ?>" 
+                data-make="<?php echo isset($vehicle["make"]) ? $vehicle["make"] : "";  ?>"
+                data-model="<?php echo isset($vehicle["model"]) ? $vehicle["model"] : "";  ?>"
+                data-registration="<?php echo isset($vehicle["registration"]) ? $vehicle["registration"] : "";  ?>"
+                data-mileage="<?php echo isset($vehicle["mileage"]) ? $vehicle["mileage"] : "";  ?>"
+                data-colour="<?php echo isset($vehicle["colour"]) ? $vehicle["colour"] : "";  ?>"
+                data-vehicle-all="<?php echo isset($vehicle_json) ? $vehicle_json : ""; ?>"
             >
                 <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="46" height="46" rx="23" fill="#F0F6FF"/>
@@ -75,8 +74,6 @@
             </span>
         </div>
     </div>
-
     <!-- //Hidden fields -->
-    <input type="hidden" name="customer-data" value="<?php echo isset($customer_data) ? $customer_data : ""; ?>" >
-    
+    <input type="hidden" name="customer-data" value="<?php echo isset($customer_data) ? $customer_data : ""; ?>" >    
 </div>

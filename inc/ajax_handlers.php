@@ -42,6 +42,9 @@ function handle_job_ajax_form() {
 
     //Job Grand Total
     isset($_POST['grand-total']) && $grand_total = strip_tags( $_POST['grand-total'] );
+
+    //Job Mechanics
+    isset($_POST['mechanics']) && $mechanics = strip_tags( $_POST['mechanics'] );
     
     //Add/update the post
     $job_args = array(
@@ -65,38 +68,41 @@ function handle_job_ajax_form() {
         // delete_user_meta( $user_id, 'job_number' );
 
         echo 'inserted';
-        //Create/update job labour meta
+        //Create job labour meta
         add_post_meta($job_id, 'labour', $labour_data, true);
         
-        //Create/update job part meta
+        //Create job part meta
         add_post_meta($job_id, 'parts', $parts_data, true);
         
-        //Create/update job note meta
+        //Create job note meta
         add_post_meta($job_id, 'notes', $job_notes, true);
         
-        //Create/update job attachments meta
+        //Create job attachments meta
         add_post_meta($job_id, 'attachments', $attachments, true);
         
-        //Create/update job customer data
+        //Create job customer data
         add_post_meta($job_id, 'customer-data', $customer_data, true);
         
-        //Create/update job vin meta
+        //Create job vin meta
         add_post_meta($job_id, 'vin', $vin, true);
         
-        //Create/update job vehicle data
+        //Create job vehicle data
         add_post_meta($job_id, 'vehicle-data', $vehicle_data, true);
         
-        //Create/update job registration meta
+        //Create job registration meta
         add_post_meta($job_id, 'registration', $registration, true);
         
-        //Create/update job booking notes
+        //Create job booking notes
         add_post_meta($job_id, 'booking-notes', $booking_fields, true);
         
-        //Create/update job status
+        //Create job status
         add_post_meta($job_id, 'status', $job_status, true);
         
-        //Create/update job grand total
+        //Create job grand total
         add_post_meta($job_id, 'grand-total', $grand_total, true);
+        
+        //Create mechanics meta
+        add_post_meta($job_id, 'mechanics', $grand_total, true);
         
     } 
     if( $existing_job_id != 0 ) {
@@ -131,8 +137,11 @@ function handle_job_ajax_form() {
         //update job status
         update_post_meta($existing_job_id, 'status', $job_status);
         
-        //Create/update job grand total
+        //update job grand total
         update_post_meta($existing_job_id, 'grand-total', $grand_total);
+        
+        //update mechanics meta
+        update_post_meta($existing_job_id, 'mechanics', $mechanics, true);
 
     }
 
@@ -219,14 +228,18 @@ function handle_customer_ajax_form() {
             );
         } 
 
-        //Update job labour meta
+        //Update customer labour meta
         update_post_meta($existing_customer_post_id, 'details', $details);
       
-        //Update job labour meta
+        //Update customer labour meta
         update_post_meta($existing_customer_post_id, 'contacts', $contacts);
       
-        //Update job labour meta
+        //Update customer note meta
         update_post_meta($existing_customer_post_id, 'notes', $notes);
+                 
+        //Update customer vehicle meta
+        add_post_meta($customer_id, 'customer_vehicles', $vehicles);
+
     }
 
     if(wp_doing_ajax()) die();
@@ -234,7 +247,7 @@ function handle_customer_ajax_form() {
 
 //Create vehicle from initial customer save
 function createVehicle($vehicle_name, $vehicle_attachments, $vehicles, $vin) {
-    
+   
     //Add/update the post
     $vehicle_args = array(
         'post_type' => 'vehicles',
