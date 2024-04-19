@@ -5,7 +5,7 @@
     <div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow">
         <div class="wp-block-buttons justified-md-end is-layout-flex wp-container-core-buttons-layout-1 wp-block-buttons-is-layout-flex">
             <div class="wp-block-button">
-                <a href="/customer" class="wp-block-button__link wp-element-button">+ Add New Customer</a>
+                <a href="/workshoppro/customer" class="wp-block-button__link wp-element-button">+ Add New Customer</a>
             </div>
         </div>
     </div>

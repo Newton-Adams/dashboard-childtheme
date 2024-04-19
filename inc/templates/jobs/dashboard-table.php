@@ -25,7 +25,7 @@ $date_options = array(
         echo '<div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow mb-1">';
         echo '<div class="wp-block-buttons justified-md-end is-layout-flex wp-container-core-buttons-layout-1 wp-block-buttons-is-layout-flex">';
         echo ' <div class="wp-block-button">';
-        echo '<a href="/job/" class="wp-block-button__link wp-element-button popup-btn">+ New Job</a>';
+        echo '<a href="/workshoppro/job/" class="wp-block-button__link wp-element-button popup-btn">+ New Job</a>';
         echo '</div>';
         echo '</div>';
         echo '</div>';
