@@ -111,42 +111,36 @@ document.addEventListener('DOMContentLoaded', function() {
     let requiredInputs = document.querySelectorAll('input.required');
     requiredInputs.forEach(function(input) {
         input.addEventListener('change', validateInput);
-        input.addEventListener('keyup', validateInput);
     });
 
     // Validate number input
     let numberInputs = document.querySelectorAll('input[type="number"]');
     numberInputs.forEach(function(input) {
         input.addEventListener('change', validateNumberInput);
-        input.addEventListener('keyup', validateNumberInput);
     });
 
     // Validate Email input
     let emailInputs = document.querySelectorAll('input[type="email"]'); 
     emailInputs.forEach(function(input) {
         input.addEventListener('change', validateEmailInput);
-        input.addEventListener('keyup', validateEmailInput);
     });
 
     // Validate Phone input 
     let phoneInputs = document.querySelectorAll('input[type="tel"]'); 
     phoneInputs.forEach(function(input) {
         input.addEventListener('change', validatePhoneInput);
-        input.addEventListener('keyup', validatePhoneInput);
     });
 
     // Validate Whatsapp input
     let whatsappInputs = document.querySelectorAll('input[name="whatsapp_number"]');
     whatsappInputs.forEach(function(input) {
         input.addEventListener('change', validateWhatsappInput);
-        input.addEventListener('keyup', validateWhatsappInput);
     });
 
     // Validate VIN input
     let vinInputs = document.querySelectorAll('input[name="vehicle_vin"]');
     vinInputs.forEach(function(input) {
         input.addEventListener('change', validateVIN);
-        input.addEventListener('keyup', validateVIN);
     });
 
     

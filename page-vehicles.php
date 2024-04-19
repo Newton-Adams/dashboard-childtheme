@@ -26,15 +26,60 @@ get_header(); ?>
 			 */
 			do_action( 'generate_before_main_content' );
 
-			if ( generate_has_default_loop() ) {
-				while ( have_posts() ) :
+			?>
+			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?> <?php generate_do_microdata( 'article' ); ?>>
+				<div class="inside-article">
+					<?php
+					/**
+					 * generate_before_content hook.
+					 *
+					 * @since 0.1
+					 *
+					 * @hooked generate_featured_page_header_inside_single - 10
+					 */
+					do_action( 'generate_before_content' );
 
-					the_post();
+					/**
+					 * generate_after_entry_header hook.
+					 *
+					 * @since 0.1
+					 *
+					 * @hooked generate_post_image - 10
+					 */
+					do_action( 'generate_after_entry_header' );
 
-					generate_do_template_part( 'vehicle' );
+					$itemprop = '';
 
-				endwhile;
-			}
+					if ( 'microdata' === generate_get_schema_type() ) {
+						$itemprop = ' itemprop="text"';
+					}
+					?>
+
+					<div class="entry-content"<?php echo $itemprop; // phpcs:ignore -- No escaping needed. ?>>
+
+					<?php 
+
+						include( get_stylesheet_directory() . "/inc/page-templates/dashboard-vehicle.php");
+
+						// the_content();
+
+						// wp_link_pages(
+						// 	array(
+						// 		'before' => '<div class="page-links">' . __( 'Pages:', 'generatepress' ),
+						// 		'after'  => '</div>',
+						// 	)
+						// );
+						/**
+						 * generate_after_content hook.
+						 *
+						 * @since 0.1
+						 */
+						do_action( 'generate_after_content' );
+					?>
+				</div>
+			</article>
+
+			<?php
 
 			/**
 			 * generate_after_main_content hook.

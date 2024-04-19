@@ -384,7 +384,7 @@ function get_all_jobs() {
         $job_status = get_post_meta( $job->ID, 'status', true );
         
         $date = date_create($job->post_date);
-        $formatted_date = date_format($date,"m/d/Y");
+        $formatted_date = date_format($date,"d/m/Y");
         
         // echo '<pre>',print_r($job->post_date,1),'</pre>';
         // echo '<pre>',print_r($notes,1),'</pre>';
@@ -497,6 +497,44 @@ function get_user_vehicles() {
 
     // Send JSON response
     echo json_encode(array('data' => $vehicle_data));
+
+    wp_die();
+}
+
+// Get user customers 
+add_action('wp_ajax_get_user_customers', 'get_user_customers');
+add_action('wp_ajax_nopriv_get_user_customers', 'get_user_customers'); 
+function get_user_customers() {
+    
+    $loggedInUser = get_current_user(); //Current User
+    
+    $args = array(
+        'post_type' => 'customers',
+        'numberposts' => -1,
+        'author' => $loggedInUser,
+    );
+
+    $customers = get_posts($args);
+
+    $customer_data = array();
+
+    foreach ($customers as $key => $customer) {
+        parse_str( get_post_meta($customer->ID, 'contacts', true), $customer_meta_contacts ); 
+        parse_str( get_post_meta($customer->ID, 'details', true), $customer_meta_details );
+        parse_str( get_post_meta($customer->ID, 'customer_vehicles', true), $customer_meta_vehicle );
+        $customer_data[$key] = array( 
+            "customer_post_id" => $customer->ID,
+            "customer_name" => ucfirst( $customer_meta_contacts['first-name-1'] ) . ' ' . ucfirst( $customer_meta_contacts['last-name-1'] ),
+            "customer_contact" => $customer_meta_contacts['cell-number-1'],
+            "customer_email" => $customer_meta_contacts['email-1'],
+            "customer_vehicle" => $customer_meta_vehicle['make'],
+            "customer_address" => $customer_meta_details['physical-address'] . ', ' . $customer_meta_details['suburb'] . ', ' . $customer_meta_details['city'] . ', ' . $customer_meta_details['province'] . ', ' . $customer_meta_details['postal-code'],
+            "actions" => "...",
+        );
+    };
+
+    // Send JSON response
+    echo json_encode(array('data' => $customer_data));
 
     wp_die();
 }

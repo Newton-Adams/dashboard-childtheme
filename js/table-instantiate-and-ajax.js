@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
     // Jobs Table 
     if($('#jobs-table').length > 0) {
 
-        let jobsToShow = $('body').hasClass('home') ? 5 : 10;
+        let jobsToShow = $('body').hasClass('home') ? 5 : 20;
 
         var jobsTable = $('#jobs-table').DataTable({
             ajax: {
@@ -54,7 +54,7 @@ jQuery(document).ready(function ($) {
                     previous: 'Prev'
                 }
             }, 
-            order: [1, 'asc'],
+            order: [1, 'desc'],
             responsive: true, 
             columnDefs: [
                 { 
@@ -108,6 +108,13 @@ jQuery(document).ready(function ($) {
             ], 
             createdRow: function (row, data, index) {
                 $(row).addClass('post-id-'+data.job_post_id);
+            }, 
+            drawCallback: function(settings) {
+                setTimeout(() => {
+                    if( settings.aoData.length <= 20 ) {
+                        $('.dt-paging').hide();
+                    }
+                }, 1500);
             }
         });
 
@@ -248,6 +255,7 @@ jQuery(document).ready(function ($) {
             ajax: {
               url: workshop_pro_obj.ajaxurl + '?action=get_user_vehicles'
             },
+            pagingType: 'simple_numbers', 
             columns: [
                 { data: 'vehicle_customer' }, 
                 { data: 'vehicle_make' }, 
@@ -331,6 +339,91 @@ jQuery(document).ready(function ($) {
         
             // Toggle the visibility
             column.visible(!column.visible());                    
+        });
+    }
+
+    // Customer Table 
+    if($('#customerTable').length > 0) {
+        var customerTable = $('#customerTable').DataTable({
+            ajax: {
+                url: workshop_pro_obj.ajaxurl + '?action=get_user_customers'
+            },
+            pagingType: 'simple_numbers', 
+            columns: [
+                { data: 'customer_name' }, 
+                { data: 'customer_contact' }, 
+                { data: 'customer_email' }, 
+                { data: 'customer_vehicle' },
+                { data: 'customer_address' }, 
+                { data: 'actions' }
+            ],
+            layout: { 
+                ordering: true,
+                select: true, 
+                topStart: null,  
+                topEnd: null, 
+                bottomEnd: {
+                    paging: {
+                        numbers: 3
+                    }
+                }
+            }, 
+            language: {
+                paginate: {
+                    first: '', 
+                    last: '', 
+                    next: 'Next', 
+                    previous: 'Prev'
+                }
+            }, 
+            order: [1, 'asc'],
+            responsive: true,
+            columnDefs: [
+                {
+                    targets: '_all', 
+                    width: "16.666%"
+                }, 
+                { 
+                    responsivePriority: 2, 
+                    targets: 0 
+                },
+                { 
+                    responsivePriority: 2, 
+                    targets: 1 
+                },
+                { 
+                    responsivePriority: 3, 
+                    targets: 2 
+                },
+                { 
+                    responsivePriority: 4, 
+                    targets: 3 
+                },
+                { 
+                    responsivePriority: 5, 
+                    targets: 4 
+                },
+                { 
+                    responsivePriority: 1, 
+                    targets: 5, 
+                    className: 'actions', 
+                    "render": function (data, type, row) { 
+                        console.log(row)
+                        let actions = '';
+                        actions += '<div class="action-ellipses" data-id="' + row['customer_post_id'] + '"><span></span><span></span><span></span></div>';
+                        actions += '<ul style="display:none;">';
+                        actions += '<li><a href="#" data-popup="add-customer-popup" class="popup-btn edit-customer-action">Edit</a></li>';
+                        actions += '<li><a href="#" data-delete-post="' + row['customer_post_id'] + '">Delete</a></li>';
+                        actions += '<li>Send Quote</li>'; 
+                        actions += '<li>Send Invoice</li>'; 
+                        actions += '</ul>'; 
+                        return actions; 
+                    }
+                }
+            ],
+            createdRow: function (row, data, index) {
+                $(row).addClass('post-id-'+data.customer_post_id);
+            }
         });
     }
 
