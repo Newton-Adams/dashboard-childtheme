@@ -424,6 +424,13 @@ jQuery(document).ready(function ($) {
             createdRow: function (row, data, index) {
                 $(row).addClass('post-id-'+data.customer_post_id);
             }
+        }); 
+        //Hide/Show Columns 
+        $(document).on('click','.table-filters .column-states input',function() { 
+            const columnNo = $(this).attr('value') 
+            let column = customerTable.column(columnNo); 
+            // Toggle the visibility 
+            column.visible(!column.visible()); 
         });
     }
 

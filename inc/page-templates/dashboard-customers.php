@@ -11,5 +11,8 @@
     </div>
 </div>
 
+<!-- Customer Table Filter -->
+<?php include( get_stylesheet_directory() . "/inc/templates/customers/customer-table-filter.php"); ?>
+
 <!-- Customer Table --> 
 <?php include( get_stylesheet_directory() . "/inc/templates/customers/customer-table.php"); ?>

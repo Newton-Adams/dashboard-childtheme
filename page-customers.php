@@ -1,4 +1,5 @@
 <?php
+/* Template Name: Customers Page */
 /**
  * The template for displaying all pages.
  *
@@ -26,7 +27,7 @@ get_header(); ?>
 			 */
 			do_action( 'generate_before_main_content' );
 
-			include( get_stylesheet_directory() . "/inc/page-templates/new-customer.php");   
+			include( get_stylesheet_directory() . "/inc/page-templates/dashboard-customers.php");   
 
 			/**
 			 * generate_after_main_content hook.

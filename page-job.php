@@ -1,4 +1,5 @@
 <?php
+/* Template Name: Add/Edit Job Page */
 /**
  * The template for displaying all pages.
  *

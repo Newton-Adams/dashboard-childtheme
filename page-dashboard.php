@@ -1,4 +1,5 @@
 <?php
+/* Template Name: Dashboard Page */
 /**
  * The template for displaying all pages.
  *

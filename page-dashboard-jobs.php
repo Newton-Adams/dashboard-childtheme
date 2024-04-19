@@ -1,4 +1,5 @@
 <?php
+/* Template Name: Jobs Page */
 /**
  * The template for displaying all pages.
  *

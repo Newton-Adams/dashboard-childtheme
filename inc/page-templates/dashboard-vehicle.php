@@ -11,7 +11,10 @@
     </div>
 </div>
 
-<!-- Vehicle list --> 
+<!-- Vehicle Table Filter --> 
+<?php include( get_stylesheet_directory() . "/inc/templates/vehicle/vehicle-table-filter.php"); ?>
+
+<!-- Vehicle Table --> 
 <?php include( get_stylesheet_directory() . "/inc/templates/vehicle/vehicle-table.php"); ?>
 
 <!-- Add Vehicle Popup -->
