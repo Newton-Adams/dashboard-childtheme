@@ -1,43 +1,45 @@
 <form id="vehicle-fields" >
     <h3>Vehicle(s)</h3>
-    <h3>Add Vehicle</h3>
-    <div class="form-row d-flex flex-wrap" >
-        <div class="fw-33 input-label-wrapper" >
-            <label for="make" >Make</label>
-            <input type="text" id="make" name="make" value="<?= isset($vehicles["make"]) ? $vehicles["make"] : ''; ?>" >
+    <?php if( !isset($vehicles) ): ?>
+        <h3>Add Vehicle</h3>
+        <div class="form-row d-flex flex-wrap" >
+            <div class="fw-33 input-label-wrapper" >
+                <label for="make" >Make</label>
+                <input type="text" id="make" name="make" value="<?= isset($vehicles["make"]) ? $vehicles["make"] : ''; ?>" >
+            </div>
+        
+            <div class="fw-33 input-label-wrapper" >
+                <label for="model" >Model</label>
+                <input type="text" id="model" name="model" value="<?= isset($vehicles["model"]) ? $vehicles["model"] : ''; ?>" >
+            </div>
+            
+            <div class="fw-33 input-label-wrapper" >
+                <label for="year" >Year</label>
+                <input type="text" id="year" name="year" value="<?= isset($vehicles["year"]) ? $vehicles["year"] : ''; ?>" >
+            </div>
+            
+            <div class="fw-50 input-label-wrapper" >
+                <label for="colour" >Colour</label>
+                <input type="text" id="colour" name="colour" value="<?= isset($vehicles["colour"]) ? $vehicles["colour"] : ''; ?>" >
+            </div>
+            
+            <div class="fw-50 input-label-wrapper" >
+                <label for="mileage" >Mileage</label>
+                <input type="text" id="mileage" name="mileage" value="<?= isset($vehicles["mileage"]) ? $vehicles["mileage"] : ''; ?>" >
+            </div>
+            
+            <div class="fw-50 input-label-wrapper" >
+                <label for="registration" >Registration</label>
+                <input type="text" id="registration" name="registration" value="<?= isset($vehicles["registration"]) ? $vehicles["registration"] : ''; ?>" >
+            </div>
+            
+            <div class="fw-50 input-label-wrapper" >
+                <label for="VIN" >VIN</label>
+                <input type="text" id="VIN" name="VIN" value="<?= isset($vehicles["VIN"]) ? $vehicles["VIN"] : ''; ?>" >
+            </div>
+            
         </div>
     
-        <div class="fw-33 input-label-wrapper" >
-            <label for="model" >Model</label>
-            <input type="text" id="model" name="model" value="<?= isset($vehicles["model"]) ? $vehicles["model"] : ''; ?>" >
-        </div>
-        
-        <div class="fw-33 input-label-wrapper" >
-            <label for="year" >Year</label>
-            <input type="text" id="year" name="year" value="<?= isset($vehicles["year"]) ? $vehicles["year"] : ''; ?>" >
-        </div>
-        
-        <div class="fw-50 input-label-wrapper" >
-            <label for="colour" >Colour</label>
-            <input type="text" id="colour" name="colour" value="<?= isset($vehicles["colour"]) ? $vehicles["colour"] : ''; ?>" >
-        </div>
-        
-        <div class="fw-50 input-label-wrapper" >
-            <label for="mileage" >Mileage</label>
-            <input type="text" id="mileage" name="mileage" value="<?= isset($vehicles["mileage"]) ? $vehicles["mileage"] : ''; ?>" >
-        </div>
-        
-        <div class="fw-50 input-label-wrapper" >
-            <label for="registration" >Registration</label>
-            <input type="text" id="registration" name="registration" value="<?= isset($vehicles["registration"]) ? $vehicles["registration"] : ''; ?>" >
-        </div>
-        
-        <div class="fw-50 input-label-wrapper" >
-            <label for="VIN" >VIN</label>
-            <input type="text" id="VIN" name="VIN" value="<?= isset($vehicles["VIN"]) ? $vehicles["VIN"] : ''; ?>" >
-        </div>
-        
-    </div>
     <div class="form-row attachments" >
             <div class="d-flex flex-column fw-100" >
                 <h3 class="mt-5 mb-2" >Attachments</h3>
@@ -87,4 +89,5 @@
                 </div>
             </div>
         </div>
+    <?php endif; ?>
 </form>

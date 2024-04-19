@@ -94,7 +94,7 @@ jQuery(document).ready(function ($) {
                         let actions = '';
                         actions += '<div class="action-ellipses" data-id="' + row['job_post_id'] + '"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
-                        actions += '<li><a href="/jobs/?edit=' + row['job_post_id'] + '" class="">Edit</a></li>';
+                        actions += '<li><a href="/workshoppro/job/?edit=' + row['job_post_id'] + '" class="">Edit</a></li>';
                         actions += '<li><a href="#" data-delete-post="' + row['job_post_id'] + '">Delete</a></li>';
                         actions += '<li>Send Quote</li>';
                         actions += '<li>Send Invoice</li>';

@@ -29,3 +29,5 @@ echo '<span class="'.$editing.'" ><div class="controls" >
          <input type="hidden" id="customer-id" name="customer-id" value="">';
          include( get_stylesheet_directory() . "/inc/templates/customers/controls.php");          
 echo '</div>';  
+include( get_stylesheet_directory() . "/inc/templates/popups/unsaved-data-popup.php");      
+include( get_stylesheet_directory() . "/inc/templates/popups/ajax-error-popup.php");      

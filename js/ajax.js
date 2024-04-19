@@ -28,28 +28,29 @@ jQuery(document).ready(function ($) {
                     'search-val': searchValue,
                 },
                 success: function (response) {	
-                    console.log(response);
                     customerResultsActive = true
                     const customerData = JSON.parse(response)
+                    // const customerData = response
                     let options = `<li class="add-new-customer" >
-                                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect width="46" height="46" rx="23" fill="#EDFFEB"/>
-                                            <mask id="mask0_2_12674" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="14" width="18" height="18">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M23 18.5C23.3107 18.5 23.5625 18.7518 23.5625 19.0625V22.4375H26.9375C27.2482 22.4375 27.5 22.6893 27.5 23C27.5 23.3107 27.2482 23.5625 26.9375 23.5625H23.5625V26.9375C23.5625 27.2482 23.3107 27.5 23 27.5C22.6893 27.5 22.4375 27.2482 22.4375 26.9375V23.5625H19.0625C18.7518 23.5625 18.5 23.3107 18.5 23C18.5 22.6893 18.7518 22.4375 19.0625 22.4375H22.4375V19.0625C22.4375 18.7518 22.6893 18.5 23 18.5Z" fill="black"/>
-                                            </mask>
-                                            <g mask="url(#mask0_2_12674)">
-                                            <rect x="14" y="14" width="18" height="18" fill="#009026"/>
-                                            </g>
-                                        </svg>
-                                        Add new customer
-                                    </li>`
-
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="46" height="46" rx="23" fill="#EDFFEB"/>
+                    <mask id="mask0_2_12674" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="14" width="18" height="18">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M23 18.5C23.3107 18.5 23.5625 18.7518 23.5625 19.0625V22.4375H26.9375C27.2482 22.4375 27.5 22.6893 27.5 23C27.5 23.3107 27.2482 23.5625 26.9375 23.5625H23.5625V26.9375C23.5625 27.2482 23.3107 27.5 23 27.5C22.6893 27.5 22.4375 27.2482 22.4375 26.9375V23.5625H19.0625C18.7518 23.5625 18.5 23.3107 18.5 23C18.5 22.6893 18.7518 22.4375 19.0625 22.4375H22.4375V19.0625C22.4375 18.7518 22.6893 18.5 23 18.5Z" fill="black"/>
+                    </mask>
+                    <g mask="url(#mask0_2_12674)">
+                    <rect x="14" y="14" width="18" height="18" fill="#009026"/>
+                    </g>
+                    </svg>
+                    Add new customer
+                    </li>`
+                    
                     if(Object.keys(customerData).length > 0) {
                         Object.keys(customerData).forEach(customer => {
-                          
+                            console.log(customerData[customer]);
+                            console.log(customerData[customer]["all-vehicle-values"]);
                             options += `<li 
-                                            data-company-name='${customerData[customer]["company-name"]}' 
-                                            data-address='${customerData[customer]["address"]}' 
+                            data-company-name='${customerData[customer]["company-name"]}' 
+                            data-address='${customerData[customer]["address"]}' 
                                             data-name='${customerData[customer]["name"]}' 
                                             data-email='${customerData[customer]["email"]}' 
                                             data-phone='${customerData[customer]["phone"]}' 
@@ -59,7 +60,7 @@ jQuery(document).ready(function ($) {
                                             data-registration='${customerData[customer]["registration"]}'
                                             data-mileage='${customerData[customer]["mileage"]}'
                                             data-colour='${customerData[customer]["colour"]}'
-                                            data-vehicle-all='${JSON.stringify( customerData[customer]["all-vehicle-values"] )}'
+                                            data-vehicle-all='${customerData[customer]["all-vehicle-values"]}'
                                         >
                                             <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect width="46" height="46" rx="23" fill="#F0F6FF"/>
@@ -173,7 +174,7 @@ jQuery(document).ready(function ($) {
                                         data-mileage="${dataValues['mileage']}" 
                                         data-make="${dataValues['make']}" 
                                         data-model="${dataValues['model']}" 
-                                        data-vehicle-all='${ JSON.stringify(dataValues['vehicleAll']) }' 
+                                        data-vehicle-all='${ dataValues['vehicleAll'] }' 
                                     >
                                         <p class="make-model" > ${dataValues['make']} / ${dataValues['model']} / ${dataValues['colour']} </p>
                                         <p class="registration" > ${dataValues['registration']} </p>
@@ -438,12 +439,14 @@ jQuery(document).ready(function ($) {
         const customerContact = $('#contact-fields').serialize()
 
         //Vehicle Fields
+        const vehicleName = `${ $('#make').val() } / ${$('#model').val()} / ${$('#colour').val()}`
+        const vin = $('#VIN').val()
         const customerVehicle = $('#vehicle-fields').serialize()
-        
+        const vehicleAttachments = $('#attachments-obj').val()
+       
         //Notes Fields
         const customerNotes = $('#customer-notes textarea').val()
-
-
+      
         $.ajax({
             type: "POST",
             url: workshop_pro_obj.ajaxurl,
@@ -453,11 +456,22 @@ jQuery(document).ready(function ($) {
                 'customer-post-id': existingCustomerPostID,
                 'customer-details': customerDetails,
                 'customer-contacts': customerContact,
+                'vehicle-name': vehicleName,
                 'customer-vehicles': customerVehicle,
+                'vehicle-attachments': vehicleAttachments,
+                'vin': vin,
                 'customer-notes': customerNotes,
             },
-            success: function (response) {	                
+            success: function (response) {	
                 console.log(response);
+                $('input[name="content-changed"]').prop('checked',false)
+                window.location.href = "/dashboard-customers/"
+            },
+            error: function (xhr) {
+                xhr.status === 500 ? $('.alert-popup-outer.error .warning-title').html(`There was a 500 internal server error and the post did not save, please contact support @ <a href="mailto:sfjha@fdsf.com">sfjha@fdsf.com</a> or call <a href="tel:1231231234">1231231234</a>`) : $('.alert-popup-outer.error .warning-title').text("There was an error and the post did not save, please retry saving")
+                $('.alert-popup-outer.error').fadeIn(function() {
+
+                })           
             }
         });
     })

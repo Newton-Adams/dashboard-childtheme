@@ -49,9 +49,9 @@ if(isset($job_edit_id)) {
     }
     
     //Vehicle Data
-    if(!empty( get_post_meta($job_edit_id, 'vehicle-data', true) )) {
-        $vehicle_json = get_post_meta($job_edit_id, 'vehicle-data', true);
-        $vehicle = json_decode($vehicle_json);
+    if(!empty( get_post_meta($job_edit_id, 'customer_vehicles', true) )) {
+        $vehicle_json = get_post_meta($job_edit_id, 'customer_vehicles', true);
+        parse_str($vehicle_json,$vehicle);
     } 
 
     !empty(get_post_meta($job_edit_id, 'parts', true) ) && $parts = json_decode(get_post_meta($job_edit_id, 'parts', true)); 

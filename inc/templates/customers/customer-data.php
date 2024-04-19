@@ -20,7 +20,16 @@ if(isset($customer_edit_id)) {
 
     $editing = "editing";
 
-    
+    //Vehicle Attachments
+    !empty(get_post_meta($customer_edit_id, 'vehicle_attachments', true) ) && $attachments = get_post_meta($customer_edit_id, 'vehicle_attachments', true); 
+    if(!empty($attachments)) {
+        $attchments_decoded = json_decode($attachments);
+        $existingAttachments = array();
+        foreach ($attchments_decoded as $key => $attachment) {
+            array_push($existingAttachments,$attachment);
+        }
+    }
+
     !empty(get_post_meta($customer_edit_id, 'notes', true) ) && $notes = json_decode(get_post_meta($customer_edit_id, 'notes', true)); 
 
     !empty(get_post_meta($customer_edit_id, 'details', true) ) && parse_str(get_post_meta($customer_edit_id, 'details', true),$details); 
