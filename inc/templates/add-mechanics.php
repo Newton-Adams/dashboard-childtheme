@@ -44,24 +44,51 @@
             </thead>
             <tbody>
                 <?php 
-                     if(!empty($existing_mechanics)) {
-                         foreach ($existing_mechanics as $mechanickey => $mechanic) {
-                            echo '<tr>';
-                                foreach ($mechanic as $key => $value) {
-                                    if(!empty($value["name-0"])) {
-                                        echo '<td class="name" >'.$value["name-0"].'</td>';
-                                    }
-                                    if(!empty($value["contact-number-0"])) {
-                                        echo  '<td class="contact-number" >'.$value["contact-number-0"].'</td>';
-                                    }
-                                    if(!empty($value["role-0"])) {
-                                        echo '<td class="role" >'.$value["role-0"].'</td>';
+                    if(!empty($existing_mechanics)) {
+                        // Iterate through each entry in the data array
+                        foreach ($existing_mechanics as $mechanic) {
+                            // Initialize an empty associative array to store name, contact number, and role
+                            $info = [];
+
+                            // Extract name, contact number, and role
+                            foreach ($mechanic as $mechanic_detail) {
+                                foreach ($mechanic_detail as $key => $value) {
+                                    if (strpos($key, 'name-0') !== false) {
+                                        $info['name'] = $value;
+                                    } elseif (strpos($key, 'contact-number-0') !== false) {
+                                        $info['contact-number'] = $value;
+                                    } elseif (strpos($key, 'role-0') !== false) {
+                                        $info['role'] = $value;
                                     }
                                 }
-                                echo '<td>'.file_get_contents( get_stylesheet_directory() . "/assets/images/bin.svg" ).'</td>';
+                            }
+
+                            // Create a table row
+                            echo '<tr>';
+                            echo '<td>' . $info['name'] . '</td>';
+                            echo '<td>' . $info['contact-number'] . '</td>';
+                            echo '<td>' . $info['role'] . '</td>';
+                            echo '<td>'.file_get_contents( get_stylesheet_directory() . "/assets/images/bin.svg" ).'</td>';
                             echo '</tr>';
                         }
-                     }
+                        // foreach ($existing_mechanics as $mechanickey => $mechanic) {
+                        // }
+                        //     echo '<tr>';
+                        //         foreach ($mechanic as $key => $value) {
+                        //             if(!empty($value["name-0"])) {
+                        //                 echo '<td class="name" >'.$value["name-0"].'</td>';
+                        //             }
+                        //             if(!empty($value["contact-number-0"])) {
+                        //                 echo  '<td class="contact-number" >'.$value["contact-number-0"].'</td>';
+                        //             }
+                        //             if(!empty($value["role-0"])) {
+                        //                 echo '<td class="role" >'.$value["role-0"].'</td>';
+                        //             }
+                        //         }
+                        //         echo '<td>'.file_get_contents( get_stylesheet_directory() . "/assets/images/bin.svg" ).'</td>';
+                        //     echo '</tr>';
+                        // }
+                    }
                 ?>                    
             </tbody>
         </table>

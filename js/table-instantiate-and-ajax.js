@@ -94,14 +94,18 @@ jQuery(document).ready(function ($) {
                     targets: 8, 
                     className: 'actions', 
                     "render": function (data, type, row) {
-                        let actions = '';
-                        actions += '<div class="action-ellipses" data-id="' + row['job_post_id'] + '"><span></span><span></span><span></span></div>';
+                        let actions = '';                        
+                        actions += '<div class="d-flex flex-align-center justified-end">';
+                        actions += '<a href="/workshoppro/job/?edit=' + row['job_post_id'] + '" class="edit-customer-action mt-1 mr-2">Edit</a>';
+                        actions += '<div class="action-wrap">';
+                        actions += '<div class="action-btn" data-id="' + row['job_post_id'] + '"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
-                        actions += '<li><a href="/workshoppro/job/?edit=' + row['job_post_id'] + '" class="">Edit</a></li>';
                         actions += '<li><a href="#" data-delete-post="' + row['job_post_id'] + '">Delete</a></li>';
-                        actions += '<li>Send Quote</li>';
-                        actions += '<li>Send Invoice</li>';
-                        actions += '</ul>';
+                        actions += '<li><a href="#">Send Quote</a></li>'; 
+                        actions += '<li><a href="#">Send Invoice</a></li>'; 
+                        actions += '</ul>'; 
+                        actions += '</div>';
+                        actions += '</div>';
                         return actions;
                     },
                 },
@@ -204,7 +208,7 @@ jQuery(document).ready(function ($) {
 
         //Expand/Collapse Job Extra Info
         $(document).on('click', '#jobs-table tbody tr td:not(.actions)', function () {
-            const jobID = $(this).closest('tr').find('.action-ellipses').data('id')
+            const jobID = $(this).closest('tr').find('.action-btn').data('id')
             let tr = $(this)
             let row = jobsTable.row( tr )
 
@@ -316,13 +320,17 @@ jQuery(document).ready(function ($) {
                     className: 'actions', 
                     "render": function (data, type, row) {
                         let actions = '';
-                        actions += '<div class="action-ellipses" data-id="' + row['vehicle_post_id'] + '"><span></span><span></span><span></span></div>';
+                        actions += '<div class="d-flex flex-align-center justified-end">';
+                        actions += '<a href="#" data-popup="add-vehicle-popup" class="popup-btn edit-vehicle-action mt-1 mr-2">Edit</a>';
+                        actions += '<div class="action-wrap">';
+                        actions += '<div class="action-btn" data-id="' + row['vehicle_post_id'] + '"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
-                        actions += '<li><a href="#" data-popup="add-vehicle-popup" class="popup-btn edit-vehicle-action">Edit</a></li>';
                         actions += '<li><a href="#" data-delete-post="' + row['vehicle_post_id'] + '">Delete</a></li>';
-                        actions += '<li>Send Quote</li>';
-                        actions += '<li>Send Invoice</li>';
-                        actions += '</ul>';
+                        actions += '<li><a href="#">Send Quote</a></li>'; 
+                        actions += '<li><a href="#">Send Invoice</a></li>'; 
+                        actions += '</ul>'; 
+                        actions += '</div>';
+                        actions += '</div>';
                         return actions;
                     },
                 },
@@ -410,13 +418,17 @@ jQuery(document).ready(function ($) {
                     "render": function (data, type, row) { 
                         console.log(row)
                         let actions = '';
-                        actions += '<div class="action-ellipses" data-id="' + row['customer_post_id'] + '"><span></span><span></span><span></span></div>';
+                        actions += '<div class="d-flex flex-align-center justified-end">';
+                        actions += '<a href=/workshoppro/customer?edit=' + row['customer_post_id'] + '" class="edit-customer-action mt-1 mr-2">Edit</a>';
+                        actions += '<div class="action-wrap">';
+                        actions += '<div class="action-btn" data-id="' + row['customer_post_id'] + '"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
-                        actions += '<li><a href="#" data-popup="add-customer-popup" class="popup-btn edit-customer-action">Edit</a></li>';
                         actions += '<li><a href="#" data-delete-post="' + row['customer_post_id'] + '">Delete</a></li>';
-                        actions += '<li>Send Quote</li>'; 
-                        actions += '<li>Send Invoice</li>'; 
+                        actions += '<li><a href="#">Send Quote</a></li>'; 
+                        actions += '<li><a href="#">Send Invoice</a></li>'; 
                         actions += '</ul>'; 
+                        actions += '</div>';
+                        actions += '</div>';
                         return actions; 
                     }
                 }
@@ -464,12 +476,13 @@ jQuery(document).ready(function ($) {
 
     //Actions popup 
     let actionOpen = false
-    $(document).on('click','table tbody td.actions',function() {
+    $(document).on('click','table tbody td.actions .action-btn',function() {
         if(!actionOpen) {
-            $(this).find('ul').fadeIn()
+            $(this).addClass('active').closest('.actions').find('ul').fadeIn()
             actionOpen = true
         } else {
             $('table tbody td.actions').find('ul').fadeOut()
+            $(this).removeClass('active');
             actionOpen = false
         }
     })
