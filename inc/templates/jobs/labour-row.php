@@ -60,7 +60,7 @@
             </div>
             <div class="input-label-wrapper quantity-wrapper" >
                 <label for="qty" >Qty</label>
-                <input type="number" class="qty" name="qty-0" >
+                <input type="number" class="qty" name="qty-0" value="1" >
             </div>
             <div class="input-label-wrapper vat-wrapper" >
                 <label for="vat" >Vat</label>

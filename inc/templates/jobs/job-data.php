@@ -60,7 +60,7 @@ if(isset($job_edit_id)) {
 
     if( !empty(get_post_meta($job_edit_id, 'mechanics', true) ) )  {
         $mechanics = get_post_meta( $job_edit_id, 'mechanics', true );
-        $mechanics_decoded = explode( ",", json_decode( $mechanics ) );
+        isset($mechanics) && $mechanics_decoded = explode( ",", json_decode( $mechanics ) );
     }
 
     !empty(get_post_meta($job_edit_id, 'notes', true) ) && parse_str(get_post_meta($job_edit_id, 'notes', true),$job_notes); 

@@ -27,7 +27,7 @@ get_header(); ?>
 			 */
 			do_action( 'generate_before_main_content' );
 
-			include( get_stylesheet_directory() . "/inc/page-templates/page-customer.php");   
+			include( get_stylesheet_directory() . "/inc/page-templates/new-customer.php");   
 
 			/**
 			 * generate_after_main_content hook.

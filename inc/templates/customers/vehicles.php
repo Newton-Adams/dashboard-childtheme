@@ -1,6 +1,6 @@
 <form id="vehicle-fields" >
     <h3>Vehicle(s)</h3>
-    <?php if( !isset($vehicles) ): ?>
+    <?php if( !isset($customer_edit_id) ) { ?>
         <h3>Add Vehicle</h3>
         <div class="form-row d-flex flex-wrap" >
             <div class="fw-33 input-label-wrapper" >
@@ -89,5 +89,10 @@
                 </div>
             </div>
         </div>
-    <?php endif; ?>
+    <?php } else { 
+        if(isset($customer_edit_id)) {
+            include( get_stylesheet_directory() . "/inc/templates/vehicle/vehicle-table.php");  
+            include( get_stylesheet_directory() . "/inc/templates/popups/add-vehicle-popup.php"); 
+        } 
+    }; ?>
 </form>

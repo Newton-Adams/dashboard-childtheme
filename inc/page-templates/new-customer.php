@@ -23,7 +23,7 @@ echo '</div>
    <div class="forms-container" >
       <div class="notes-container" >'; 
           include( get_stylesheet_directory() . "/inc/templates/customers/customer-notes.php"); 
-echo '</div>
+echo '</div> 
     </div>';
 echo '<span class="'.$editing.'" ><div class="controls" >
          <input type="hidden" id="customer-id" name="customer-id" value="">';
@@ -31,3 +31,4 @@ echo '<span class="'.$editing.'" ><div class="controls" >
 echo '</div>';  
 include( get_stylesheet_directory() . "/inc/templates/popups/unsaved-data-popup.php");      
 include( get_stylesheet_directory() . "/inc/templates/popups/ajax-error-popup.php");      
+    

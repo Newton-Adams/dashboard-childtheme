@@ -23,11 +23,11 @@
             </div>
             <div class="input-label-wrapper unit-price-wrapper" >
                 <label for="unit-price" >Unit price</label>
-                <input type="number" class="unit-price" name="unit-price" value="<?= $row[4]->{"unit-price-{$loop_count}"}; ?>" >
+                <input type="number" class="unit-price" name="unit-price" value="<?= isset($row[4]->{"unit-price-{$loop_count}"}) ? $row[4]->{"unit-price-{$loop_count}"} : 1; ?>" >
             </div>
             <div class="input-label-wrapper quantity-wrapper" >
                 <label for="qty" >Qty</label>
-                <input type="number" class="qty" name="qty" value="<?= $row[5]->{"qty-{$loop_count}"}; ?>" >
+                <input type="number" class="qty" name="qty" value="<?= $row[5]->{"qty-{$loop_count}"}; ?>" value="1" >
             </div>
             <div class="input-label-wrapper vat-wrapper" >
                 <label for="vat" >Vat</label>
@@ -72,7 +72,7 @@
         </div>
         <div class="input-label-wrapper quantity-wrapper" >
             <label for="qty" >Qty</label>
-            <input type="text" class="qty" name="qty-0" >
+            <input type="text" class="qty" name="qty-0" value="1"  >
         </div>
         <div class="input-label-wrapper vat-wrapper" >
             <label for="vat" >Vat</label>
