@@ -279,9 +279,9 @@ jQuery(document).ready(function ($) {
         event.preventDefault(); 
         
         // Validate 
-        if( !validateFormSubmit() ) {
-            return false
-        }
+        // if( !validateFormSubmit() ) {
+        //     return false
+        // }
         
         //Job single data
         const existingJobID = $('input#job-id').val()
@@ -424,9 +424,9 @@ jQuery(document).ready(function ($) {
         event.preventDefault()
 
         // Validate 
-        if( !validateFormSubmit() ) {
-            return false
-        }
+        // if( !validateFormSubmit(['#add-vehicle-form input.required']) ) {
+        //     return false
+        // }
 
         //Customer Name
         const customerName = $('#first-name-1').val()
@@ -464,7 +464,7 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {	
                 $('input[name="content-changed"]').prop('checked',false)
-                window.location.href = "/workshoppro/dashboard-customers/"
+                window.location.href = "/workshoppro/customers/"
             },
             error: function (xhr) {
                 xhr.status === 500 ? $('.alert-popup-outer.error .warning-title').html(`There was a 500 internal server error and the post did not save, please contact support @ <a href="mailto:sfjha@fdsf.com">sfjha@fdsf.com</a> or call <a href="tel:1231231234">1231231234</a>`) : $('.alert-popup-outer.error .warning-title').text("There was an error and the post did not save, please retry saving")

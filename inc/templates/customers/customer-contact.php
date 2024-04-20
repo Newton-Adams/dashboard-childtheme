@@ -12,11 +12,11 @@
             </div>
             <div class="fw-100 pr-2" >
                 <label for="email-1" >Email</label>
-                <input type="text" id="email-1" name="email-1" value="<?= isset($contacts["email-1"]) ? $contacts["email-1"] : ''; ?>" >
+                <input type="email" id="email-1" name="email-1" value="<?= isset($contacts["email-1"]) ? $contacts["email-1"] : ''; ?>" >
             </div>
             <div class="fw-100 pr-2" >
                 <label for="cell-number-1" >Cell number</label>
-                <input type="text" id="cell-number-1" name="cell-number-1" value="<?= isset($contacts["cell-number-1"]) ? $contacts["cell-number-1"] : ''; ?>" >
+                <input type="tel" id="cell-number-1" name="cell-number-1" value="<?= isset($contacts["cell-number-1"]) ? $contacts["cell-number-1"] : ''; ?>" >
             </div>
             <div class="fw-100 pr-2" >
                 <label for="additional-number-1" >Additional cell number (Whatsapp)</label>
@@ -35,11 +35,11 @@
             </div>
             <div class="fw-100" >
                 <label for="email-2" >Email</label>
-                <input type="text" id="email-2" name="email-2" value="<?= isset($contacts["email-2"]) ? $contacts["email-2"] : ''; ?>" >
+                <input type="email" id="email-2" name="email-2" value="<?= isset($contacts["email-2"]) ? $contacts["email-2"] : ''; ?>" >
             </div>
             <div class="fw-100" >
                 <label for="cell-number-2" >Cell number</label>
-                <input type="text" id="cell-number-2" name="cell-number-2" value="<?= isset($contacts["cell-number-2"]) ? $contacts["cell-number-2"] : ''; ?>" >
+                <input type="tel" id="cell-number-2" name="cell-number-2" value="<?= isset($contacts["cell-number-2"]) ? $contacts["cell-number-2"] : ''; ?>" >
             </div>
             <div class="fw-100" >
                 <label for="additional-number-2" >Additional cell number (Whatsapp)</label>

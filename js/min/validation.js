@@ -146,4 +146,35 @@ document.addEventListener('DOMContentLoaded', function() {
     
 });
 
+// function validateFormSubmit(excludedSelectors = []) {
+//     let valid = true;
+
+//     // Construct the excluded selectors string
+//     let excludedSelectorString = '';
+//     if (excludedSelectors.length > 0) {
+//         excludedSelectorString = excludedSelectors.map(selector => `:not(${selector})`).join('');
+//     }
+
+//     // Get all required input fields excluding the specified parent classes and IDs
+//     let requiredInputs = document.querySelectorAll(`${excludedSelectorString} input.required`);
+//     // input:not(#add-vehicle-form input.required) 
+    
+//     console.log(requiredInputs)
+    
+//     requiredInputs.forEach(function(input) {
+//         if (input.value.trim() === '') {
+//             removeErrorMessage(input);
+//             addErrorMessage(input, 'This field is required');
+//             valid = false;
+//         } else {
+//             removeErrorMessage(input);
+//         }
+//     });
+
+//     return valid;
+// }
+
+
+
+
 
