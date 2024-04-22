@@ -21,7 +21,7 @@ if(isset($customer_edit_id)) {
     $editing = "editing";
 
     //Vehicle Attachments
-    !empty(get_post_meta($customer_edit_id, 'vehicle_attachments', true) ) && $attachments = get_post_meta($customer_edit_id, 'vehicle_attachments', true); 
+    !empty(get_post_meta($customer_edit_id, 'vehicle-attachments', true) ) && $attachments = get_post_meta($customer_edit_id, 'vehicle-attachments', true); 
     if(!empty($attachments)) {
         $attchments_decoded = json_decode($attachments);
         $existingAttachments = array();

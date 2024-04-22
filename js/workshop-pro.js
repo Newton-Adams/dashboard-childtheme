@@ -303,7 +303,7 @@ jQuery(document).ready(function ($) {
         $('#add-staff').append(jobRow)    
     })
 
-    // Get started guide 
+    //Get started guide 
     if($('.get-started-guide').length) { 
         
         $(document).on('click','.add-business-info .add-business-btn',function() {
@@ -326,7 +326,7 @@ jQuery(document).ready(function ($) {
         })
     }
 
-    // Workshop Doughnut Chart 
+    //Workshop Doughnut Chart 
     if( $('#workshopChart').length ) {
         var activeVal = $('.active .chart-value').text();
         var completeVal = $('.complete .chart-value').text();
@@ -377,7 +377,7 @@ jQuery(document).ready(function ($) {
 
     }
 
-    // Popup 
+    //Popup 
     $(document).on('click','.popup-btn',function() { 
         const popup = '#'+$(this).attr('data-popup')
         $(popup).fadeIn('fast', function() {
@@ -394,7 +394,7 @@ jQuery(document).ready(function ($) {
         $(this).closest('form').clearForm();
     });
 
-    // Vehicle Edit popup extras
+    //Vehicle Edit popup extras
     $(document).on(
         'click', 
         '.edit-vehicle-popup .popup-overlay, .edit-vehicle-popup .close-popup, .edit-vehicle-popup .cancel-popup', 
@@ -505,4 +505,16 @@ jQuery(document).ready(function ($) {
         $('.edit-vehicle-popup .customer .options.active').removeClass('active');
     });
 
+    //Display new vehicle form on customer edit
+    if( $('#vehicle-fields .add-new-vehicle').length > 0 ) {
+        $(document).on('click','#vehicle-fields .add-new-vehicle',function() {
+            $(this).closest('#vehicle-fields').find('.add-vehicle-wrapper').fadeOut()
+            $(this).closest('#vehicle-fields').find('.new-vehicle').fadeIn()
+            $(this).closest('#vehicle-fields').find('.vehicle-description').fadeIn()
+            $(this).closest('#vehicle-fields').find('.attachments').fadeIn()
+        })
+    }
+
 })
+
+

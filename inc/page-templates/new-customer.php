@@ -22,6 +22,11 @@ echo '</div>
    </div>
    <div class="forms-container" >
       <div class="notes-container" >'; 
+          include( get_stylesheet_directory() . "/inc/templates/customers/customer-jobs.php"); 
+echo '</div>
+   </div>
+   <div class="forms-container" >
+      <div class="notes-container" >'; 
           include( get_stylesheet_directory() . "/inc/templates/customers/customer-notes.php"); 
 echo '</div> 
     </div>';

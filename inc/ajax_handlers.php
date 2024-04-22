@@ -102,7 +102,7 @@ function handle_job_ajax_form() {
         add_post_meta($job_id, 'grand-total', $grand_total, true);
         
         //Create mechanics meta
-        add_post_meta($job_id, 'mechanics', $grand_total, true);
+        add_post_meta($job_id, 'mechanics', $mechanics, true);
         
     } 
     if( $existing_job_id != 0 ) {
@@ -212,8 +212,11 @@ function handle_customer_ajax_form() {
         //Create customer notes meta
         add_post_meta($customer_id, 'notes', $notes, true);
                 
-        //Create customer notes meta
+        //Create customer vehicles meta
         add_post_meta($customer_id, 'customer_vehicles', $vehicles, true);
+                
+        //Create customer vehicle attachments meta
+        add_post_meta($customer_id, 'vehicle-attachments', $vehicle_attachments, true);
     } 
 
     if( $existing_customer_post_id != 0 ) {
@@ -238,7 +241,10 @@ function handle_customer_ajax_form() {
         update_post_meta($existing_customer_post_id, 'notes', $notes);
                  
         //Update customer vehicle meta
-        add_post_meta($customer_id, 'customer_vehicles', $vehicles);
+        update_post_meta($existing_customer_post_id, 'customer_vehicles', $vehicles);
+        
+        //Create customer vehicle attachments meta
+        update_post_meta($existing_customer_post_id, 'vehicle-attachments', $vehicle_attachments);
 
     }
 
@@ -355,6 +361,66 @@ function delete_file() {
     if(wp_doing_ajax()) die();
 }
 
+//Get Customer Jobs for Customer Edit
+add_action('wp_ajax_get_customer_jobs', 'get_customer_jobs');
+add_action('wp_ajax_nopriv_get_customer_jobs', 'get_customer_jobs');
+function get_customer_jobs() {
+    
+    //Current USer
+    $loggedInUser = get_current_user();
+    $customer_name = isset($_GET['customer-name']) ? $_GET['customer-name'] : 284;
+
+    $args = array(
+        'post_type' => 'jobs',
+        'numberposts' => -1,
+        'author' => $loggedInUser,
+        'oderby' => 'date',
+        'order' => 'DESC',
+        'meta_query' => array(
+            array(
+                'key' => 'customer-data',
+                'value' => $customer_name, // Substring to search for
+                'compare' => 'LIKE'
+            )
+        )
+    );
+    $jobs = get_posts($args);
+
+    $job_data = array();
+
+    
+    foreach ($jobs as $key => $job) {
+        parse_str( get_post_meta($job->ID, 'notes', true), $notes );
+        $notes = (strlen($notes["job-notes"]) > 15) ? substr($notes["job-notes"],0,15).'...' : $notes["job-notes"];;
+       
+        $vehicle_data = json_decode(get_post_meta( $job->ID , 'vehicle-data', true ));
+        $customer_data = json_decode(get_post_meta( $job->ID, 'customer-data', true ));
+        $job_status = get_post_meta( $job->ID, 'status', true );
+        
+        $date = date_create($job->post_date);
+        $formatted_date = date_format($date,"d/m/Y");
+        
+        $job_data[$key] = array(
+            "job_post_id" => $job->ID,
+            "name" => $customer_data->{"customer-name"},
+            "date" => $formatted_date,
+            "job_no" => $job->post_title,
+            "vehicle" => $vehicle_data->{"make"},
+            "registration" => $vehicle_data->{"registration"},
+            "status" => "<span class='status-light' ></span>".$job_status,
+            "notes" => $notes,
+            "total" => "Not Implemented",
+            "actions" => "...",
+        );
+    };
+
+    // Send JSON response
+    echo json_encode(array('data' => $job_data));
+
+    wp_die();
+
+}
+
 //Get Jobs for Jobs Dashboard
 add_action('wp_ajax_get_all_jobs', 'get_all_jobs');
 add_action('wp_ajax_nopriv_get_all_jobs', 'get_all_jobs');
@@ -378,7 +444,7 @@ function get_all_jobs() {
     foreach ($jobs as $key => $job) {
         parse_str( get_post_meta($job->ID, 'notes', true), $notes );
         $notes = (strlen($notes["job-notes"]) > 15) ? substr($notes["job-notes"],0,15).'...' : $notes["job-notes"];;
-        // $notes = wp_trim_words($notes["job-notes"]);
+       
         $vehicle_data = json_decode(get_post_meta( $job->ID , 'vehicle-data', true ));
         $customer_data = json_decode(get_post_meta( $job->ID, 'customer-data', true ));
         $job_status = get_post_meta( $job->ID, 'status', true );
@@ -386,8 +452,6 @@ function get_all_jobs() {
         $date = date_create($job->post_date);
         $formatted_date = date_format($date,"d/m/Y");
         
-        // echo '<pre>',print_r($job->post_date,1),'</pre>';
-        // echo '<pre>',print_r($notes,1),'</pre>';
         $job_data[$key] = array(
             "job_post_id" => $job->ID,
             "name" => $customer_data->{"customer-name"},
@@ -529,6 +593,45 @@ function get_user_customers() {
             "customer_email" => $customer_meta_contacts['email-1'],
             "customer_vehicle" => $customer_meta_vehicle['make'],
             "customer_address" => $customer_meta_details['physical-address'] . ', ' . $customer_meta_details['suburb'] . ', ' . $customer_meta_details['city'] . ', ' . $customer_meta_details['province'] . ', ' . $customer_meta_details['postal-code'],
+            "actions" => "...",
+        );
+    };
+
+    // Send JSON response
+    echo json_encode(array('data' => $customer_data));
+
+    wp_die();
+}
+
+// Get user vehicles edit
+add_action('wp_ajax_get_user_vehicles_edit', 'get_user_vehicles_edit');
+add_action('wp_ajax_nopriv_get_user_vehicles_edit', 'get_user_vehicles_edit'); 
+function get_user_vehicles_edit() {
+    
+    $loggedInUser = get_current_user(); //Current User
+    $customer_id = isset($_GET['customer-id']) ? (int)$_GET['customer-id'] : 0;
+    
+    $args = array(
+        'post_type' => 'customers',
+        'include' => array((int)$customer_id),
+        'numberposts' => -1,
+        'author' => $loggedInUser,
+    );
+
+    $customers = get_posts($args);
+
+    $customer_data = array();
+
+    foreach ($customers as $key => $customer) {
+        parse_str( get_post_meta($customer->ID, 'contacts', true), $customer_meta_contacts ); 
+        parse_str( get_post_meta($customer->ID, 'details', true), $customer_meta_details );
+        parse_str( get_post_meta($customer->ID, 'customer_vehicles', true), $customer_meta_vehicle );
+        $customer_data[$key] = array( 
+            "vehicle_customer" => ucfirst( $customer_meta_contacts['first-name-1'] ) . ' ' . ucfirst( $customer_meta_contacts['last-name-1'] ), 
+            "vehicle_make" => $customer_meta_vehicle['make'], 
+            "vehicle_model" => $customer_meta_vehicle['model'], 
+            "vehicle_registration" => $customer_meta_vehicle['registration'], 
+            "vehicle_vin" => $customer_meta_vehicle['VIN'], 
             "actions" => "...",
         );
     };

@@ -1,8 +1,36 @@
 <form id="vehicle-fields" >
-    <h3>Vehicle(s)</h3>
-    <?php if( !isset($customer_edit_id) ) { ?>
-        <h3>Add Vehicle</h3>
-        <div class="form-row d-flex flex-wrap" >
+    <h3>Vehicle(s)</h3>  
+       
+    
+    <?php  
+    //Add new vehicle when editing
+    if(isset($customer_edit_id) && !$customer_edit_id == "") {             
+        echo '<span class="add-new-vehicle" >';
+        include( get_stylesheet_directory() . "/assets/images/add-small-button.svg");
+        echo 'Add new vehicle </span>
+              <div class="datatable-wrapper"> 
+                <table id="customerVehicleTable" class="dt-table"> 
+                    <thead> 
+                        <tr>
+                            <th>Customer</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Registration</th>
+                            <th>VIN</th>
+                            <th>Actions</th>
+                        </tr> 
+                    </thead> 
+                    <tbody></tbody> 
+                </table> 
+            </div>
+              '; 
+            
+       
+    } else {
+        echo '<h3>Add Vehicle</h3><span class="add-new-vehicle" >'; 
+    }; ?>
+    
+    <div class="form-row d-flex flex-wrap new-vehicle" style="<?= isset($customer_edit_id) && $customer_edit_id != "" ? "display:none;" : ""; ?>" >
             <div class="fw-33 input-label-wrapper" >
                 <label for="make" >Make</label>
                 <input type="text" id="make" name="make" value="<?= isset($vehicles["make"]) ? $vehicles["make"] : ''; ?>" >
@@ -35,12 +63,12 @@
             
             <div class="fw-50 input-label-wrapper" >
                 <label for="VIN" >VIN</label>
-                <input type="text" id="VIN" name="VIN" value="<?= isset($vehicles["VIN"]) ? $vehicles["VIN"] : ''; ?>" >
+                <input type="text" class="vin-number" id="VIN" name="VIN" value="<?= isset($vehicles["VIN"]) ? $vehicles["VIN"] : ''; ?>" >
             </div>
             
         </div>
-    
-    <div class="form-row attachments" >
+
+    <div class="form-row attachments" style="<?= isset($customer_edit_id) && $customer_edit_id != "" ? "display:none;" : ""; ?>" >
             <div class="d-flex flex-column fw-100" >
                 <h3 class="mt-5 mb-2" >Attachments</h3>
                 <div class="fw-100" >
@@ -63,6 +91,7 @@
             <thead><tr><th>Name</th><th>Delete</th></tr></thead>
             <tbody>
             <?php 
+                
             if( isset($attchments_decoded) ) {
                 foreach ($attchments_decoded as $key => $attachment) {
                 echo '<tr><td><a href="'.$attachment[2].'" target="_blank" >'.$key.'</a></td>';
@@ -80,7 +109,7 @@
             ?>
             </tbody>
         </table>
-        <div class="form-row" >
+        <div class="form-row vehicle-description" style="<?= isset($customer_edit_id) && $customer_edit_id != "" ? "display:none;" : ""; ?>"  >
             <div class="d-flex flex-column fw-100" >
                 <h3 class="mt-5 mb-2" >Vehicle Description</h3>
                 <div class="fw-100" >
@@ -89,10 +118,4 @@
                 </div>
             </div>
         </div>
-    <?php } else { 
-        if(isset($customer_edit_id)) {
-            include( get_stylesheet_directory() . "/inc/templates/vehicle/vehicle-table.php");  
-            include( get_stylesheet_directory() . "/inc/templates/popups/add-vehicle-popup.php"); 
-        } 
-    }; ?>
 </form>

@@ -46,8 +46,6 @@ jQuery(document).ready(function ($) {
                     
                     if(Object.keys(customerData).length > 0) {
                         Object.keys(customerData).forEach(customer => {
-                            console.log(customerData[customer]);
-                            console.log(customerData[customer]["all-vehicle-values"]);
                             options += `<li 
                             data-company-name='${customerData[customer]["company-name"]}' 
                             data-address='${customerData[customer]["address"]}' 
@@ -297,7 +295,7 @@ jQuery(document).ready(function ($) {
         const vehicleData = $('input[name="vehicle-data"]').val()
 
         //Cost
-        let jobGrandTotal = $("input#grand-total-value").val()
+        let jobGrandTotal = $("input#grand-total-value").val().replace('R','')
 
         //Notes & Attachments Rows
         let jobAttachments = $("#attachments-obj").val()
@@ -429,7 +427,7 @@ jQuery(document).ready(function ($) {
         // }
 
         //Customer Name
-        const customerName = $('#first-name-1').val()
+        const customerName = $('#first-name-1').val() + ' ' + $('#last-name-1').val()
         const existingCustomerPostID = $('input#customer-post-id').val()
 
         //Details Fields
