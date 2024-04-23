@@ -429,12 +429,12 @@ jQuery(document).ready(function ($) {
         //Customer Name
         const customerName = $('#first-name-1').val() + ' ' + $('#last-name-1').val()
         const existingCustomerPostID = $('input#customer-post-id').val()
-
-        //Details Fields
-        const customerDetails = $('#customer-fields').serialize()
         
-        //Contact Fields
-        const customerContact = $('#contact-fields').serialize()
+        //Company Fields
+        const companyDetails = $('#company-fields').serialize()
+        
+        //Customer Details Fields
+        const customerDetails = $('#customer-details').serialize()
 
         //Vehicle Fields
         const vehicleName = `${ $('#make').val() } / ${$('#model').val()} / ${$('#colour').val()}`
@@ -444,7 +444,7 @@ jQuery(document).ready(function ($) {
        
         //Notes Fields
         const customerNotes = $('#customer-notes textarea').val()
-      
+       
         $.ajax({
             type: "POST",
             url: workshop_pro_obj.ajaxurl,
@@ -452,8 +452,8 @@ jQuery(document).ready(function ($) {
                 'action': 'post_customers',
                 'customer-name': customerName,
                 'customer-post-id': existingCustomerPostID,
+                'company-details': companyDetails,
                 'customer-details': customerDetails,
-                'customer-contacts': customerContact,
                 'vehicle-name': vehicleName,
                 'customer-vehicles': customerVehicle,
                 'vehicle-attachments': vehicleAttachments,

@@ -20,23 +20,13 @@ if(isset($customer_edit_id)) {
 
     $editing = "editing";
 
-    //Vehicle Attachments
-    !empty(get_post_meta($customer_edit_id, 'vehicle-attachments', true) ) && $attachments = get_post_meta($customer_edit_id, 'vehicle-attachments', true); 
-    if(!empty($attachments)) {
-        $attchments_decoded = json_decode($attachments);
-        $existingAttachments = array();
-        foreach ($attchments_decoded as $key => $attachment) {
-            array_push($existingAttachments,$attachment);
-        }
-    }
+    !empty(get_post_meta($customer_edit_id, 'customer_notes', true) ) && $notes = json_decode(get_post_meta($customer_edit_id, 'customer_notes', true)); 
 
-    !empty(get_post_meta($customer_edit_id, 'notes', true) ) && $notes = json_decode(get_post_meta($customer_edit_id, 'notes', true)); 
+    !empty(get_post_meta($customer_edit_id, 'customer_details', true) ) && parse_str(get_post_meta($customer_edit_id, 'customer_details', true),$customer_details); 
 
-    !empty(get_post_meta($customer_edit_id, 'details', true) ) && parse_str(get_post_meta($customer_edit_id, 'details', true),$details); 
+    !empty(get_post_meta($customer_edit_id, 'customer_vehicles', true) ) && parse_str(get_post_meta($customer_edit_id, 'customer_vehicles', true),$customer_vehicles); 
 
-    !empty(get_post_meta($customer_edit_id, 'vehicles', true) ) && parse_str(get_post_meta($customer_edit_id, 'vehicles', true),$vehicles); 
-
-    !empty(get_post_meta($customer_edit_id, 'contacts', true) ) && parse_str(get_post_meta($customer_edit_id, 'contacts', true),$contacts); 
+    !empty(get_post_meta($customer_edit_id, 'company_details', true) ) && parse_str(get_post_meta($customer_edit_id, 'company_details', true),$company_details); 
 
 } 
 

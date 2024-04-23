@@ -118,19 +118,19 @@ body {
         order: 3;
     }
     .justified-center {
-        justify-content: center;
+        justify-content: center!important;
     }
     .justified-between {
-        justify-content: space-between;
+        justify-content: space-between!important;
     }
     .justified-around {
-        justify-content: space-around;
+        justify-content: space-around!important;
     }
     .justified-start {
-        justify-content: flex-start;
+        justify-content: flex-start!important;
     }
     .justified-end {
-        justify-content: flex-end;
+        justify-content: flex-end!important;
     }
 
     @media only screen and (min-width: 1080px) {
@@ -188,6 +188,9 @@ body {
     }
     .fw-33 {
         width: calc(100% / 3 - 20px);
+    }
+    .fw-25 {
+        width: calc(100% / 4 - 20px);
     }
     @each $max_width_abbr, $max_width_name in (
         "150" : "150px",

@@ -1,0 +1,25 @@
+.alternate-contact {
+    .title-button {
+        display: flex;
+        cursor: pointer;
+        &::after {
+            content: '';
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='12' height='11' viewBox='0 0 12 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.649 7.659L2.352 3.89a.687.687 0 0 1 .517-1.14h6.595c.59 0 .906.696.517 1.14L6.684 7.66a.687.687 0 0 1-1.035 0z' fill='%23B5B5BD'/%3E%3C/svg%3E");
+            width: 30px;
+            height: 26px;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: inline-block;
+            transform: rotateX(0deg);
+            transition: transform 0.3s ease-in-out;
+        }
+    }
+    &.open {
+        .title-button {
+            &::after {
+                background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='12' height='11' viewBox='0 0 12 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.649 7.659L2.352 3.89a.687.687 0 0 1 .517-1.14h6.595c.59 0 .906.696.517 1.14L6.684 7.66a.687.687 0 0 1-1.035 0z' fill='%23B5B5BD'/%3E%3C/svg%3E");
+                transform: rotateX(180deg);
+            }
+        }
+    }
+}

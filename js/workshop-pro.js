@@ -515,6 +515,23 @@ jQuery(document).ready(function ($) {
         })
     }
 
+    //Display additional contact in customer form
+    if($('.alternate-contact .title-button').length > 0) {
+        let additionalDetails = $('.alternate-contact').hasClass('open') ? true : false
+        console.log(additionalDetails);
+        $(document).on('click','.alternate-contact .title-button',function() {
+            if(!additionalDetails) {
+                $(this).closest('.alternate-contact').find('.alternate-contact-form').fadeIn()
+                $(this).closest('.alternate-contact').addClass('open')
+                additionalDetails = true
+            } else {
+                $(this).closest('.alternate-contact').find('.alternate-contact-form').fadeOut()
+                $(this).closest('.alternate-contact').removeClass('open')
+                additionalDetails = false
+            }
+        })
+    }
+
 })
 
 

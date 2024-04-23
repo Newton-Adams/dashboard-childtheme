@@ -160,10 +160,10 @@ function handle_customer_ajax_form() {
     isset($_POST['customer-name']) && $customer_name = strip_tags($_POST['customer-name']);
 
     //Details Data
-    isset($_POST['customer-details']) &&  $details = strip_tags( $_POST['customer-details']);
+    isset($_POST['customer-details']) && $customer_details = strip_tags( $_POST['customer-details']);
  
     //Contact Data
-    isset($_POST['customer-contacts']) && $contacts = strip_tags( $_POST['customer-contacts'] );
+    isset($_POST['company-details']) && $company_details = strip_tags( $_POST['company-details'] );
 
     //Vehicle Data
     isset($_POST['vehicle-name']) && $vehicle_name = strip_tags( $_POST['vehicle-name'] );
@@ -204,19 +204,16 @@ function handle_customer_ajax_form() {
     // Check if the post was successfully inserted
     if ( !is_wp_error($post_id) && $customer_id > 0 ) {        
         //Create customer details meta
-        add_post_meta($customer_id, 'details', $details, true);
+        add_post_meta($customer_id, 'customer_details', $customer_details, true);
         
         //Create customer contact meta
-        add_post_meta($customer_id, 'contacts', $contacts, true);
+        add_post_meta($customer_id, 'company_details', $company_details, true);
                 
         //Create customer notes meta
-        add_post_meta($customer_id, 'notes', $notes, true);
+        add_post_meta($customer_id, 'customer_notes', $notes, true);
                 
         //Create customer vehicles meta
         add_post_meta($customer_id, 'customer_vehicles', $vehicles, true);
-                
-        //Create customer vehicle attachments meta
-        add_post_meta($customer_id, 'vehicle-attachments', $vehicle_attachments, true);
     } 
 
     if( $existing_customer_post_id != 0 ) {
@@ -232,19 +229,16 @@ function handle_customer_ajax_form() {
         } 
 
         //Update customer labour meta
-        update_post_meta($existing_customer_post_id, 'details', $details);
+        update_post_meta($existing_customer_post_id, 'customer_details', $customer_details);
       
         //Update customer labour meta
-        update_post_meta($existing_customer_post_id, 'contacts', $contacts);
+        update_post_meta($existing_customer_post_id, 'company_details', $company_details);
       
         //Update customer note meta
-        update_post_meta($existing_customer_post_id, 'notes', $notes);
+        update_post_meta($existing_customer_post_id, 'customer_notes', $notes);
                  
         //Update customer vehicle meta
         update_post_meta($existing_customer_post_id, 'customer_vehicles', $vehicles);
-        
-        //Create customer vehicle attachments meta
-        update_post_meta($existing_customer_post_id, 'vehicle-attachments', $vehicle_attachments);
 
     }
 
@@ -259,7 +253,7 @@ function createVehicle($vehicle_name, $vehicle_attachments, $vehicles, $vin) {
         'post_type' => 'vehicles',
         'post_title'    => $vehicle_name,
         'post_status'   => 'publish',
-        'post_author'   => 1,
+        'post_author'   => get_current_user_id(),
     );    
     
     //Create or edit post
@@ -292,7 +286,7 @@ function insert_csv_customers() {
             'post_type' => 'customers',
             'post_title'    => $row[0],
             'post_status'   => 'publish',
-            'post_author'   => 1,
+            'post_author'   => get_current_user_id(),
         );
         //Create or edit post
         $customer_id = (int)wp_insert_post( $customer_args );
@@ -366,7 +360,7 @@ add_action('wp_ajax_get_customer_jobs', 'get_customer_jobs');
 add_action('wp_ajax_nopriv_get_customer_jobs', 'get_customer_jobs');
 function get_customer_jobs() {
     
-    //Current USer
+    //Current User
     $loggedInUser = get_current_user();
     $customer_name = isset($_GET['customer-name']) ? $_GET['customer-name'] : 284;
 
@@ -376,6 +370,7 @@ function get_customer_jobs() {
         'author' => $loggedInUser,
         'oderby' => 'date',
         'order' => 'DESC',
+        'post_author'   => get_current_user_id(),
         'meta_query' => array(
             array(
                 'key' => 'customer-data',
@@ -623,8 +618,8 @@ function get_user_vehicles_edit() {
     $customer_data = array();
 
     foreach ($customers as $key => $customer) {
-        parse_str( get_post_meta($customer->ID, 'contacts', true), $customer_meta_contacts ); 
-        parse_str( get_post_meta($customer->ID, 'details', true), $customer_meta_details );
+        parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_meta_contacts ); 
+        parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_meta_details );
         parse_str( get_post_meta($customer->ID, 'customer_vehicles', true), $customer_meta_vehicle );
         $customer_data[$key] = array( 
             "vehicle_customer" => ucfirst( $customer_meta_contacts['first-name-1'] ) . ' ' . ucfirst( $customer_meta_contacts['last-name-1'] ), 
@@ -811,7 +806,8 @@ function fetch_customers() {
     $args = array(
         'post_type' => 'customers',
         'numberposts' => -1,
-        's' => $search_value
+        's' => $search_value,
+        'post_author'   => get_current_user_id(),
     );
 
     $customers = get_posts($args);
@@ -870,7 +866,7 @@ function save_vehicle_data() {
                 'post_type' => 'vehicles',
                 'post_title' => $formFields['vehicle_make'] . '-' . $formFields['vehicle_model'],
                 'post_status' => 'publish',
-                'post_author' => 1,
+                'post_author'   => get_current_user_id(),
             );
 
             if (isset($formFields['vehicle_post_id']) && $formFields['vehicle_post_id'] > 0) {
