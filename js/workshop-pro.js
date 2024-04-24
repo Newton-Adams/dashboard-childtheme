@@ -305,6 +305,8 @@ jQuery(document).ready(function ($) {
 
     //Get started guide 
     if($('.get-started-guide').length) { 
+
+        
         
         $(document).on('click','.add-business-info .add-business-btn',function() {
             $(this).toggleClass('active')
@@ -317,6 +319,23 @@ jQuery(document).ready(function ($) {
             }
         })
     }
+
+    if( $('#profile-form').length ) {
+        let profileFormValid = true
+        $('#profile-form input').each(function() {
+            if ($(this).val() === '') {
+                profileFormValid = false
+            }
+        });
+        console.log(profileFormValid);
+        if (profileFormValid) {
+            $('#profile-form').closest('.add-business-info').addClass('completed');
+            $('#profile-form').closest('.add-business-info').find('.icon-col').html('<svg width="60" height="61" viewBox="0 0 60 61" fill="none" xmlns="http://www.w3.org/2000/svg"><rect y="0.662109" width="60" height="60" rx="30" fill="#009026"></rect><path fill-rule="evenodd" clip-rule="evenodd" d="M37.6854 23.9755C38.0841 24.4299 38.0841 25.1666 37.6854 25.6209L29.5173 37.2555C29.1185 37.7099 28.4721 37.7099 28.0733 37.2555L22.6692 31.0975C22.2704 30.6431 22.2704 29.9064 22.6692 29.4521C23.0679 28.9977 23.7144 28.9977 24.1131 29.4521L28.7953 34.7875L36.2415 23.9755C36.6402 23.5212 37.2867 23.5212 37.6854 23.9755Z" fill="white"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M35.7025 23.8726C36.2819 23.2209 37.2214 23.2209 37.8008 23.8726C38.3731 24.5163 38.3802 25.5551 37.8219 26.2086L29.924 37.3126C29.9126 37.3286 29.9004 37.3439 29.8875 37.3584C29.3081 38.0102 28.3687 38.0102 27.7892 37.3585L22.5537 31.4697C21.9743 30.818 21.9743 29.7613 22.5537 29.1096C23.1332 28.4579 24.0726 28.4579 24.652 29.1096L28.7937 33.768L35.6631 23.9225C35.6753 23.905 35.6885 23.8883 35.7025 23.8726Z" fill="white"></path></svg>');
+        } else {
+            $('#profile-form').closest('.add-business-info').removeClass('completed');
+        }
+    }
+
 
     //Toggle snapshot
     if($('.snapshot-section').length)  { 
@@ -512,6 +531,29 @@ jQuery(document).ready(function ($) {
             $(this).closest('#vehicle-fields').find('.new-vehicle').fadeIn()
             $(this).closest('#vehicle-fields').find('.vehicle-description').fadeIn()
             $(this).closest('#vehicle-fields').find('.attachments').fadeIn()
+        })
+    }
+    
+    // Tabs 
+    if($('.tab-container').length > 0) {
+
+        console.log('tabs')
+        $('.tab-item').hide();
+        $('.tab-content .tab-item:first').show();
+        $('.tab-button:first').addClass('active');
+
+        $(document).on('click','.tabs > .tab-button',function() {
+            // Hide all tab content 
+            $('.tab-content .tab-item').hide(); 
+    
+            // Show the selected tab content 
+            const tabId = $(this).data('tab');
+            $(`#${tabId}`).fadeIn();
+    
+            // Optional: Add active class to the selected tab button
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+    
         })
     }
 

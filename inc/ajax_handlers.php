@@ -542,11 +542,11 @@ function get_user_vehicles() {
 
         $vehicle_data[$key] = array( 
             "vehicle_post_id" => $vehicle->ID,
-            "vehicle_customer" => $customer_data->{'customer-name'}, 
-            "vehicle_make" => $vehicle_meta_data->vehicle_make, 
-            "vehicle_model" => $vehicle_meta_data->vehicle_model, 
-            "vehicle_registration" => $vehicle_meta_data->vehicle_registration, 
-            "vehicle_vin" => $vehicle_meta_data->vehicle_vin, 
+            "customer" => $customer_data->{'customer-name'}, 
+            "make" => $vehicle_meta_data->make, 
+            "model" => $vehicle_meta_data->model, 
+            "registration" => $vehicle_meta_data->registration, 
+            "vin" => $vehicle_meta_data->vin, 
             "actions" => "...",
         );
     };
@@ -661,6 +661,10 @@ function profile_form() {
     $userAddress = esc_attr(get_user_meta($user_id, 'address', true));
     $vatNumber = esc_attr(get_user_meta($user_id, 'vat_number', true));
     $companyRegistrationNumber = esc_attr(get_user_meta($user_id, 'company_registration_number', true));
+    $hourlyLabourRate = esc_attr(get_user_meta($user_id, 'hourly_labour_rate', true));
+    $currency = esc_attr(get_user_meta($user_id, 'currency', true));
+    $vatRate = esc_attr(get_user_meta($user_id, 'vat_rate', true));
+    $parts_markup = esc_attr(get_user_meta($user_id, 'parts_markup', true));
 
     if ( isset($_POST['formData']) ) {
         parse_str($_POST['formData'], $form_data);
@@ -683,6 +687,29 @@ function profile_form() {
         <div class="form-row">
             <div class="input-label-wrapper" >
                 <div class="profile-form-header d-flex flex-align-center">
+                    <?php 
+                        // Get the current user
+                        $current_user = wp_get_current_user();
+
+                        // Check if the form was submitted
+                        if (isset($_FILES['profile_picture'])) {
+                            // Handle the file upload
+                            $uploaded_file = $_FILES['profile_picture'];
+                            $upload_overrides = array('test_form' => false);
+                            $upload_result = wp_handle_upload($uploaded_file, $upload_overrides);
+
+                            if (isset($upload_result['file'])) {
+                                // File upload was successful
+                                // Update the user's profile picture (avatar)
+                                update_user_meta($current_user->ID, 'profile_picture', $upload_result['url']);
+
+                                return '<p>Profile picture updated successfully!</p>';
+                            } else {
+                                // File upload failed
+                                return '<p>File upload failed. Please try again.</p>';
+                            }
+                        }
+                    ?>
                     <div class="d-flex flex-align-center">
                         <div class="profile-image">
                             <?php 
@@ -774,6 +801,33 @@ function profile_form() {
                 <input type="text" name="company_registration_number" id="company_registration_number" value="<?= $companyRegistrationNumber ?>" placeholder="Placeholder" /> 
             </div>
         </div>
+
+        <!-- Extra fields -->
+        <?php if(!is_front_page(  )) { ?> 
+        <div class="form-row" >
+            <div class="input-label-wrapper" >
+                <label for="hourly_labour_rate" >Hourly labour rate</label>
+                <input type="text" name="hourly_labour_rate" id="hourly_labour_rate" value="<?= $hourlyLabourRate ?>" placeholder="Placeholder" />
+            </div>
+            <div class="input-label-wrapper" >
+                <label for="currency" >Currency</label>
+                <select name="currency" id="currency" class="required" >
+                    <option value="ZAR" >ZAR</option>
+                    <option value="USD" >USD</option>
+                    <option value="EUR" >EUR</option>
+                </select>
+            </div>
+            <div class="input-label-wrapper" >
+                <label for="vat_rate" >VAT rate</label>
+                <input type="text" name="vat_rate" id="vat_rate" value="<?= $vatRate ?>" placeholder="Placeholder" />
+            </div>
+            <div class="input-label-wrapper" >
+                <label for="parts_markup" >Parts markup</label>
+                <input type="number" name="parts_markup" id="parts_markup" value="<?= $partsMarkup ?>" placeholder="%" />
+            </div>
+        </div>
+        <?php } ?>
+
     
         <div style="height:10px" aria-hidden="true" class="wp-block-spacer"></div>
 
@@ -830,7 +884,8 @@ function fetch_customers() {
         }
       
         //Vehicle data        
-        $customer_data[$customer->ID] = array(
+        $customer_data[$customer->ID] = array( 
+            "customer_post_id" => $customer->ID, 
             "name" => $customer->post_title,
             "company-name" => $details["company-name"],
             "email" => $contacts["email-1"],
@@ -860,57 +915,110 @@ add_action('wp_ajax_nopriv_save_vehicle_data', 'save_vehicle_data');
 function save_vehicle_data() {
 
     if (isset($_POST['formData'])) {
+        
+        // Convert serialized form data to array
+        parse_str($_POST['formData'], $formFields);
+        parse_str($_POST['attachments'], $attachments);
 
-        parse_str($_POST['formData'], $formFields); // Convert serialized form data to array 
-        parse_str($_POST['attachments'], $attachments); // Convert serialized form data to array
-
-        if ( isset($formFields['vehicle_make']) && isset($formFields['vehicle_model']) ) {
-
-            //Add/update the post
-            $vehicle_args = array(
-                'post_type' => 'vehicles',
-                'post_title' => $formFields['vehicle_make'] . '-' . $formFields['vehicle_model'],
-                'post_status' => 'publish',
-                'post_author'   => get_current_user_id(),
-            );
-
-            if (isset($formFields['vehicle_post_id']) && $formFields['vehicle_post_id'] > 0) {
-                $vehicle_args['ID'] = $formFields['vehicle_post_id'];
-            }
-
-            //Create or edit post
-            $vehicle_id = (int) wp_insert_post($vehicle_args);
-
-            // Check if post exist and update  
-            if ( !is_wp_error($vehicle_id) && isset($formFields['vehicle_post_id']) && $formFields['vehicle_post_id'] > 0) {
-
-                $vehicleData = $formFields;
-                unset($vehicleData["customer-data"], $vehicleData["hidden-attachment"]);
-
-                // Update post meta
-                update_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
-                update_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
-                if ( isset($attachments) ) {
-                    update_post_meta( $vehicle_id, 'attachment', json_encode( $attachments ) );
-                }
-
-            } else {
-
-                $vehicleData = $formFields;
-                unset($vehicleData["customer-data"], $vehicleData["hidden-attachment"]);
-
-                // Update post meta
-                add_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
-                add_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
-                if ( isset($attachments) ) {
-                    add_post_meta( $vehicle_id, 'attachment', json_encode( $attachments ) );
-                }
-
-            }
-
+        // Validate required data fields
+        if (!isset($formFields['customer-data'], $formFields['vin'])) {
+            wp_send_json_error(['message' => 'Missing required fields']);
         }
 
-        echo json_encode($attachments);
+        // Decode customer data
+        $customerData = json_decode($formFields['customer-data']);
+        $customerId = $customerData->{"customer-post-id"};
+
+        if ($customerId > 0) {
+            // Retrieve existing customer vehicles data
+            $customerVehicles = get_post_meta($customerId, 'customer_vehicles', true);
+            $customerVehiclesDecoded = json_decode($customerVehicles, true);
+
+            // Prepare updated vehicle data
+            $updateVehicle = [
+                "make" => sanitize_text_field($formFields['make']),
+                "model" => sanitize_text_field($formFields['model']),
+                "year" => sanitize_text_field($formFields['year']),
+                "colour" => sanitize_text_field($formFields['colour']),
+                "mileage" => sanitize_text_field($formFields['mileage']),
+                "registration" => sanitize_text_field($formFields['registration']),
+                "description" => sanitize_text_field($formFields['description']),
+            ];
+
+            // Update the vehicle data in the array
+            $customerVehiclesDecoded[$formFields['vin']] = $updateVehicle;
+
+            // Save the updated data back to the database
+            update_post_meta($customerId, 'customer_vehicles', json_encode($customerVehiclesDecoded));
+
+
+            // Create vehicle post
+
+            if ( isset($formFields['make']) && isset($formFields['model']) ) {
+                
+                $vehicle_name = $formFields['make'] . '-' . $formFields['model'];
+                //Add/update the post
+                $vehicle_args = array(
+                    'post_type' => 'vehicles',
+                    'post_title' => $vehicle_name,
+                    'post_status' => 'publish',
+                    'post_author'   => get_current_user_id(),
+                );
+    
+                if (isset($formFields['vehicle_post_id']) && $formFields['vehicle_post_id'] > 0) {
+                    $vehicle_args['ID'] = $formFields['vehicle_post_id'];
+                }
+    
+                //Create or edit post
+                $vehicle_id = (int) wp_insert_post($vehicle_args);
+
+                // Update post title if vehicle post is created 
+                $existing_vehicle_post_id = $formFields['vehicle_post_id'];
+
+                if(get_the_title($vehicle_id) !== $vehicle_name) {
+                    wp_update_post(
+                        array (
+                            'ID'        => $existing_vehicle_post_id,
+                            'post_title' => $vehicle_name
+                        )
+                    );
+                } 
+    
+                // Check if post exist and update  
+                if ( !is_wp_error($vehicle_id) && isset($formFields['vehicle_post_id']) && $formFields['vehicle_post_id'] > 0) {
+    
+                    $vehicleData = $formFields;
+                    unset($vehicleData["customer-data"], $vehicleData["hidden-attachment"]);
+    
+                    // Update post meta 
+                    update_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
+                    update_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
+                    if ( isset($attachments) ) {
+                        update_post_meta( $vehicle_id, 'attachment', json_encode( $attachments ) );
+                    }
+    
+                } else {
+    
+                    $vehicleData = $formFields;
+                    unset($vehicleData["customer-data"], $vehicleData["hidden-attachment"]);
+    
+                    // Update post meta 
+                    add_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
+                    add_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
+                    if ( isset($attachments) ) {
+                        add_post_meta( $vehicle_id, 'attachment', json_encode( $attachments ) );
+                    }
+    
+                }
+    
+            }
+
+            // Send success response
+            wp_send_json_success(['message' => 'Vehicle data saved successfully']);
+        } else {
+            // Send error response if customer ID is not valid
+            wp_send_json_error(['message' => 'Invalid customer ID']);
+        }
     }
 
     if (wp_doing_ajax()) {
@@ -939,7 +1047,6 @@ function edit_vehicle_data() {
         
         echo json_encode($vehicle_data);
     }
-    
 
     if (wp_doing_ajax()) {
         die();
@@ -947,9 +1054,9 @@ function edit_vehicle_data() {
 }
 
 // Delete Vehicle Data 
-add_action('wp_ajax_delete_vehicle_data', 'delete_vehicle_data');
-add_action('wp_ajax_nopriv_delete_vehicle_data', 'delete_vehicle_data'); 
-function delete_vehicle_data() {
+add_action('wp_ajax_delete_post', 'delete_post');
+add_action('wp_ajax_nopriv_delete_post', 'delete_post'); 
+function delete_post() {
 
     $delete_post_id = isset($_POST['delete_post_id']) ? (int)$_POST['delete_post_id'] : 0;
 

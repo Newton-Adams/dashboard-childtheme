@@ -375,11 +375,11 @@ jQuery(document).ready(function ($) {
             },
             pagingType: 'simple_numbers', 
             columns: [
-                { data: 'vehicle_customer' }, 
-                { data: 'vehicle_make' }, 
-                { data: 'vehicle_model' }, 
-                { data: 'vehicle_registration' }, 
-                { data: 'vehicle_vin' }, 
+                { data: 'customer' }, 
+                { data: 'make' }, 
+                { data: 'model' }, 
+                { data: 'registration' }, 
+                { data: 'vin' }, 
                 { data: 'actions' }
             ],
             layout: { 
@@ -537,7 +537,7 @@ jQuery(document).ready(function ($) {
                         actions += '<div class="action-wrap">';
                         actions += '<div class="action-btn" data-id="' + row['customer_post_id'] + '"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
-                        actions += '<li><a href="# data-delete-post="' + row['customer_post_id'] + '">Delete</a></li>';
+                        actions += '<li><a href="#" data-delete-post="' + row['customer_post_id'] + '">Delete</a></li>';
                         actions += '<li><a href="#">Send Quote</a></li>'; 
                         actions += '<li><a href="#">Send Invoice</a></li>'; 
                         actions += '</ul>'; 

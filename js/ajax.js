@@ -46,34 +46,36 @@ jQuery(document).ready(function ($) {
                     
                     if(Object.keys(customerData).length > 0) {
                         Object.keys(customerData).forEach(customer => {
+                            console.log(customerData[customer]);
                             options += `<li 
+                            data-customer-id='${customerData[customer]["customer_post_id"]}' 
                             data-company-name='${customerData[customer]["company-name"]}' 
                             data-address='${customerData[customer]["address"]}' 
-                                            data-name='${customerData[customer]["name"]}' 
-                                            data-email='${customerData[customer]["email"]}' 
-                                            data-phone='${customerData[customer]["phone"]}' 
-                                            data-vin='${customerData[customer]["vin"]}' 
-                                            data-make='${customerData[customer]["make"]}'
-                                            data-model='${customerData[customer]["model"]}'
-                                            data-registration='${customerData[customer]["registration"]}'
-                                            data-mileage='${customerData[customer]["mileage"]}'
-                                            data-colour='${customerData[customer]["colour"]}'
-                                            data-vehicle-all='${customerData[customer]["all-vehicle-values"]}'
-                                        >
-                                            <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect width="46" height="46" rx="23" fill="#F0F6FF"/>
-                                                <mask id="mask0_2_12688" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="14" width="18" height="18">
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M23 30.875C27.3492 30.875 30.875 27.3492 30.875 23C30.875 18.6508 27.3492 15.125 23 15.125C18.6508 15.125 15.125 18.6508 15.125 23C15.125 27.3492 18.6508 30.875 23 30.875ZM23 32C27.9706 32 32 27.9706 32 23C32 18.0294 27.9706 14 23 14C18.0294 14 14 18.0294 14 23C14 27.9706 18.0294 32 23 32Z" fill="black"/>
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.8204 24.7631C19.0893 24.6075 19.4334 24.6994 19.589 24.9683C20.2706 26.1467 21.5433 26.9375 23 26.9375C24.4568 26.9375 25.7294 26.1467 26.4111 24.9683C26.5667 24.6994 26.9108 24.6075 27.1797 24.7631C27.4486 24.9187 27.5405 25.2627 27.3849 25.5317C26.5104 27.0434 24.8746 28.0625 23 28.0625C21.1255 28.0625 19.4896 27.0434 18.6151 25.5317C18.4596 25.2627 18.5515 24.9187 18.8204 24.7631Z" fill="black"/>
-                                                <path d="M21.875 21.3125C21.875 22.2445 21.3713 23 20.75 23C20.1287 23 19.625 22.2445 19.625 21.3125C19.625 20.3805 20.1287 19.625 20.75 19.625C21.3713 19.625 21.875 20.3805 21.875 21.3125Z" fill="black"/>
-                                                <path d="M26.375 21.3125C26.375 22.2445 25.8713 23 25.25 23C24.6287 23 24.125 22.2445 24.125 21.3125C24.125 20.3805 24.6287 19.625 25.25 19.625C25.8713 19.625 26.375 20.3805 26.375 21.3125Z" fill="black"/>
-                                                </mask>
-                                                <g mask="url(#mask0_2_12688)">
-                                                <rect x="14" y="14" width="18" height="18" fill="#18181A"/>
-                                                </g>
-                                            </svg>
-                                            ${customerData[customer]['name']} 
-                                        </li>`
+                            data-name='${customerData[customer]["name"]}' 
+                            data-email='${customerData[customer]["email"]}' 
+                            data-phone='${customerData[customer]["phone"]}' 
+                            data-vin='${customerData[customer]["vin"]}' 
+                            data-make='${customerData[customer]["make"]}'
+                            data-model='${customerData[customer]["model"]}'
+                            data-registration='${customerData[customer]["registration"]}'
+                            data-mileage='${customerData[customer]["mileage"]}'
+                            data-colour='${customerData[customer]["colour"]}'
+                            data-vehicle-all='${customerData[customer]["all-vehicle-values"]}'
+                            >
+                                <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="46" height="46" rx="23" fill="#F0F6FF"/>
+                                    <mask id="mask0_2_12688" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="14" width="18" height="18">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M23 30.875C27.3492 30.875 30.875 27.3492 30.875 23C30.875 18.6508 27.3492 15.125 23 15.125C18.6508 15.125 15.125 18.6508 15.125 23C15.125 27.3492 18.6508 30.875 23 30.875ZM23 32C27.9706 32 32 27.9706 32 23C32 18.0294 27.9706 14 23 14C18.0294 14 14 18.0294 14 23C14 27.9706 18.0294 32 23 32Z" fill="black"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M18.8204 24.7631C19.0893 24.6075 19.4334 24.6994 19.589 24.9683C20.2706 26.1467 21.5433 26.9375 23 26.9375C24.4568 26.9375 25.7294 26.1467 26.4111 24.9683C26.5667 24.6994 26.9108 24.6075 27.1797 24.7631C27.4486 24.9187 27.5405 25.2627 27.3849 25.5317C26.5104 27.0434 24.8746 28.0625 23 28.0625C21.1255 28.0625 19.4896 27.0434 18.6151 25.5317C18.4596 25.2627 18.5515 24.9187 18.8204 24.7631Z" fill="black"/>
+                                    <path d="M21.875 21.3125C21.875 22.2445 21.3713 23 20.75 23C20.1287 23 19.625 22.2445 19.625 21.3125C19.625 20.3805 20.1287 19.625 20.75 19.625C21.3713 19.625 21.875 20.3805 21.875 21.3125Z" fill="black"/>
+                                    <path d="M26.375 21.3125C26.375 22.2445 25.8713 23 25.25 23C24.6287 23 24.125 22.2445 24.125 21.3125C24.125 20.3805 24.6287 19.625 25.25 19.625C25.8713 19.625 26.375 20.3805 26.375 21.3125Z" fill="black"/>
+                                    </mask>
+                                    <g mask="url(#mask0_2_12688)">
+                                    <rect x="14" y="14" width="18" height="18" fill="#18181A"/>
+                                    </g>
+                                </svg>
+                                ${customerData[customer]['name']} 
+                            </li>`
                         });
                     } else {
                         options += `<li class="no-customers" >
@@ -107,6 +109,7 @@ jQuery(document).ready(function ($) {
          //Add customer option event listeners
          $(document).on('click','.job-select-wrapper.customer .options li:not(.add-new-customer):not(.no-customers)',function() {
             customerResultsActive = false     
+            const customerID = $(this).data('customer-id')
             const customerName = $(this).data('name')
             const companyName = $(this).data('company-name')
             const contact = $(this).data('email')
@@ -120,6 +123,7 @@ jQuery(document).ready(function ($) {
 
             //Complete hidden customer field
             const customerData = {
+                "customer-post-id": customerID,
                 "customer-name": customerName,
                 "company-name": companyName,
                 "email": contact,
@@ -699,6 +703,8 @@ jQuery(document).ready(function ($) {
             }, 
             success: function(response) {
 
+                console.log(response);
+
                 removeOverlayLoader(self);
                 setTimeout(() => {
 
@@ -760,12 +766,13 @@ jQuery(document).ready(function ($) {
 
                 // decode the JSON response
                 const vehicleData = JSON.parse(response);
+                console.log(vehicleData);
                 
                 // Pass the post id to the form
                 $('#add-vehicle-form input[name="vehicle_post_id"]').val(edit_post_id);
 
                 // Customer field update
-                const customerData = '{"customer-name":"'+vehicleData['customer-name']+'","company-name":"'+vehicleData['company-name']+'","email":"'+vehicleData['email']+'","phone":'+vehicleData['phone']+',"address":"'+vehicleData['address']+'"}';
+                const customerData = '{"customer-post-id":'+vehicleData['customer-post-id']+',"customer-name":"'+vehicleData['customer-name']+'","company-name":"'+vehicleData['company-name']+'","email":"'+vehicleData['email']+'","phone":'+vehicleData['phone']+',"address":"'+vehicleData['address']+'"}';
                 $('#add-vehicle-form .customer-select input').val(vehicleData['customer-name'])
 
                 $('.customer').find('.customer-select').fadeOut(0,function() {
@@ -780,14 +787,14 @@ jQuery(document).ready(function ($) {
                 
                 // Populate the vehicle fields with the data
                 $('.edit-vehicle-popup input[name="customer-data"]').val(customerData);
-                $('.edit-vehicle-popup input[name="vehicle_make"]').val(vehicleData.vehicle_make); 
-                $('.edit-vehicle-popup input[name="vehicle_model"]').val(vehicleData.vehicle_model); 
-                $('.edit-vehicle-popup input[name="vehicle_year"]').val(vehicleData.vehicle_year); 
-                $('.edit-vehicle-popup input[name="vehicle_vin"]').val(vehicleData.vehicle_vin); 
-                $('.edit-vehicle-popup input[name="vehicle_registration"]').val(vehicleData.vehicle_registration); 
-                $('.edit-vehicle-popup input[name="vehicle_colour"]').val(vehicleData.vehicle_colour); 
-                $('.edit-vehicle-popup input[name="vehicle_mileage"]').val(vehicleData.vehicle_mileage); 
-                $('.edit-vehicle-popup input[name="vehicle-description"]').val(vehicleData['vehicle-description']);
+                $('.edit-vehicle-popup input[name="make"]').val(vehicleData.make); 
+                $('.edit-vehicle-popup input[name="model"]').val(vehicleData.model); 
+                $('.edit-vehicle-popup input[name="year"]').val(vehicleData.year); 
+                $('.edit-vehicle-popup input[name="vin"]').val(vehicleData.vin); 
+                $('.edit-vehicle-popup input[name="registration"]').val(vehicleData.registration); 
+                $('.edit-vehicle-popup input[name="colour"]').val(vehicleData.colour); 
+                $('.edit-vehicle-popup input[name="mileage"]').val(vehicleData.mileage); 
+                $('.edit-vehicle-popup textarea[name="description"]').val(vehicleData.description);
 
             },
             error: function(xhr, status, error) {
@@ -807,7 +814,7 @@ jQuery(document).ready(function ($) {
             url: workshop_pro_obj.ajaxurl, 
             type: 'POST', 
             data: {
-                action: 'delete_vehicle_data',
+                action: 'delete_post',
                 delete_post_id: delete_post_id
             },
             success: function(response) { 

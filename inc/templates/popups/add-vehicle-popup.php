@@ -42,38 +42,38 @@ function add_vehicle_popup() {
 
                 <div class="form-row" >
                     <div class="input-label-wrapper" >
-                        <label for="vehicle_make" >Make</label>
-                        <input type="text" name="vehicle_make" id="vehicle_make" value="" placeholder="Make" class="required"  />
+                        <label for="make" >Make</label>
+                        <input type="text" name="make" id="make" value="" placeholder="Make" class="required"  />
                     </div>
                     <div class="input-label-wrapper" >
-                        <label for="vehicle_model" >Model</label>
-                        <input type="text" name="vehicle_model" id="vehicle_model" value="" placeholder="Model" class="required" />               
+                        <label for="model" >Model</label>
+                        <input type="text" name="model" id="model" value="" placeholder="Model" class="required" />               
                     </div>
                     <div class="input-label-wrapper" >
-                        <label for="vehicle_year" >Year</label>
-                        <input type="text" name="vehicle_year" id="vehicle_year" value="" placeholder="Year" class="required" />
+                        <label for="year" >Year</label>
+                        <input type="text" name="year" id="year" value="" placeholder="Year" class="required" />
                     </div>
                 </div>
 
                 <div class="form-row" >
                     <div class="input-label-wrapper" > 
-                        <label for="vehicle_colour" >Colour</label> 
-                        <input type="text" name="vehicle_colour" id="vehicle_colour" value="" placeholder="Colour" class="required" />
+                        <label for="colour" >Colour</label> 
+                        <input type="text" name="colour" id="colour" value="" placeholder="Colour" class="required" />
                     </div>
                     <div class="input-label-wrapper" > 
-                        <label for="vehicle_mileage" >Mileage</label>  
-                        <input type="text" name="vehicle_mileage" id="vehicle_mileage" value="" placeholder="Mileage" class="required" />
+                        <label for="mileage" >Mileage</label>  
+                        <input type="text" name="mileage" id="mileage" value="" placeholder="Mileage" class="required" />
                     </div>
                 </div>
                 
                 <div class="form-row" >
                     <div class="input-label-wrapper" >
-                        <label for="vehicle_registration" >Registration</label>
-                        <input type="text" name="vehicle_registration" id="vehicle_registration" value="" placeholder="Registration" class="required" />
+                        <label for="registration" >Registration</label>
+                        <input type="text" name="registration" id="registration" value="" placeholder="Registration" class="required" />
                     </div>
                     <div class="input-label-wrapper" >
-                        <label for="vehicle_vin" >VIN</label>
-                        <input type="text" name="vehicle_vin" id="vehicle_vin" value="" placeholder="VIN" class="required" />
+                        <label for="vin" >VIN</label>
+                        <input type="text" name="vin" id="vin" value="" placeholder="VIN" class="required" />
                     </div>
                 </div>
 
@@ -128,8 +128,8 @@ function add_vehicle_popup() {
 
                 <div class="form-row" >
                     <div class="input-label-wrapper" >
-                        <label for="vehicle-description" >Vehicle Description</label> 
-                        <textarea name="vehicle-description" id="vehicle-description" value="" placeholder="Vehicle Description" ></textarea>
+                        <label for="description" >Vehicle Description</label> 
+                        <textarea name="description" id="description" value="" placeholder="Vehicle Description" ></textarea>
                     </div>
                 </div>
 
