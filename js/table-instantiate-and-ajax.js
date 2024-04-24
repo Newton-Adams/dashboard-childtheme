@@ -573,7 +573,6 @@ jQuery(document).ready(function ($) {
             },
             pagingType: 'simple_numbers', 
             columns: [
-                { data: 'vehicle_customer' }, 
                 { data: 'vehicle_make' }, 
                 { data: 'vehicle_model' }, 
                 { data: 'vehicle_registration' },
@@ -628,10 +627,9 @@ jQuery(document).ready(function ($) {
                 },
                 { 
                     responsivePriority: 1, 
-                    targets: 5, 
+                    targets: 4, 
                     className: 'actions', 
                     "render": function (data, type, row) { 
-                        console.log(data,type,row)
                         let actions = '';
                         actions += '<div class="d-flex flex-align-center justified-end">';
                         actions += '<a href=/workshoppro/customer?edit=' + row['customer_post_id'] + ' class="edit-customer-action mt-1 mr-2">Edit</a>';

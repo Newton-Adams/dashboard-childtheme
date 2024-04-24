@@ -12,7 +12,6 @@
                 <table id="customerVehicleTable" class="dt-table"> 
                     <thead> 
                         <tr>
-                            <th>Customer</th>
                             <th>Make</th>
                             <th>Model</th>
                             <th>Registration</th>

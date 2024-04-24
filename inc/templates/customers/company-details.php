@@ -1,4 +1,4 @@
-<h3>Company Company Details</h3>
+<h3>Company Details</h3>
 <form id="company-fields" >
     <div class="form-row d-flex flex-wrap" >
         <div class="fw-100 input-label-wrapper" >

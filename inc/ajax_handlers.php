@@ -185,20 +185,20 @@ function handle_customer_ajax_form() {
         'post_author' => get_current_user_id()
     );    
     
-    $vinExists = get_posts(array(
-                    'post_type' => 'vehicles',
-                    'post_status'   => 'publish',
-                    'meta_key'   => 'vin',
-                    'meta_value' => 'vin',
-                ));
-                
-    if(!$vinExists) {
-        createVehicle($vehicle_name, $vehicle_attachments, $vehicles, $vin);
-    }  
-
     //Create or edit post
     if($existing_customer_post_id == 0) {
         $customer_id = (int)wp_insert_post( $customer_args );
+        
+        //Check if vin exists, else create vehicle
+        $vinExists = get_posts(array(
+                        'post_type' => 'vehicles',
+                        'post_status'   => 'publish',
+                        'meta_key'   => 'vin',
+                        'meta_value' => 'vin',
+                    ));                
+        if(!$vinExists) {
+            createVehicle($vehicle_name, $vehicle_attachments, $vehicles, $vin);
+        }  
     }    
     
     // Check if the post was successfully inserted
@@ -219,11 +219,11 @@ function handle_customer_ajax_form() {
     if( $existing_customer_post_id != 0 ) {
         echo 'update';
 
-        if(get_the_post_title($existing_customer_post_id) !== $customer_name) {
+        if(get_the_title($existing_customer_post_id) !== $customer_name) {
             wp_update_post(
                 array (
                     'ID'        => $existing_customer_post_id,
-                    'post_name' => $customer_name
+                    'post_title' => $customer_name
                 )
             );
         } 
@@ -236,9 +236,6 @@ function handle_customer_ajax_form() {
       
         //Update customer note meta
         update_post_meta($existing_customer_post_id, 'customer_notes', $notes);
-                 
-        //Update customer vehicle meta
-        update_post_meta($existing_customer_post_id, 'customer_vehicles', $vehicles);
 
     }
 
@@ -578,16 +575,16 @@ function get_user_customers() {
     $customer_data = array();
 
     foreach ($customers as $key => $customer) {
-        parse_str( get_post_meta($customer->ID, 'contacts', true), $customer_meta_contacts ); 
-        parse_str( get_post_meta($customer->ID, 'details', true), $customer_meta_details );
-        parse_str( get_post_meta($customer->ID, 'customer_vehicles', true), $customer_meta_vehicle );
+        parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_details ); 
+        parse_str( get_post_meta($customer->ID, 'company_details', true), $company_details );
+        parse_str( get_post_meta($customer->ID, 'customer_vehicles', true), $customer_vehicles );
         $customer_data[$key] = array( 
             "customer_post_id" => $customer->ID,
-            "customer_name" => ucfirst( $customer_meta_contacts['first-name-1'] ) . ' ' . ucfirst( $customer_meta_contacts['last-name-1'] ),
-            "customer_contact" => $customer_meta_contacts['cell-number-1'],
-            "customer_email" => $customer_meta_contacts['email-1'],
-            "customer_vehicle" => $customer_meta_vehicle['make'],
-            "customer_address" => $customer_meta_details['physical-address'] . ', ' . $customer_meta_details['suburb'] . ', ' . $customer_meta_details['city'] . ', ' . $customer_meta_details['province'] . ', ' . $customer_meta_details['postal-code'],
+            "customer_name" => ucfirst( $customer_details['first-name-1'] ) . ' ' . ucfirst( $customer_details['last-name-1'] ),
+            "customer_contact" => $customer_details['cell-number-1'],
+            "customer_email" => $customer_details['email-1'],
+            "customer_vehicle" => $customer_vehicles['make'],
+            "customer_address" => $customer_details['physical-address'] . ', ' . $customer_details['suburb'] . ', ' . $customer_details['city'] . ', ' . $customer_details['province'] . ', ' . $customer_details['postal-code'],
             "actions" => "...",
         );
     };
@@ -622,7 +619,6 @@ function get_user_vehicles_edit() {
         parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_meta_details );
         parse_str( get_post_meta($customer->ID, 'customer_vehicles', true), $customer_meta_vehicle );
         $customer_data[$key] = array( 
-            "vehicle_customer" => ucfirst( $customer_meta_contacts['first-name-1'] ) . ' ' . ucfirst( $customer_meta_contacts['last-name-1'] ), 
             "vehicle_make" => $customer_meta_vehicle['make'], 
             "vehicle_model" => $customer_meta_vehicle['model'], 
             "vehicle_registration" => $customer_meta_vehicle['registration'], 
