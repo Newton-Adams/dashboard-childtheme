@@ -572,19 +572,28 @@ function get_user_customers() {
 
     $customers = get_posts($args);
 
-    $customer_data = array();
+    $customer_data = array();    
 
     foreach ($customers as $key => $customer) {
+        $address_data = array();
         parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_details ); 
         parse_str( get_post_meta($customer->ID, 'company_details', true), $company_details );
         parse_str( get_post_meta($customer->ID, 'customer_vehicles', true), $customer_vehicles );
+
+        //Create ddress to later implode - this avoids unnecessary ","'s
+        $customer_details['physical-address'] != "" && array_push($address_data,$customer_details['physical-address']);
+        $customer_details['suburb'] != "" && array_push($address_data, $customer_details['suburb']);
+        $customer_details['city'] != "" && array_push($address_data, $customer_details['city']);
+        $customer_details['province'] != "" && array_push($address_data, $customer_details['province']);
+        $customer_details['postal-code'] != "" && array_push($address_data, $customer_details['postal-code']);
+      
         $customer_data[$key] = array( 
             "customer_post_id" => $customer->ID,
             "customer_name" => ucfirst( $customer_details['first-name-1'] ) . ' ' . ucfirst( $customer_details['last-name-1'] ),
             "customer_contact" => $customer_details['cell-number-1'],
             "customer_email" => $customer_details['email-1'],
             "customer_vehicle" => $customer_vehicles['make'],
-            "customer_address" => $customer_details['physical-address'] . ', ' . $customer_details['suburb'] . ', ' . $customer_details['city'] . ', ' . $customer_details['province'] . ', ' . $customer_details['postal-code'],
+            "customer_address" => implode(",", $address_data),
             "actions" => "...",
         );
     };
