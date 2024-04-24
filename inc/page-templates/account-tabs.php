@@ -26,4 +26,5 @@
         <div id="staff-tab" class="tab-item">
             <?php include( get_stylesheet_directory() . "/inc/templates/account/account-staff.php" ); ?>
         </div>
+    </div>
 </div>

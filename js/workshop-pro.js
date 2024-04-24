@@ -406,11 +406,16 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('click','.popup-overlay, .close-popup, .cancel-popup',function() { 
+
         $('.popup').fadeOut('fast', function() {
             $(this).removeClass('show');
             $('body').css('overflow','auto');
         });
+
         $(this).closest('form').clearForm();
+
+        // Remove Attachment Files from table
+        $('#attachment-files tr').remove();
     });
 
     //Vehicle Edit popup extras
@@ -423,10 +428,12 @@ jQuery(document).ready(function ($) {
                     $(this).removeClass('show');
                     $('body').css('overflow','auto');
                 });
-                $(this).closest('form').clearForm();
-                $('#add-vehicle-popup').removeClass('edit-vehicle-popup');
-                $('.edit-vehicle-popup ').find('.popup-title').text('Add Vehicle'); 
-            }, 1500);
+                $('#add-vehicle-popup').removeClass('edit-vehicle-popup').find('.popup-title').text('Add Vehicle');
+                $('#add-vehicle-popup').find('form').clearForm();
+                $('.customer').find('.selected-customer-outer').fadeOut(0,function() {
+                    $('.customer-select').fadeIn();                            
+                })
+            }, 500);
         }
     );
 
@@ -506,16 +513,6 @@ jQuery(document).ready(function ($) {
       
         updateTotalCosts('.section.labour-container','.section.parts-container')
     } 
-    
-    // Add Vehicle Popup 
-    $(document).on('click','[data-popup="add-vehicle-popup"]',function() {
-        // Change popup title and remove edit-vehicle-popup
-        $('#add-vehicle-popup').removeClass('edit-vehicle-popup').find('.popup-title').text('Add Vehicle');
-        $('#add-vehicle-popup').find('form').clearForm();
-        $('.customer').find('.selected-customer-outer').fadeOut(0,function() {
-            $('.customer-select').fadeIn();                            
-        })
-    });
 
     // Edit Vehicle Popop remove customer list options
     $(document).on('click', '.edit-vehicle-popup .customer .change-customer, .edit-vehicle-popup .customer .close', function(e) {

@@ -578,7 +578,7 @@ function get_user_customers() {
         $address_data = array();
         parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_details ); 
         parse_str( get_post_meta($customer->ID, 'company_details', true), $company_details );
-        parse_str( get_post_meta($customer->ID, 'customer_vehicles', true), $customer_vehicles );
+        $customer_vehicles = json_decode(get_post_meta($customer->ID, 'customer_vehicles', true) );
 
         //Create ddress to later implode - this avoids unnecessary ","'s
         $customer_details['physical-address'] != "" && array_push($address_data,$customer_details['physical-address']);
@@ -586,13 +586,21 @@ function get_user_customers() {
         $customer_details['city'] != "" && array_push($address_data, $customer_details['city']);
         $customer_details['province'] != "" && array_push($address_data, $customer_details['province']);
         $customer_details['postal-code'] != "" && array_push($address_data, $customer_details['postal-code']);
+
+        $makes = array(); // create an empty array to hold the makes 
+        foreach ($customer_vehicles as $vehicle) {
+            array_push($makes, $vehicle->make); // push the make of each vehicle into the $makes array
+        }
+        
+
+        ; // implode the $makes array into a string
       
         $customer_data[$key] = array( 
             "customer_post_id" => $customer->ID,
             "customer_name" => ucfirst( $customer_details['first-name-1'] ) . ' ' . ucfirst( $customer_details['last-name-1'] ),
             "customer_contact" => $customer_details['cell-number-1'],
             "customer_email" => $customer_details['email-1'],
-            "customer_vehicle" => $customer_vehicles['make'],
+            "customer_vehicle" => implode(", ", $makes),
             "customer_address" => implode(",", $address_data),
             "actions" => "...",
         );
@@ -918,7 +926,7 @@ function save_vehicle_data() {
         
         // Convert serialized form data to array
         parse_str($_POST['formData'], $formFields);
-        parse_str($_POST['attachments'], $attachments);
+        $attachments = isset($_POST['attachments']) ? $_POST['attachments'] : null;
 
         // Validate required data fields
         if (!isset($formFields['customer-data'], $formFields['vin'])) {
@@ -994,7 +1002,7 @@ function save_vehicle_data() {
                     update_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
                     update_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
                     if ( isset($attachments) ) {
-                        update_post_meta( $vehicle_id, 'attachment', json_encode( $attachments ) );
+                        update_post_meta( $vehicle_id, 'attachment', $attachments );
                     }
     
                 } else {
@@ -1006,7 +1014,7 @@ function save_vehicle_data() {
                     add_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
                     add_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
                     if ( isset($attachments) ) {
-                        add_post_meta( $vehicle_id, 'attachment', json_encode( $attachments ) );
+                        add_post_meta( $vehicle_id, 'attachment', $attachments );
                     }
     
                 }
@@ -1036,11 +1044,12 @@ function edit_vehicle_data() {
     if($edit_post_id > 0) {
         $vehicle_data = get_post_meta($edit_post_id, 'data', true);
         $customer_data = get_post_meta($edit_post_id, 'customer-data', true);
-        // $attachment_data = get_post_meta($edit_post_id, 'attachment', true);
+        $attachment_data = get_post_meta($edit_post_id, 'attachment', true);
         
         $vehicle_data = json_decode($vehicle_data) ?? array();
         $customer_data = json_decode($customer_data) ?? array();
         $attachment_data = json_decode($attachment_data) ?? array();
+        $attachment_data = array('attachments' => $attachment_data);
 
         // merge data with keys 
         $vehicle_data = array_merge( (array)$vehicle_data, (array)$customer_data, (array)$attachment_data );
