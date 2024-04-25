@@ -464,7 +464,7 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {	
                 console.log(response);
-                $('input[name="content-changed"]').prop('checked',false)
+                $('input[name="content-changed"]').prop('checked',false) 
                 window.location.href = "/workshoppro/customers/"
             },
             error: function (xhr) {

@@ -168,7 +168,32 @@ function handle_customer_ajax_form() {
     //Vehicle Data
     isset($_POST['vehicle-name']) && $vehicle_name = strip_tags( $_POST['vehicle-name'] );
     isset($_POST['vin']) && $vin = strip_tags( $_POST['vin'] );
+
     isset($_POST['customer-vehicles']) && $vehicles = strip_tags( $_POST['customer-vehicles'] );
+
+    // Vehicle Data Format
+    $vehiclesDataFormat = [];
+    if ( isset($_POST['customer-vehicles']) ) {
+
+        // Parse the vehicle data
+        parse_str($_POST['customer-vehicles'], $vehiclesData);
+
+        // Prepare updated vehicle data
+        $updateVehicle = [
+            "make" => sanitize_text_field( $vehiclesData['make'] ),
+            "model" => sanitize_text_field($vehiclesData['model']),
+            "year" => sanitize_text_field( $vehiclesData['year'] ),
+            "colour" => sanitize_text_field( $vehiclesData['colour'] ),
+            "mileage" => sanitize_text_field( $vehiclesData['mileage'] ),
+            "registration" => sanitize_text_field( $vehiclesData['registration'] ),
+            "description" => sanitize_text_field( $vehiclesData['description'] ),
+        ];
+
+        // Update the vehicle data in the array
+        $vehiclesDataFormat[ $vehiclesData['vin'] ] = $updateVehicle;
+        $vehiclesDataDecoded = json_encode( $vehiclesDataFormat, true );
+    }
+    
     isset($_POST['vehicle-attachments']) && $vehicle_attachments = strip_tags( $_POST['vehicle-attachments'] );
 
     //Customer Contact
@@ -197,7 +222,7 @@ function handle_customer_ajax_form() {
                         'meta_value' => 'vin',
                     ));                
         if(!$vinExists) {
-            createVehicle($vehicle_name, $vehicle_attachments, $vehicles, $vin);
+            createVehicle($customer_details, $vehicle_name, $vehicle_attachments, $vehiclesDataDecoded, $vin);
         }  
     }    
     
@@ -213,7 +238,9 @@ function handle_customer_ajax_form() {
         add_post_meta($customer_id, 'customer_notes', $notes, true);
                 
         //Create customer vehicles meta
-        add_post_meta($customer_id, 'customer_vehicles', $vehicles, true);
+        add_post_meta($customer_id, 'customer_vehicles', $vehicles, true); 
+
+        add_post_meta( $customer_id, 'vehicles_data', $vehiclesDataDecoded, true );
     } 
 
     if( $existing_customer_post_id != 0 ) {
@@ -235,7 +262,10 @@ function handle_customer_ajax_form() {
         update_post_meta($existing_customer_post_id, 'company_details', $company_details);
       
         //Update customer note meta
-        update_post_meta($existing_customer_post_id, 'customer_notes', $notes);
+        update_post_meta($existing_customer_post_id, 'customer_notes', $notes); 
+
+        //Update customer vehicles meta
+        update_post_meta($existing_customer_post_id, 'vehicles_data', $vehiclesDataDecoded, true );
 
     }
 
@@ -243,7 +273,7 @@ function handle_customer_ajax_form() {
 }
 
 //Create vehicle from initial customer save
-function createVehicle($vehicle_name, $vehicle_attachments, $vehicles, $vin) {
+function createVehicle($vehicles_customer, $vehicle_name, $vehicle_attachments, $vehicles, $vin) {
    
     //Add/update the post
     $vehicle_args = array(
@@ -255,9 +285,12 @@ function createVehicle($vehicle_name, $vehicle_attachments, $vehicles, $vin) {
     
     //Create or edit post
     $vehicle_ID = (int)wp_insert_post( $vehicle_args );  
+
+    // Create vehicle customer details 
+    add_post_meta($vehicle_ID, 'customer_details', $vehicles_customer, true);
         
     //Create vehicle meta
-    add_post_meta($vehicle_ID, 'vehicles', $vehicles, true);
+    add_post_meta($vehicle_ID, 'vehicles_data', $vehicles, true);
 
     //Create vehicle attachments
     add_post_meta($vehicle_ID, 'vehicle_attachments', $vehicle_attachments, true);
@@ -537,8 +570,9 @@ function get_user_vehicles() {
 
     foreach ($vehicles as $key => $vehicle) {
 
-        $vehicle_meta_data = json_decode( get_post_meta($vehicle->ID, 'vehicles', true) ); 
-        $customer_data = json_decode( get_post_meta($vehicle->ID, 'customer_details', true) );
+        $vehicle_meta_data = json_decode( get_post_meta( $vehicle->ID, 'vehicles_data', true ) ); 
+        $customer_data = get_post_meta($vehicle->ID, 'customer_details', true);
+        parse_str( $customer_data, $customer_data);
         
         // Extract the key (VIN) from the associative array
         $vin_key = key($vehicle_meta_data);
@@ -550,12 +584,11 @@ function get_user_vehicles() {
         $make = $vehicle_details->{'make'};
         $model = $vehicle_details->{'model'};
         $registration = $vehicle_details->{'registration'};
-        $vin_key = $vehicle_details->{'vin'};
 
-
+        // // Create an array of the vehicle data
         $vehicle_data[$key] = array( 
             "vehicle_post_id" => $vehicle->ID,
-            "customer" => $customer_data->{'first-name-1'} . ' ' . $customer_data->{'last-name-1'}, 
+            "customer" => $customer_data['first-name-1'] . ' ' . $customer_data['last-name-1'],
             "make" => $make, 
             "model" => $model, 
             "registration" => $registration, 
@@ -591,7 +624,7 @@ function get_user_customers() {
         $address_data = array();
         parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_details ); 
         parse_str( get_post_meta($customer->ID, 'company_details', true), $company_details );
-        $customer_vehicles = json_decode(get_post_meta($customer->ID, 'customer_vehicles', true) );
+        $customer_vehicles = json_decode(get_post_meta($customer->ID, 'vehicles_data', true) );
 
         //Create ddress to later implode - this avoids unnecessary ","'s
         $customer_details['physical-address'] != "" && array_push($address_data,$customer_details['physical-address']);
@@ -970,14 +1003,14 @@ function save_vehicle_data() {
             $customerVehiclesDecoded[$formFields['vin']] = $updateVehicle;
 
             // Save the updated data back to the database
-            update_post_meta($customerId, 'customer_vehicles', json_encode($customerVehiclesDecoded));
+            update_post_meta($customerId, 'vehicles_data', json_encode($customerVehiclesDecoded));
 
 
             // Create vehicle post
 
             if ( isset($formFields['make']) && isset($formFields['model']) ) {
                 
-                $vehicle_name = $formFields['make'] . '-' . $formFields['model'];
+                $vehicle_name = $formFields['make'] . ' / ' . $formFields['model'] . ' / ' . $formFields['colour'];
                 //Add/update the post
                 $vehicle_args = array(
                     'post_type' => 'vehicles',
@@ -1012,7 +1045,7 @@ function save_vehicle_data() {
                     unset($vehicleData["customer-data"], $vehicleData["hidden-attachment"]);
     
                     // Update post meta 
-                    update_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
+                    update_post_meta( $vehicle_id, 'vehicles_data', json_encode( $vehicleData ) );
                     update_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
                     if ( isset($attachments) ) {
                         update_post_meta( $vehicle_id, 'attachment', $attachments );
@@ -1024,7 +1057,7 @@ function save_vehicle_data() {
                     unset($vehicleData["customer-data"], $vehicleData["hidden-attachment"]);
     
                     // Update post meta 
-                    add_post_meta( $vehicle_id, 'data', json_encode( $vehicleData ) );
+                    add_post_meta( $vehicle_id, 'vehicles_data', json_encode( $vehicleData ) );
                     add_post_meta( $vehicle_id, 'customer-data', $formFields['customer-data'] );
                     if ( isset($attachments) ) {
                         add_post_meta( $vehicle_id, 'attachment', $attachments );
