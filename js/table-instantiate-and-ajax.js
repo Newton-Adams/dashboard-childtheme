@@ -10,8 +10,6 @@ jQuery(document).ready(function ($) {
             bottomEnd: null
         }
     });
-    
-    
 
     // Jobs Table 
     if($('#jobs-table').length > 0) {
@@ -94,6 +92,7 @@ jQuery(document).ready(function ($) {
                     targets: 8, 
                     className: 'actions', 
                     "render": function (data, type, row) {
+                        console.log(row)
                         let actions = '';                        
                         actions += '<div class="d-flex flex-align-center justified-end">';
                         actions += '<a href="/workshoppro/job/?edit=' + row['job_post_id'] + '" class="edit-customer-action mt-1 mr-2">Edit</a>';
@@ -247,17 +246,13 @@ jQuery(document).ready(function ($) {
             $('#jobs-table_wrapper > .dt-layout-row:last-child .row-count .showing').text(tableRows)
         }
 
-        //Result Count
-        // const loadRows = $('#jobs-table tbody tr').length
-        // $('#jobs-table_wrapper > .dt-layout-row:last-child').prepend(`<p class="row-count" >Showing <span class="showing">${loadRows}</span> of <span class="results" >${jobsTable.rows().count()}</span> results found</p>`)
-      
     }
     
      // Jobs Table 
      if($('#customer-jobs-table').length > 0) {
         let customerID = $('input#customer-post-id').val().length > 0 ? $('input#customer-post-id').val() : ""
         let customerName = $('#first-name-1').val() + ' ' + $('#last-name-1').val()
-        console.log(customerID);
+      
         var jobsTable = $('#customer-jobs-table').DataTable({
             ajax: {
                 url: workshop_pro_obj.ajaxurl + '?action=get_customer_jobs',
@@ -437,9 +432,9 @@ jQuery(document).ready(function ($) {
                         actions += '<div class="d-flex flex-align-center justified-end">';
                         actions += '<a href="#" data-popup="add-vehicle-popup" class="popup-btn edit-vehicle-action mt-1 mr-2">Edit</a>';
                         actions += '<div class="action-wrap">';
-                        actions += '<div class="action-btn" data-id="' + row['vehicle_post_id'] + '"><span></span><span></span><span></span></div>';
+                        actions += '<div class="action-btn" data-id="' + row['vehicle-post-id'] + '"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
-                        actions += '<li><a href="#" data-delete-post="' + row['vehicle_post_id'] + '">Delete</a></li>';
+                        actions += '<li><a href="#" data-delete-post="' + row['vehicle-post-id'] + '">Delete</a></li>';
                         actions += '<li><a href="#">Send Quote</a></li>'; 
                         actions += '<li><a href="#">Send Invoice</a></li>'; 
                         actions += '</ul>'; 
@@ -450,6 +445,7 @@ jQuery(document).ready(function ($) {
                 },
             ], 
             createdRow: function (row, data, index) {
+                console.log(data);
                 $(row).addClass('post-id-'+data.vehicle_post_id);
             }
         });
@@ -530,10 +526,9 @@ jQuery(document).ready(function ($) {
                     targets: 5, 
                     className: 'actions', 
                     "render": function (data, type, row) { 
-                        console.log(row)
                         let actions = '';
                         actions += '<div class="d-flex flex-align-center justified-end">';
-                        actions += '<a href=/workshoppro/customer?edit=' + row['customer_post_id'] + ' class="edit-customer-action mt-1 mr-2">Edit</a>';
+                        actions += '<a href=/workshoppro/customer?edit=' + row['customer_post_id'] + ' class="edit-customer-action mt-1 mr-2">Edit5</a>';
                         actions += '<div class="action-wrap">';
                         actions += '<div class="action-btn" data-id="' + row['customer_post_id'] + '"><span></span><span></span><span></span></div>';
                         actions += '<ul style="display:none;">';
@@ -548,6 +543,7 @@ jQuery(document).ready(function ($) {
                 }
             ],
             createdRow: function (row, data, index) {
+                console.log(data);
                 $(row).addClass('post-id-'+data.customer_post_id);
             }
         }); 
@@ -573,10 +569,10 @@ jQuery(document).ready(function ($) {
             },
             pagingType: 'simple_numbers', 
             columns: [
-                { data: 'vehicle_make' }, 
-                { data: 'vehicle_model' }, 
-                { data: 'vehicle_registration' },
-                { data: 'vehicle_vin' }, 
+                { data: 'make' }, 
+                { data: 'model' }, 
+                { data: 'registration' },
+                { data: 'vin' }, 
                 { data: 'actions' }
             ],
             layout: { 
@@ -632,15 +628,8 @@ jQuery(document).ready(function ($) {
                     "render": function (data, type, row) { 
                         let actions = '';
                         actions += '<div class="d-flex flex-align-center justified-end">';
-                        actions += '<a href=/workshoppro/customer?edit=' + row['customer_post_id'] + ' class="edit-customer-action mt-1 mr-2">Edit</a>';
-                        actions += '<div class="action-wrap">';
-                        actions += '<div class="action-btn" data-id="' + row['customer_post_id'] + '"><span></span><span></span><span></span></div>';
-                        actions += '<ul style="display:none;">';
-                        actions += '<li><a href="# data-delete-post="' + row['customer_post_id'] + '">Delete</a></li>';
-                        actions += '<li><a href="#">Send Quote</a></li>'; 
-                        actions += '<li><a href="#">Send Invoice</a></li>'; 
-                        actions += '</ul>'; 
-                        actions += '</div>';
+                        actions += '<a href="#" data-popup="add-vehicle-popup" class="popup-btn edit-vehicle-action mt-1 mr-2">Edit</a>';
+                        actions += '<a href="#" data-delete-post="' + row['vehicle_post_id'] + '">Delete</a>';
                         actions += '</div>';
                         return actions; 
                     }
@@ -648,6 +637,24 @@ jQuery(document).ready(function ($) {
             ],
             createdRow: function (row, data, index) {
                 $(row).addClass('post-id-'+data.customer_post_id);
+            },
+            initComplete: function(settings, json) {
+                // Extract data from the received JSON
+                var rowData = [];
+                for (var vehicleID in json.data) {
+                    if (json.data.hasOwnProperty(vehicleID)) {
+                        var vehicleData = json.data[vehicleID];
+                        rowData.push({
+                            'make': vehicleData.make,
+                            'model': vehicleData.model,
+                            'registration': vehicleData.registration,
+                            'vin': vehicleData.vin,
+                            'actions': vehicleData.actions
+                        });
+                    }
+                }
+                // Set the data for the DataTable
+                this.api().clear().rows.add(rowData).draw();
             }
         }); 
         //Hide/Show Columns 

@@ -22,9 +22,12 @@ if(isset($customer_edit_id)) {
 
     !empty(get_post_meta($customer_edit_id, 'customer_notes', true) ) && $notes = json_decode(get_post_meta($customer_edit_id, 'customer_notes', true)); 
 
-    !empty(get_post_meta($customer_edit_id, 'customer_details', true) ) && parse_str(get_post_meta($customer_edit_id, 'customer_details', true),$customer_details); 
-
-    !empty(get_post_meta($customer_edit_id, 'customer_vehicles', true) ) && parse_str(get_post_meta($customer_edit_id, 'customer_vehicles', true),$customer_vehicles); 
+    if(!empty(get_post_meta($customer_edit_id, 'customer_details', true) )) {
+        $customer_encoded = get_post_meta($customer_edit_id, 'customer_details', true);
+        $customer_details = json_decode($customer_encoded);
+    }
+    
+    !empty(get_post_meta($customer_edit_id, 'customer_vehicles', true) ) && $vehicles = json_decode(get_post_meta($customer_edit_id, 'customer_vehicles', true)); 
 
     !empty(get_post_meta($customer_edit_id, 'company_details', true) ) && parse_str(get_post_meta($customer_edit_id, 'company_details', true),$company_details); 
 

@@ -15,20 +15,20 @@ $date_options = array(
 
     <?php 
         echo '<div class="wp-block-columns are-vertically-aligned-center is-layout-flex wp-container-core-columns-layout-1 wp-block-columns-is-layout-flex mb-1">';
-        echo ' <div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow mb-1">';
-        if( !is_front_page() ) { 
-            echo '<h2 class="wp-block-heading mb-0">Job list</h2>'; 
-        } else {
-            echo '<h3 class="wp-block-heading mb-0">Job list</h3>';
-        }
-        echo '</div>';
-        echo '<div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow mb-1">';
-        echo '<div class="wp-block-buttons justified-md-end is-layout-flex wp-container-core-buttons-layout-1 wp-block-buttons-is-layout-flex">';
-        echo ' <div class="wp-block-button">';
-        echo '<a href="/workshoppro/job/" class="wp-block-button__link wp-element-button popup-btn">+ New Job</a>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
+            echo ' <div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow mb-1">';
+                if( !is_front_page() ) { 
+                    echo '<h2 class="wp-block-heading mb-0">Job list</h2>'; 
+                } else {
+                    echo '<h3 class="wp-block-heading mb-0">Job list</h3>';
+                }
+                echo '</div>';
+                    echo '<div class="wp-block-column is-vertically-aligned-center is-layout-flow wp-block-column-is-layout-flow mb-1">';
+                        echo '<div class="wp-block-buttons justified-md-end is-layout-flex wp-container-core-buttons-layout-1 wp-block-buttons-is-layout-flex">';
+                            echo ' <div class="wp-block-button">';
+                        echo '<a href="/workshoppro/job/" class="wp-block-button__link wp-element-button popup-btn">+ New Job</a>';
+                    echo '</div>';
+                echo '</div>';
+            echo '</div>';
         echo '</div>';
 
         // Filters not needed on the front page

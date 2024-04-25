@@ -1,7 +1,7 @@
-<?php 
-function add_vehicle_popup() {
-    ?>
+
+
     <!-- Popup -->
+    
     <div id="add-vehicle-popup" class="popup">
 
         <div class="popup-overlay"></div>
@@ -28,7 +28,9 @@ function add_vehicle_popup() {
                 <!-- Customer -->
                 <div class="form-row" >
                     <div class="input-label-wrapper" >
-                        <?php include( get_stylesheet_directory() . "/inc/templates/jobs/customer-select.php"); ?>
+                        <?php 
+                        include( get_stylesheet_directory() . "/inc/templates/global/customer-select.php"); 
+                        ?>
                     </div> 
                 </div>
 
@@ -152,12 +154,7 @@ function add_vehicle_popup() {
             </form>
         </div>
     </div>
-    <?php
-}
-add_action( 'wp_footer', 'add_vehicle_popup', 100 );
 
-
-?>
 
 
 

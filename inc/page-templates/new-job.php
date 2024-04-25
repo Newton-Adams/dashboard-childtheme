@@ -7,7 +7,7 @@ echo '<span class="'.$editing.'" ><div class="controls" >
 echo '</div>';
 echo '<div class="forms-container" >
             <div class="jobno-customer-vehicle" >';      
-                  include( get_stylesheet_directory() . "/inc/templates/jobs/customer-select.php");   
+                  include( get_stylesheet_directory() . "/inc/templates/global/customer-select.php");   
                   include( get_stylesheet_directory() . "/inc/templates/jobs/vehicle-select.php");
       echo '</div>
    </div>

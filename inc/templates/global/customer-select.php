@@ -1,9 +1,10 @@
 <div class="job-select-wrapper customer" >
+    
     <h3>Customer</h3>
-    <div class="customer-select" style="<?php echo isset($customer_data_decoded->{"customer-name"}) ? "display: none;" : ""; ?>" >
+    <div class="customer-select" style="<?php echo isset($customer_details->{"first-name-1"}) ? "display: none;" : ""; ?>" >
         <input type="text" class="selected-value" placeholder="Find a customer by name, vehicle or registraion" >
         <ul class="options" >
-            <?php if(isset($customer_data_decoded->{"customer-name"})) : ?>
+            <?php if(isset($customer_details->{"first-name-1"})) : ?>
             <li class="add-new-customer" >
                 <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="46" height="46" rx="23" fill="#EDFFEB"/>
@@ -17,16 +18,16 @@
                 Add new customer
             </li>
             <li 
-                data-company-name='<?php echo isset($customer_data_decoded->{"company-name"}) ? $customer_data_decoded->{"company-name"} : "";  ?>' 
-                data-address='<?php echo isset($customer_data_decoded->{"address"}) ? $customer_data_decoded->{"address"} : "";  ?>' 
-                data-name='<?php echo isset($customer_data_decoded->{"customer-name"}) ? $customer_data_decoded->{"customer-name"} : "";  ?>' 
-                data-email='<?php echo isset($customer_data_decoded->{"email"}) ? $customer_data_decoded->{"email"} : "";  ?>' 
-                data-vin="<?php echo isset($vehicle["VIN"]) ? $vehicle["VIN"] : "";  ?>" 
-                data-make="<?php echo isset($vehicle["make"]) ? $vehicle["make"] : "";  ?>"
-                data-model="<?php echo isset($vehicle["model"]) ? $vehicle["model"] : "";  ?>"
-                data-registration="<?php echo isset($vehicle["registration"]) ? $vehicle["registration"] : "";  ?>"
-                data-mileage="<?php echo isset($vehicle["mileage"]) ? $vehicle["mileage"] : "";  ?>"
-                data-colour="<?php echo isset($vehicle["colour"]) ? $vehicle["colour"] : "";  ?>"
+                data-company-name='<?php echo isset($company_details["company-name"]) ? $company_details["company-name"] : "";  ?>' 
+                data-address='<?php echo isset($customer_details->{"address"}) ? $customer_details->{"address"} : "";  ?>' 
+                data-name='<?php echo isset($customer_details->{"first-name-1"}) ? $customer_details->{"first-name-1"} : "";  ?>' 
+                data-email='<?php echo isset($customer_details->{"email"}) ? $customer_details->{"email"} : "";  ?>' 
+                data-vin="<?php echo isset($vehicles->{"VIN"}) ? $vehicles->{"VIN"} : "";  ?>" 
+                data-make="<?php echo isset($vehicles->{"make"}) ? $vehicles->{"make"} : "";  ?>"
+                data-model="<?php echo isset($vehicles->{"model"}) ? $vehicles->{"model"} : "";  ?>"
+                data-registration="<?php echo isset($vehicles->{"registration"}) ? $vehicles->{"registration"} : "";  ?>"
+                data-mileage="<?php echo isset($vehicles->{"mileage"}) ? $vehicles->{"mileage"} : "";  ?>"
+                data-colour="<?php echo isset($vehicles->{"colour"}) ? $vehicles->{"colour"} : "";  ?>"
                 data-vehicle-all="<?php echo isset($vehicle_json) ? $vehicle_json : ""; ?>"
             >
                 <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,15 +42,16 @@
                     <rect x="14" y="14" width="18" height="18" fill="#18181A"/>
                     </g>
                 </svg>
-                <?php echo isset($customer_data_decoded->{"customer-name"}) ? $customer_data_decoded->{"customer-name"} : "";  ?>
+                <?php echo isset($customer_details->{"first-name-1"}) ? $customer_details->{"first-name-1"} : "";  ?>
             </li>
             <?php endif; ?>
         </ul>
     </div>
-    <div class="selected-customer-outer" style="<?php echo isset($customer_data_decoded->{"customer-name"}) ? "" : "display: none;"; ?>" >
+    
+    <div class="selected-customer-outer" style="<?php echo isset($customer_details->{"first-name-1"}) ? "" : "display: none;"; ?>" >
         <div class="customer-name-outer" >
             <span class="customer-name" >
-                <p class="customer-name-val" ><?php echo isset($customer_data_decoded->{"customer-name"}) ? $customer_data_decoded->{"customer-name"} : ""; ?></p>
+                <p class="customer-name-val" ><?php echo isset($customer_details->{"first-name-1"}) ? $customer_details->{"first-name-1"} : ""; ?></p>
                 <span class="close" >
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z" fill="#425466"/>
@@ -62,18 +64,18 @@
         <div class="customer-details" >
             <span class="company-name" >
                 <p>Company Name</p>
-                <p class="company-name-val" ><?php echo isset($customer_data_decoded->{"company-name"}) ? $customer_data_decoded->{"customer-name"} : ""; ?></p>
+                <p class="company-name-val" ><?php echo isset($company_details["company-name"]) ? $company_details["company-name"] : ""; ?></p>
             </span>
             <span class="contact" >
                 <p>Contact</p>
-                <p class="contact-val" ><?php echo isset($customer_data_decoded->{"email"}) ? $customer_data_decoded->{"email"} : ""; ?></p>
+                <p class="contact-val" ><?php echo isset($customer_details->{"email-1"}) ? $customer_details->{"email-1"} : ""; ?></p>
             </span>
             <span class="address" >
                 <p>Address</p>
-                <p class="address-val" ><?php echo isset($customer_data_decoded->{"address"}) ? $customer_data_decoded->{"address"} : ""; ?></p>
+                <p class="address-val" ><?php echo isset($customer_details->{"physical-address"}) ? $customer_details->{"physical-address"} : ""; ?></p>
             </span>
         </div>
+        <!-- //Hidden fields -->
+        <input type="hidden" name="customer-data" value='<?= isset($customer_encoded) ? $customer_encoded : ""; ?>' >    
     </div>
-    <!-- //Hidden fields -->
-    <input type="hidden" name="customer-data" value="<?php echo isset($customer_data) ? $customer_data : ""; ?>" >    
 </div>

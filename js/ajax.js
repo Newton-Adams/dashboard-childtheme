@@ -442,7 +442,6 @@ jQuery(document).ready(function ($) {
 
         //Vehicle Fields
         const vehicleName = `${ $('#make').val() } / ${$('#model').val()} / ${$('#colour').val()}`
-        const vin = $('#VIN').val()
         const customerVehicle = $('#vehicle-fields').serialize()
         const vehicleAttachments = $('#attachments-obj').val()
        
@@ -461,10 +460,10 @@ jQuery(document).ready(function ($) {
                 'vehicle-name': vehicleName,
                 'customer-vehicles': customerVehicle,
                 'vehicle-attachments': vehicleAttachments,
-                'vin': vin,
                 'customer-notes': customerNotes,
             },
             success: function (response) {	
+                console.log(response);
                 $('input[name="content-changed"]').prop('checked',false)
                 window.location.href = "/workshoppro/customers/"
             },
@@ -689,6 +688,7 @@ jQuery(document).ready(function ($) {
         const self = $(this); 
 
         const formData = $(self).serialize();
+        console.log(formData);
         const attachments = $('#attachments-obj').val();
             
         addOverlayLoader(self); 

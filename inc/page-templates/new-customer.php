@@ -21,10 +21,11 @@ echo '<div class="forms-container" >
          include( get_stylesheet_directory() . "/inc/templates/customers/vehicles.php"); 
    echo '</div>
       </div>';
-   if(isset($customer_edit_id) && $customer_edit_id != "") {
+   if(isset($customer_edit_id) && $customer_edit_id != "") {      
       echo '<div class="forms-container" >
                <div class="notes-container" >'; 
                include( get_stylesheet_directory() . "/inc/templates/customers/customer-jobs.php"); 
+               include( get_stylesheet_directory() . "/inc/templates/popups/add-vehicle-popup.php" ); 
          echo '</div>
             </div>';
    }

@@ -5,7 +5,7 @@
     <?php  
     //Add new vehicle when editing
     if(isset($customer_edit_id) && !$customer_edit_id == "") {             
-        echo '<span class="add-new-vehicle" >';
+        echo '<span class="add-new-vehicle popup-btn" data-popup="add-vehicle-popup" >';
         include( get_stylesheet_directory() . "/assets/images/add-small-button.svg");
         echo 'Add new vehicle </span>
               <div class="datatable-wrapper"> 
@@ -30,37 +30,37 @@
         <div class="form-row d-flex flex-wrap new-vehicle" style="<?= isset($customer_edit_id) && $customer_edit_id != "" ? "display:none;" : ""; ?>" >
             <div class="fw-33 input-label-wrapper" >
                 <label for="make" >Make</label>
-                <input type="text" id="make" name="make" value="<?= isset($vehicles["make"]) ? $vehicles["make"] : ''; ?>" >
+                <input type="text" id="make" name="make" value="<?= isset($vehicles->{"make"}) ? $vehicles->{"make"} : ''; ?>" >
             </div>
         
             <div class="fw-33 input-label-wrapper" >
                 <label for="model" >Model</label>
-                <input type="text" id="model" name="model" value="<?= isset($vehicles["model"]) ? $vehicles["model"] : ''; ?>" >
+                <input type="text" id="model" name="model" value="<?= isset($vehicles->{"model"}) ? $vehicles->{"model"} : ''; ?>" >
             </div>
             
             <div class="fw-33 input-label-wrapper" >
                 <label for="year" >Year</label>
-                <input type="text" id="year" name="year" value="<?= isset($vehicles["year"]) ? $vehicles["year"] : ''; ?>" >
+                <input type="text" id="year" name="year" value="<?= isset($vehicles->{"year"}) ? $vehicles->{"year"} : ''; ?>" >
             </div>
             
             <div class="fw-50 input-label-wrapper" >
                 <label for="colour" >Colour</label>
-                <input type="text" id="colour" name="colour" value="<?= isset($vehicles["colour"]) ? $vehicles["colour"] : ''; ?>" >
+                <input type="text" id="colour" name="colour" value="<?= isset($vehicles->{"colour"}) ? $vehicles->{"colour"} : ''; ?>" >
             </div>
             
             <div class="fw-50 input-label-wrapper" >
                 <label for="mileage" >Mileage</label>
-                <input type="text" id="mileage" name="mileage" value="<?= isset($vehicles["mileage"]) ? $vehicles["mileage"] : ''; ?>" >
+                <input type="text" id="mileage" name="mileage" value="<?= isset($vehicles->{"mileage"}) ? $vehicles->{"mileage"} : ''; ?>" >
             </div>
             
             <div class="fw-50 input-label-wrapper" >
                 <label for="registration" >Registration</label>
-                <input type="text" id="registration" name="registration" value="<?= isset($vehicles["registration"]) ? $vehicles["registration"] : ''; ?>" >
+                <input type="text" id="registration" name="registration" value="<?= isset($vehicles->{"registration"}) ? $vehicles->{"registration"} : ''; ?>" >
             </div>
             
             <div class="fw-50 input-label-wrapper" >
-                <label for="VIN" >VIN</label>
-                <input type="text" class="vin-number" id="VIN" name="VIN" value="<?= isset($vehicles["VIN"]) ? $vehicles["VIN"] : ''; ?>" >
+                <label for="vin" >VIN</label>
+                <input type="text" class="vin-number" id="vin" name="vin" value="<?= isset($vehicles->{"vin"}) ? $vehicles->{"vin"} : ''; ?>" >
             </div>
             
         </div>
@@ -71,7 +71,7 @@
                 <h3 class="mt-5 mb-2" >Vehicle Description</h3>
                 <div class="fw-100" >
                     <label for="job-notes" ></label>
-                    <textarea type="text" id="job-notes" name="job-notes" ><?= isset($vehicles["job-notes"]) ? $vehicles["job-notes"] : ''; ?></textarea>
+                    <textarea type="text" id="job-notes" name="job-notes" ><?= isset($vehicles->{"job-notes"}) ? $vehicles->{"job-notes"} : ''; ?></textarea>
                 </div>
             </div>
         </div>
@@ -89,7 +89,7 @@
                             <p class="mb-0 extra-small-text" >Max size: 4Mb</p>
                         </label>
                         <input type="file" id="attachment" accept=".jpg,.png,.pdf" class="d-none" >                
-                        <input type="hidden" id="attachments-obj" class="d-none" value="<?= isset($vehicles["hidden-attachment"]) ? $vehicles["hidden-attachment"] : ''; ?>" >                
+                        <input type="hidden" id="attachments-obj" class="d-none" value="<?= isset($vehicles->{"hidden-attachment"}) ? $vehicles->{"hidden-attachment"} : ''; ?>" >                
                         <input type="hidden" id="delete-attachments" class="d-none" value="" >                
                     </div>
                 </div>
