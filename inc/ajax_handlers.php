@@ -160,16 +160,16 @@ function handle_customer_ajax_form() {
     isset($_POST['customer-name']) && $customer_name = strip_tags($_POST['customer-name']);
 
     //Details Data
-    isset($_POST['customer-details']) && parse_str(strip_tags( $_POST['customer-details']),$customer_details);
+    isset($_POST['customer-details']) && $customer_details = strip_tags( $_POST['customer-details']);
  
     //Contact Data
     isset($_POST['company-details']) && $company_details = strip_tags( $_POST['company-details'] );
 
     //Vehicle Data
     isset($_POST['vehicle-name']) && $vehicle_name = strip_tags( $_POST['vehicle-name'] );
-    isset($_POST['customer-vehicles']) && parse_str( strip_tags( $_POST['customer-vehicles'] ), $vehicles );
+    isset($_POST['vin']) && $vin = strip_tags( $_POST['vin'] );
+    isset($_POST['customer-vehicles']) && $vehicles = strip_tags( $_POST['customer-vehicles'] );
     isset($_POST['vehicle-attachments']) && $vehicle_attachments = strip_tags( $_POST['vehicle-attachments'] );
-    $parsed_vehicle = array();
 
     //Customer Contact
     isset($_POST['customer-contacts']) && $contacts = strip_tags( $_POST['customer-contacts'] );
@@ -187,14 +187,8 @@ function handle_customer_ajax_form() {
     
     //Create or edit post
     if($existing_customer_post_id == 0) {
-        $customer_id = (int)wp_insert_post( $customer_args );     
-        $customer_details["customer-post-id"] = $customer_id;
-        $parsed_customer_details = json_encode($customer_details);
-       
-        $vehicles["hidden-attachment"] = addslashes($vehicles["hidden-attachment"]);
-        $parsed_vehicle[$vehicles["vin"]] = $vehicles;
-        $parsed_vehicle = json_encode($parsed_vehicle);
-
+        $customer_id = (int)wp_insert_post( $customer_args );
+        
         //Check if vin exists, else create vehicle
         $vinExists = get_posts(array(
                         'post_type' => 'vehicles',
@@ -203,15 +197,15 @@ function handle_customer_ajax_form() {
                         'meta_value' => 'vin',
                     ));                
         if(!$vinExists) {
-            createVehicle($parsed_customer_details, $vehicle_name, $vehicle_attachments, $parsed_vehicle, $vehicles["vin"]);
+            createVehicle($vehicle_name, $vehicle_attachments, $vehicles, $vin);
         }  
     }    
     
     // Check if the post was successfully inserted
     if ( !is_wp_error($post_id) && $customer_id > 0 ) {        
         //Create customer details meta
-        add_post_meta($customer_id, 'customer_details', $parsed_customer_details);
-
+        add_post_meta($customer_id, 'customer_details', $customer_details, true);
+        
         //Create customer contact meta
         add_post_meta($customer_id, 'company_details', $company_details, true);
                 
@@ -219,7 +213,7 @@ function handle_customer_ajax_form() {
         add_post_meta($customer_id, 'customer_notes', $notes, true);
                 
         //Create customer vehicles meta
-        add_post_meta($customer_id, 'customer_vehicles', $parsed_vehicle, true);
+        add_post_meta($customer_id, 'customer_vehicles', $vehicles, true);
     } 
 
     if( $existing_customer_post_id != 0 ) {
@@ -249,7 +243,7 @@ function handle_customer_ajax_form() {
 }
 
 //Create vehicle from initial customer save
-function createVehicle($parsed_customer_details, $vehicle_name, $vehicle_attachments, $vehicles, $vin) {
+function createVehicle($vehicle_name, $vehicle_attachments, $vehicles, $vin) {
    
     //Add/update the post
     $vehicle_args = array(
@@ -261,9 +255,6 @@ function createVehicle($parsed_customer_details, $vehicle_name, $vehicle_attachm
     
     //Create or edit post
     $vehicle_ID = (int)wp_insert_post( $vehicle_args );  
-        
-    //Create vehicle meta
-    add_post_meta($vehicle_ID, 'customer_details', $parsed_customer_details, true);
         
     //Create vehicle meta
     add_post_meta($vehicle_ID, 'vehicles', $vehicles, true);
@@ -446,7 +437,7 @@ function get_all_jobs() {
         parse_str( get_post_meta($job->ID, 'notes', true), $notes );
         $notes = (strlen($notes["job-notes"]) > 15) ? substr($notes["job-notes"],0,15).'...' : $notes["job-notes"];;
        
-        parse_str( json_decode(get_post_meta( $job->ID, 'vehicle-data', true)), $vehicle_data );
+        $vehicle_data = json_decode(get_post_meta( $job->ID , 'vehicle-data', true ));
         $customer_data = json_decode(get_post_meta( $job->ID, 'customer-data', true ));
         $job_status = get_post_meta( $job->ID, 'status', true );
         
@@ -458,8 +449,8 @@ function get_all_jobs() {
             "name" => $customer_data->{"customer-name"},
             "date" => $formatted_date,
             "job_no" => $job->post_title,
-            "vehicle" => $vehicle_data["model"],
-            "registration" => $vehicle_data["registration"],
+            "vehicle" => $vehicle_data->{"make"},
+            "registration" => $vehicle_data->{"registration"},
             "status" => "<span class='status-light' ></span>".$job_status,
             "notes" => $notes,
             "total" => "Not Implemented",
@@ -486,7 +477,7 @@ function get_job_content() {
     if(isset($_POST['job_id'])) { 
         parse_str( get_post_meta((int)$_POST['job_id'] , 'notes', true), $notes );
         $notes = $notes["job-notes"] !== "" ? $notes["job-notes"] : "No data";
-        parse_str( json_decode(get_post_meta( $job->ID, 'vehicle-data', true)), $vehicle_data );
+        $vehicle_data = json_decode(get_post_meta( $_POST['job_id'] , 'vehicle-data', true ));
         $customer_data = json_decode(get_post_meta( $_POST['job_id'], 'customer-data', true ));
 
         $address = explode(',',$customer_data->address);
@@ -515,8 +506,8 @@ function get_job_content() {
             </div>
             <div class="right-content" > 
                 <div class="vehicle-details" >
-                    <p class="vin" ><strong>VIN: </strong>'.$vehicle_data["VIN"].'TEst</p>
-                    <p class="vehicle" ><strong>VEHICLE YR: </strong> '. $vehicle_data["make"] . ' ' . $vehicle_data["model"] . ' ' . $vehicle_data["year"] .'</p>
+                    <p class="vin" ><strong>VIN: </strong>'.$vehicle_data->{"VIN"}.'</p>
+                    <p class="vehicle" ><strong>VEHICLE YR: </strong> '. $vehicle_data->{"make"} . ' ' . $vehicle_data->{"model"} . ' ' . $vehicle_data->{"year"} .'</p>
                 </div>
             </div>
         </div>        
@@ -546,16 +537,29 @@ function get_user_vehicles() {
 
     foreach ($vehicles as $key => $vehicle) {
 
-        $vehicle_meta_data = json_decode( get_post_meta($vehicle->ID, 'data', true) ); 
-        $customer_data = json_decode( get_post_meta($vehicle->ID, 'customer-data', true) );
+        $vehicle_meta_data = json_decode( get_post_meta($vehicle->ID, 'vehicles', true) ); 
+        $customer_data = json_decode( get_post_meta($vehicle->ID, 'customer_details', true) );
+        
+        // Extract the key (VIN) from the associative array
+        $vin_key = key($vehicle_meta_data);
+
+        // // Access the details of the vehicle using the key
+        $vehicle_details = $vehicle_meta_data->{$vin_key};
+
+        // // Extract the make, model, registration, and VIN 
+        $make = $vehicle_details->{'make'};
+        $model = $vehicle_details->{'model'};
+        $registration = $vehicle_details->{'registration'};
+        $vin_key = $vehicle_details->{'vin'};
+
 
         $vehicle_data[$key] = array( 
-            "vehicle-post-id" => $vehicle->ID,
-            "customer" => $customer_data->{'customer-name'}, 
-            "make" => $vehicle_meta_data->make, 
-            "model" => $vehicle_meta_data->model, 
-            "registration" => $vehicle_meta_data->registration, 
-            "vin" => $vehicle_meta_data->vin, 
+            "vehicle_post_id" => $vehicle->ID,
+            "customer" => $customer_data->{'first-name-1'} . ' ' . $customer_data->{'last-name-1'}, 
+            "make" => $make, 
+            "model" => $model, 
+            "registration" => $registration, 
+            "vin" => $vin_key, 
             "actions" => "...",
         );
     };
@@ -585,27 +589,31 @@ function get_user_customers() {
 
     foreach ($customers as $key => $customer) {
         $address_data = array();
-        $customer_details = json_decode( get_post_meta($customer->ID, 'customer_details', true)); 
+        parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_details ); 
+        parse_str( get_post_meta($customer->ID, 'company_details', true), $company_details );
         $customer_vehicles = json_decode(get_post_meta($customer->ID, 'customer_vehicles', true) );
 
         //Create ddress to later implode - this avoids unnecessary ","'s
-        $customer_details->{'physical-address'} != "" && array_push($address_data,$customer_details->{'physical-address'});
-        $customer_details->{'suburb'} != "" && array_push($address_data, $customer_details->{'suburb'});
-        $customer_details->{'city'} != "" && array_push($address_data, $customer_details->{'city'});
-        $customer_details->{'province'} != "" && array_push($address_data, $customer_details->{'province'});
-        $customer_details->{'postal-code'} != "" && array_push($address_data, $customer_details->{'postal-code'});
+        $customer_details['physical-address'] != "" && array_push($address_data,$customer_details['physical-address']);
+        $customer_details['suburb'] != "" && array_push($address_data, $customer_details['suburb']);
+        $customer_details['city'] != "" && array_push($address_data, $customer_details['city']);
+        $customer_details['province'] != "" && array_push($address_data, $customer_details['province']);
+        $customer_details['postal-code'] != "" && array_push($address_data, $customer_details['postal-code']);
 
         $makes = array(); // create an empty array to hold the makes 
         foreach ($customer_vehicles as $vehicle) {
-            array_push($makes,$vehicle->make);
+            array_push($makes, $vehicle->make); // push the make of each vehicle into the $makes array
         }
+        
+
+        ; // implode the $makes array into a string
       
         $customer_data[$key] = array( 
             "customer_post_id" => $customer->ID,
-            "customer_name" => ucfirst( $customer_details->{'first-name-1'} ) . ' ' . ucfirst( $customer_details->{'last-name-1'} ),
-            "customer_contact" => $customer_details->{'cell-number-1'},
-            "customer_email" => $customer_details->{'email-1'},
-            "customer_vehicle" => implode(",",$makes),
+            "customer_name" => ucfirst( $customer_details['first-name-1'] ) . ' ' . ucfirst( $customer_details['last-name-1'] ),
+            "customer_contact" => $customer_details['cell-number-1'],
+            "customer_email" => $customer_details['email-1'],
+            "customer_vehicle" => implode(", ", $makes),
             "customer_address" => implode(",", $address_data),
             "actions" => "...",
         );
@@ -624,22 +632,33 @@ function get_user_vehicles_edit() {
     
     $loggedInUser = get_current_user(); //Current User
     $customer_id = isset($_GET['customer-id']) ? (int)$_GET['customer-id'] : 0;
-    $customer_meta_vehicle = json_decode(get_post_meta($customer_id, 'customer_vehicles', true));
-   
-    $vehicle_data = array();
+    
+    $args = array(
+        'post_type' => 'customers',
+        'include' => array((int)$customer_id),
+        'numberposts' => -1,
+        'author' => $loggedInUser,
+    );
 
-    foreach ($customer_meta_vehicle as $key => $vehicle) {
-        $vehicle_data[$key] = array( 
-            "make" => $vehicle->{"make"}, 
-            "model" => $vehicle->{"model"}, 
-            "registration" => $vehicle->{"registration"}, 
-            "vin" => $key, 
+    $customers = get_posts($args);
+
+    $customer_data = array();
+
+    foreach ($customers as $key => $customer) {
+        parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_meta_contacts ); 
+        parse_str( get_post_meta($customer->ID, 'customer_details', true), $customer_meta_details );
+        parse_str( get_post_meta($customer->ID, 'customer_vehicles', true), $customer_meta_vehicle );
+        $customer_data[$key] = array( 
+            "vehicle_make" => $customer_meta_vehicle['make'], 
+            "vehicle_model" => $customer_meta_vehicle['model'], 
+            "vehicle_registration" => $customer_meta_vehicle['registration'], 
+            "vehicle_vin" => $customer_meta_vehicle['VIN'], 
             "actions" => "...",
         );
-    }
+    };
 
     // Send JSON response
-    echo json_encode(array('data' => $vehicle_data));
+    echo json_encode(array('data' => $customer_data));
 
     wp_die();
 }
@@ -876,32 +895,24 @@ function fetch_customers() {
     //Sort data to pass back to JS
     $customer_data = array();
     foreach ($customers as $key => $customer) {
-
-        !empty(get_post_meta($customer->ID, 'company_details', true) ) && parse_str(get_post_meta($customer->ID, 'company_details', true),$company_details); 
-        !empty(get_post_meta($customer->ID, 'customer_details', true) ) && parse_str(get_post_meta($customer->ID, 'customer_details', true),$customer_details); 
-        
-        if(!empty(get_post_meta($customer->ID, 'customer_details', true) )) {
+        // $details = json_decode( get_post_meta($customer->ID, 'details', true) );
+        // $contacts = json_decode( get_post_meta($customer->ID, 'contacts', true) );
+        !empty(get_post_meta($customer->ID, 'details', true) ) && parse_str(get_post_meta($customer->ID, 'details', true),$details); 
+        !empty(get_post_meta($customer->ID, 'contacts', true) ) && parse_str(get_post_meta($customer->ID, 'contacts', true),$contacts); 
+        if(!empty(get_post_meta($customer->ID, 'contacts', true) )) {
             $encoded_vehicles = get_post_meta($customer->ID, 'customer_vehicles', true);
             parse_str($encoded_vehicles,$decoded_vehicles); 
         }
-        
-        $address_data = array();
-
-        //Create ddress to later implode - this avoids unnecessary ","'s
-        $customer_details['physical-address'] != "" && array_push($address_data,$customer_details['physical-address']);
-        $customer_details['suburb'] != "" && array_push($address_data, $customer_details['suburb']);
-        $customer_details['city'] != "" && array_push($address_data, $customer_details['city']);
-        $customer_details['province'] != "" && array_push($address_data, $customer_details['province']);
-        $customer_details['postal-code'] != "" && array_push($address_data, $customer_details['postal-code']);
-
+      
         //Vehicle data        
         $customer_data[$customer->ID] = array( 
             "customer_post_id" => $customer->ID, 
             "name" => $customer->post_title,
-            "company-name" => $company_details["company-name"],
-            "email" => $customer_details["email-1"],
-            "phone" => $customer_details["cell-number-1"],
-            "address" => implode(",",$address_data),
+            "company-name" => $details["company-name"],
+            "email" => $contacts["email-1"],
+            "phone" => $contacts["cell-number-1"],
+            "address" => $details["email-1"] .','. $details["suburb"] .','. $details["city"],
+            "address" => $details["email-1"] .','. $details["suburb"] .','. $details["city"],
             "vin" => $decoded_vehicles["vin"],
             "make" => $decoded_vehicles["make"],
             "model" => $decoded_vehicles["model"],
@@ -943,7 +954,7 @@ function save_vehicle_data() {
             // Retrieve existing customer vehicles data
             $customerVehicles = get_post_meta($customerId, 'customer_vehicles', true);
             $customerVehiclesDecoded = json_decode($customerVehicles, true);
-            
+
             // Prepare updated vehicle data
             $updateVehicle = [
                 "make" => sanitize_text_field($formFields['make']),
@@ -1027,7 +1038,7 @@ function save_vehicle_data() {
             wp_send_json_success(['message' => 'Vehicle data saved successfully']);
         } else {
             // Send error response if customer ID is not valid
-            wp_send_json_error(['message' => 'Invalid customer ID:' . $customer_id ]);
+            wp_send_json_error(['message' => 'Invalid customer ID']);
         }
     }
 
