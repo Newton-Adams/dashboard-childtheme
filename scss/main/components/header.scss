@@ -1,5 +1,6 @@
 #masthead {
     height: 100vh;
+    width: 100%;
     max-width: 250px;
     flex-wrap: wrap;
     position: fixed;
@@ -11,6 +12,9 @@
     transition: max-width 0.3s ease-in-out;
     .admin-bar & {
         top: 32px;
+        @media (min-width: 782px) {
+            height: calc(100vh - 32px);
+        }
     }
     #burger-menu svg {
         cursor: pointer;
@@ -18,19 +22,20 @@
     }
     .inside-header {
         flex-wrap: wrap;
-        padding: 0 0 0 25px;
-        height: 100%;
         align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        height: 100%;
+        padding: 0 10px 20px 25px;
         .site-branding-container {
             flex-wrap: wrap;
+            width: 100%;
             .site-branding {
+                display: none !important;
                 a {
                     opacity: 1;
                     transition: all 0.2s ease-in-out;
                 }
-            }
-            .site-logo {
-                margin-right: 7px;
             }
             #burger-menu {
                 width: 100%;
@@ -39,21 +44,46 @@
                 display: none;
             }
         }
+        .site-logo {
+            position: relative;
+            z-index: 2; 
+            margin: 0 7px 0 0;
+            transition: 0.3s all ease-in-out;
+            @media (min-width: 782px) {
+                .menu-closed & {
+                    margin: 0 7px 0 0;
+                }
+            }
+            @media only screen and (min-width: 481px) and (max-width: 781px) {
+                margin: 0 7px 0 auto;
+            }
+        }
+        .sub-logo {
+            display: block;
+            position: absolute;
+            z-index: 1;
+            left: 90px;
+            margin-top: 35px;
+            @media (min-width: 782px) {
+                .menu-closed & {
+                    display: none;
+                }
+            }
+        }
         .header-scroll-content-outer {
             width: 100%;
             height: calc(100% - 127px);
             position: relative;
+            padding: 30px 0 60px;
             .header-scroll-content {
-                overflow-y: auto;
-                height: calc(100% - 180px);
                 padding-right: 25px;
+                overflow: hidden;
+                overflow-y: auto;
             }
             .menu-main-menu-container {
                 margin-left: 0;
-                margin-bottom: 30px;
+                margin-bottom: 60px;
                 width: 100%;
-                border-bottom: 1px solid var(--borders);
-                padding-bottom: 30px;
                 ul {
                     list-style: none;
                     margin: 0;
@@ -74,6 +104,8 @@
                             color: var(--text-1);
                             span {
                                 opacity: 1;
+                                word-break: unset;
+                                white-space: nowrap;
                                 transition: opacity 0.2s ease-in-out;                                
                             }
                             svg {
@@ -83,6 +115,16 @@
                                 height: 14px;
                             }
                             &:hover {
+                                color: var(--accent-1);
+                                svg {
+                                    path {
+                                        fill: var(--accent-1);
+                                    }
+                                }
+                            }
+                        }
+                        &.current-menu-item, &.current-menu-ancestor, &.current-page-ancestor {
+                            a {
                                 color: var(--accent-1);
                                 svg {
                                     path {
@@ -102,6 +144,18 @@
             display: none;
         }
     }
+    .log-out-link {
+        display: flex;
+        text-decoration: none;
+        margin-top: auto;
+        p {
+            font-size: .875rem;
+            margin: 0 0 0 14px;
+            opacity: 1;
+            white-space: nowrap;
+            transition: all .3s ease-in-out;
+        }
+    }
     @media (max-width: 781px) {
         height: unset;
         max-width: 100%;
@@ -112,6 +166,7 @@
         padding-bottom: 8px;
         overflow: unset;
         border: none;
+        box-shadow: 0 3px 8px -1px rgba(50,50,71,.05),0 0 1px 0 rgba(12,26,75,.24);
         .inside-header {
             text-align: left;
             padding: 0 18px;
@@ -119,6 +174,7 @@
                 align-items: center;
                 flex-wrap: nowrap;
                 width: 100%;
+                margin-top
                 #burger-menu {
                     width: unset;
                     min-width: 76px;
@@ -129,7 +185,18 @@
                     }
                 }
                 .site-logo {
-                    margin-left: auto;
+                    // margin: 0 0 0 auto;
+                    .header-image {
+                        width: 66px !important;
+                    }
+                }
+                .sub-logo {
+                    position: relative;
+                    left: unset;
+                    margin: 0 auto 0 -15px;
+                    img {
+                        height: 42px !important;
+                    }
                 }
                 .site-branding {
                     margin-right: auto;
@@ -142,7 +209,7 @@
                 #user-account-avatar {
                     display: block;
                     order: 3;
-                    margin: 0 0 0 20px;
+                    margin: 0 0 0 auto;
                     a, p {
                         margin: 0;
                         line-height: 0;
@@ -242,7 +309,7 @@
                 }
                 .header-scroll-content {
                     height: calc(100% - 115px);
-                    padding-bottom: 60px;
+                    padding: 30px 0 60px;
                     #account-checklist {
                         max-height: unset;
                     }
@@ -271,7 +338,10 @@ body.menu-closed {
         #masthead {
             max-width: 90px;
             .inside-header {
-                .site-branding-container {
+                .site-branding-container { 
+                    .site-logo { 
+                        margin-left: -10px;
+                    }
                     .site-branding {
                         a {
                             opacity: 0;
@@ -286,6 +356,7 @@ body.menu-closed {
                             a {
                                 span {
                                     opacity: 0!important;
+                                    width: 0;
                                     transition: opacity 0.2s ease-in-out;
                                 }
                                 svg {
@@ -293,6 +364,15 @@ body.menu-closed {
                                 }
                             }
                         }
+                    }
+                }
+            }
+            @media (min-width: 782px) {
+                .log-out-link {
+                    p {
+                        opacity: 0;
+                        width: 0;
+                        height: 0;
                     }
                 }
             }

@@ -1,17 +1,31 @@
-function validateFormSubmit() {
+function validateFormSubmit(excludedForm) {
 
     let valid = true;
+    
+    let requiredInputs = Array.from(document.querySelectorAll('form:not('+excludedForm+') input.required'))
 
-    // Get all required input fields
-    let requiredInputs = document.querySelectorAll('input.required');
+    // document.querySelector('input[type="hidden"][name="vehicle-data"]') && requiredInputs.push(document.querySelector('input[type="hidden"][name="vehicle-data"]'))
+    // document.querySelector('input[type="hidden"][name="customer-data"]') && requiredInputs.push(document.querySelector('input[type="hidden"][name="customer-data"]'))
 
+    let i = 0;
     requiredInputs.forEach(function(input) {
-        if (input.value.length === 0) {
+
+        if (input.value.length === 0 ) {
+
             removeErrorMessage(input);
             addErrorMessage(input, 'This field is required');
+
+            if(i === 0) { 
+                input.focus();
+                i++;
+            }
+
             valid = false;
+            
         } else {
+
             removeErrorMessage(input);
+
         }
     });
 
@@ -19,12 +33,14 @@ function validateFormSubmit() {
 }
 
 // Validate required input
-function validateInput() { 
-    if (this.value.length === 0) { 
-        removeErrorMessage(this);
-        addErrorMessage(this, 'This field is required');
+function validateInput(ele) { 
+    const self = ele.length > 0 ? ele[0] : this
+  
+    if (self.value.length === 0) { 
+        removeErrorMessage(self);
+        addErrorMessage(self, 'This field is required');
     } else {
-        removeErrorMessage(this);
+        removeErrorMessage(self);
     }
 }
 
@@ -42,7 +58,7 @@ function validateNumberInput() {
 function validateEmailInput() { 
     let email = this.value;
     let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if( !email.match(emailPattern) ) {
+    if( !email.match(emailPattern) && email.length > 0) {
         removeErrorMessage(this); 
         addErrorMessage(this, 'Please enter a valid email address');
     } else {
@@ -50,11 +66,11 @@ function validateEmailInput() {
     }
 }
 
-// Validate phone input
+// Validate phone input 
 function validatePhoneInput() { 
     let phone = this.value;
     let phonePattern = /^\d{10}$/;
-    if( !phone.match(phonePattern) ) {
+    if( !phone.match(phonePattern) && phone.length > 0) {
         removeErrorMessage(this); 
         addErrorMessage(this, 'Please enter a valid phone number');
     } else {
@@ -66,7 +82,7 @@ function validatePhoneInput() {
 function validateWhatsappInput() {
     let whatsapp = this.value;
     let whatsappPattern = /\+\d{3}[ ]?(\d+(-| )?)+/;
-    if( !whatsapp.match(whatsappPattern) ) {
+    if( !whatsapp.match(whatsappPattern) && whatsapp.length > 0) {
         removeErrorMessage(this); 
         addErrorMessage(this, 'Please enter a valid whatsapp number');
     } else {
@@ -78,7 +94,7 @@ function validateWhatsappInput() {
 function validateVIN() {
     let vin = this.value;
     let vinPattern = new RegExp("^[A-HJ-NPR-Z\\d]{8}[\\dX][A-HJ-NPR-Z\\d]{2}\\d{6}$");
-    if( !vin.match(vinPattern) ) {
+    if( !vin.match(vinPattern) && vin.length > 0) {
         removeErrorMessage(this); 
         addErrorMessage(this, 'Please enter a valid VIN');
     } else {
@@ -132,13 +148,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Validate Whatsapp input
-    let whatsappInputs = document.querySelectorAll('input[name="whatsapp_number"]');
+    let whatsappInputs = document.querySelectorAll('input.whatsapp');
     whatsappInputs.forEach(function(input) {
         input.addEventListener('change', validateWhatsappInput);
     });
 
     // Validate VIN input
-    let vinInputs = document.querySelectorAll('input[name="vehicle_vin"]');
+    let vinInputs = document.querySelectorAll('input[name="vin"]');
     vinInputs.forEach(function(input) {
         input.addEventListener('change', validateVIN);
     });

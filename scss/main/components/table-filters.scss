@@ -63,11 +63,25 @@
                 margin: 5px 30px 5px 0;
             }
         }
+        .page-template-page-dashboard-jobs & {
+            @media only screen and (max-width: 600px) {
+                display: none;
+            }
+        }
     }
     .filter-dropdowns {
         display: grid;
         grid-template-columns: repeat(3,1fr);
         margin-bottom: 16px;
+        @media only screen and (min-width: 781px) and (max-width: 1080px) {
+            grid-template-columns: 1fr;
+        }
+        @media only screen and (max-width: 600px) {
+            grid-template-columns: 1fr;
+            label[for="filter-customer"], .select-wrapper {
+                margin: 0 0 10px !important;
+            }
+        }
     }
     
     

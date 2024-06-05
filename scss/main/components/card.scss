@@ -7,4 +7,16 @@
     &.completed {
         background: var(--accent-2);
     }
+    &.gray-bg {
+        background: var(--background-primary);
+        box-shadow: none;
+    }
+    &.delete-card {
+        p {
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 164.286%;
+            margin-bottom: 0;
+        }
+    }
 }

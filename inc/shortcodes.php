@@ -3,8 +3,10 @@
 //Top Page Title
 add_shortcode('page_title','page_title_callback');
 function page_title_callback() {
-   isset($_GET['edit']) && $edit_id = $_GET['edit'];
-   return isset($edit_id) ? '<h1>Edit ' . get_the_title() . '</h1>' : '<h1>Add ' . get_the_title() . '</h1>';
+   if( is_front_page( ) ) {
+      return '<h1>Dashboard</h1>';
+   }
+   return '<h1>' . get_the_title() . '</h1>';
 }
 
 //Menu Icons
@@ -64,60 +66,6 @@ function menu_icons_callback($atts) {
    return ob_get_clean();
 }
 
-//New Account Checklist
-add_shortcode('new_account_checklist','new_account_checklist_callback');
-function new_account_checklist_callback() {
-   //Checks
-   $create_account = "checked";
-   $has_job = wp_count_posts( 'jobs' )->publish > 0 ? "checked" : "";
-   $has_logo = !empty(get_custom_logo()) ? "checked" : "";
-   $completed_count = !empty($has_job) + !empty($create_account) + !empty($has_logo);
-   //Todo - complete all checks once post types created/forms added
-   ob_start();
-      echo '<div class="checklist-outer" >
-               <div class="checklist-icon">
-                  <svg width="7" height="6" viewBox="0 0 7 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                     <path fill-rule="evenodd" clip-rule="evenodd" d="M5.57021 0.632554C5.79903 0.403732 6.17003 0.403732 6.39885 0.632554C6.62487 0.858571 6.62764 1.22329 6.40717 1.45271L3.28826 5.35135C3.28375 5.35698 3.27894 5.36235 3.27385 5.36744C3.04503 5.59627 2.67403 5.59627 2.44521 5.36744L0.377672 3.29991C0.148849 3.07109 0.148849 2.70009 0.377672 2.47127C0.606495 2.24244 0.97749 2.24244 1.20631 2.47127L2.84187 4.10683L5.55467 0.650082C5.55949 0.643934 5.56468 0.638081 5.57021 0.632554Z" fill="white"/>
-                  </svg>
-               </div>
-               <div class="title-and-count" ><p>Get started checklist</p> <div class="fraction">'.$completed_count.'/6</div></div>
-               <p class="percentage" >'.(Round($completed_count / 6 * 100)).'%</p>
-               <div class="checklist-progress-bar" >';
-               for ($i=0; $i < 5 ; $i++) { 
-                  echo '<span class="'. ($completed_count > $i ? 'active' : ' ') . ($completed_count - 1 == $i ? ' final' : ' ') .'" ></span>';
-               }
-      echo '   </div>
-            </div>';
-      echo '
-         <form id="account-checklist" >
-            <div class="checklist-item" >
-               <input type="checkbox" id="has-account" name="has-account" checked="true" >
-               <label for="has-account" >Create an account</label>
-            </div>
-            <div class="checklist-item" >
-               <input type="checkbox" id="has-logo" name="has-logo" '.$has_logo.' >
-               <label for="has-logo" >Add your company logo</label>
-            </div>
-            <div class="checklist-item" >
-               <input type="checkbox" id="has-customers-csv" name="has-customers-csv" >
-               <label for="has-customers-csv" >Import customers</label>
-            </div>
-            <div class="checklist-item" >
-               <input type="checkbox" id="has-job" name="has-job" '.$has_job.' >
-               <label for="has-job" >Create your first job</label>
-            </div>
-            <div class="checklist-item" >
-               <input type="checkbox" id="has-quote" name="has-quote" >
-               <label for="has-quote" >Create a quote</label>
-            </div>
-            <div class="checklist-item" >
-               <input type="checkbox" id="has-vehicle" name="has-vehicle" >
-               <label for="has-vehicle" >Add a vehicle</label>
-            </div>
-         </form>
-      ';
-   return ob_get_clean();
-}
 
 //User Account in Top Bar
 add_shortcode('top_bar_account','top_bar_account_callback');
@@ -125,14 +73,15 @@ function top_bar_account_callback() {
    
    $current_user = um_profile_id();
    um_fetch_user($current_user);
-   $avatar = um_user( 'profile_photo', 36 );
+   // $avatar = um_user( 'profile_photo', 36 ); 
+   $avatar = get_avatar_url( get_current_user_id(), array( 'size' => 48 ) );
    $url = um_user_profile_url( um_user( 'ID' ) );
    um_reset_user();
 
    ob_start(); ?>
       <div id="user-account-avatar" class="um-user-profile user-<?php echo um_user( 'ID' ); ?>">
          <a href="<?php echo $url; ?>">
-               <p class="avatar"><?php echo $avatar; ?></p>
+               <div class="avatar"><img decoding="async" src="<?php echo $avatar; ?>" class="gravatar avatar avatar-36 um-avatar um-avatar-uploaded" width="36" height="36" alt="<?php echo $current_user ?>" data-default="<?php echo $avatar; ?>" loading="lazy"></div>
          </a>
       </div>
    <?php return ob_get_clean();

@@ -50,6 +50,9 @@ get_header(); ?>
 			// Get Started Guide
 			include( get_stylesheet_directory() . "/inc/templates/get-started-guide.php" ); 
 
+			include( get_stylesheet_directory() . "/inc/templates/popups/ajax-in-progress.php");   
+			
+
 			/**
 			 * generate_after_main_content hook.
 			 *

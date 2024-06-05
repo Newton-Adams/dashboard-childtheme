@@ -48,7 +48,7 @@ $check_icon = '<svg width="60" height="61" viewBox="0 0 60 61" fill="none" xmlns
                     <h3 class="wp-block-heading">Add your business info</h3> 
                     <p class="small-text mb-0">Upload your logo, add your VAT number and address to invoices, add contact information and more</p> 
                 </div>
-                <div class="add-business-btn"> 
+                <div class="add-business-btn active"> 
                     <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg"> 
                         <path d="M8.15286 13.1945L2.7571 7.02793C2.12062 6.30052 2.6372 5.16211 3.60375 5.16211H14.3953C15.3618 5.16211 15.8784 6.30052 15.2419 7.02793L9.84616 13.1945C9.39795 13.7068 8.60108 13.7068 8.15286 13.1945Z" fill="#7A7A9D"/> 
                     </svg>
@@ -87,7 +87,7 @@ $check_icon = '<svg width="60" height="61" viewBox="0 0 60 61" fill="none" xmlns
                         <p class="small-text mb-2">Download the customer import csv template, populate the template with your customer details and add it to the “Upload customers CSV” box to the right</p> 
                         <div class="wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex mb-2">
                             <div class="wp-block-button is-style-outline">
-                                <a class="wp-block-button__link wp-element-button">Download Customer Import Template</a>
+                                <a href="<?= get_home_url(); ?>/wp-content/uploads/2024/06/Workshop-Manager-Customer-CSV.csv" class="wp-block-button__link wp-element-button" download>Download Customer Import Template</a>
                             </div>
                         </div>
                         <p>Need help importing customers? <a href="#">Get help now</a></p>
@@ -126,10 +126,10 @@ $check_icon = '<svg width="60" height="61" viewBox="0 0 60 61" fill="none" xmlns
                     <p class="small-text mb-0">Get started creating a job, quoting customers and invoicing.</p> 
                 </div>
                 <?php 
-                    if( count($jobs) < 0 ) {
+                    if( count($jobs) < 1 ) {
                         echo '<div class="add-business-btn"> 
                             <div class="wp-block-button">
-                                <a href="/job" class="wp-block-button__link wp-element-button">+ Start First Job</a>
+                                <a href="jobs/add-job" class="wp-block-button__link wp-element-button">+ Start First Job</a>
                             </div>
                         </div> ';
                     }

@@ -265,6 +265,8 @@ body {
     .wp-block-columns {
         &:not(.is-not-stacked-on-mobile) {
             flex-wrap: wrap !important;
+            gap: 1em;
+            margin-bottom: 1.5em;
             > .wp-block-column {
                 flex-basis: 100% !important;
             }

@@ -1,43 +1,9 @@
 //Component
 @import "main/components/top-bar.scss";
-@import "main/components/job-number.scss";
 @import "main/components/header.scss";
 @import "main/components/forms.scss";
 @import "main/components/buttons.scss";
-@import "main/components/log-out.scss";
-@import "main/components/upgrade-account.scss";
 @import "main/components/loader.scss";
-@import "main/components/account-checklist.scss";
 @import "main/components/card.scss";
-@import "main/components/get-started-guide.scss";
-@import "main/components/slick-slider.scss"; 
-@import "main/components/onboarding-aside-slider.scss";
-@import "main/components/upload-csv.scss";
-@import "main/components/welcome-section.scss";
-@import "main/components/add-staff.scss";
-@import "main/components/totals.scss";
-@import "main/components/snapshot.scss";
-@import "main/components/ajax-search.scss";
 @import "main/components/table-filters.scss";
 @import "main/components/datatables.scss";
-@import "main/components/job-customer.scss";
-@import "main/components/job-vehicles.scss"; 
-@import "main/components/popup.scss";
-@import "main/components/unsaved-data-popup.scss";
-@import "main/components/dropdown.scss";
-@import "main/components/mechanic-selection.scss";
-@import "main/components/tabs.scss";
-
-//Core
-@import "main/core/forms/add-labour.scss";
-@import "main/core/forms/add-parts.scss";
-@import "main/core/forms/global.scss";
-@import "main/core/forms/upload-attachments.scss";
-@import "main/core/forms/profile-form.scss";
-@import "main/core/forms/vehicle-form.scss";
-@import "main/core/forms/controls.scss";
-@import "main/core/forms/job-booking.scss";
-
-//Pages
-@import "main/pages/new-job.scss";
-@import "main/pages/new-customer.scss";

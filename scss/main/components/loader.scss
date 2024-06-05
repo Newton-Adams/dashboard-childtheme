@@ -1,11 +1,19 @@
+.jobno-customer-vehicle  {
+    .job-select-wrapper.customer {
+        position: relative;
+    }
+}
 .svg-loader {
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    border:8px solid;
-    border-color:#E4E4ED;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    border: 5px solid;
+    border-color: #e4e4ed;
     border-right-color: var(--accent-1);
     animation:s2 2s infinite linear;
+    position: absolute;
+    right: 15px;
+    top: 39px;
 }
 @keyframes s2 {to{transform: rotate(1turn)}}
 

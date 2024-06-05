@@ -1,1 +1,0 @@
-<?php profile_form() ?>

@@ -1,8 +1,84 @@
+<?php 
+
+$loggedInUser = get_current_user_id();
+
+// Get date from 30 days ago 
+$date = new DateTime();
+$date->sub(new DateInterval('P30D'));
+$thirty_days_ago = $date->format('Y-m-d');
+
+
+// Fetch all posts by current user
+$args = array(
+    'post_type' => array('jobs'),
+    'numberposts' => -1,
+    'author' => $loggedInUser,
+    'orderby' => 'date',
+    'order' => 'DESC', 
+    'date_query' => array(
+        array(
+            'after' => $thirty_days_ago,
+            'inclusive' => true,
+        ),
+    ),
+);
+
+$posts = get_posts($args);
+
+$drafts = 0;
+$quote_sent = 0;
+$quote_accepted = 0;
+$in_progress = 0;
+$awaiting_parts = 0;
+$completed = 0;
+$awaiting_payment = 0;
+$paid_closed = 0;
+
+// Loop through jobs posts
+foreach ($posts as $post) {
+    if ($post->post_type == 'jobs') {
+        $job_status = get_post_meta($post->ID, 'status', true);  
+        switch ($job_status) {
+            case 'draft':
+                $drafts++;
+                break;
+            case 'quote-sent':
+                $quote_sent++;
+                break;
+            case 'quote-accepted':
+                $quote_accepted++;
+                break;
+            case 'in-progress':
+                $in_progress++;
+                break;
+            case 'awaiting-parts':
+                $awaiting_parts++;
+                break;
+            case 'completed':
+                $completed++;
+                break;
+            case 'awaiting-payment':
+                $awaiting_payment++;
+                break;
+            case 'paid-&-closed':
+                $paid_closed++;
+                break; 
+            default:
+                break;
+        }
+    } 
+}
+
+$chart_job_total = $in_progress + $completed + $awaiting_parts;
+
+if( $posts ) {
+?>
+
 <div class="snapshot-section">
     
     <div class="d-flex flex-align-center justified-between mb-3">
         <h2 class="wp-block-heading card-title mb-0">Your Snapshot</h2>
-        <div class="reveal-snapshot-btn"> 
+        <div class="reveal-snapshot-btn active"> 
             <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg"> 
                 <path d="M8.15286 13.1945L2.7571 7.02793C2.12062 6.30052 2.6372 5.16211 3.60375 5.16211H14.3953C15.3618 5.16211 15.8784 6.30052 15.2419 7.02793L9.84616 13.1945C9.39795 13.7068 8.60108 13.7068 8.15286 13.1945Z" fill="#7A7A9D"></path> 
             </svg>
@@ -15,7 +91,9 @@
             <div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow" style="flex-basis:25%">
 
                 <div class="card">
+
                     <h5 class="wp-block-heading">Workshop Chart</h5>
+
                     <div class="text-center mb-1">
                         <canvas id="workshopChart" width="111px" height="111px" ></canvas>
                     </div>
@@ -25,7 +103,9 @@
                         <div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
                             <div class="d-flex flex-align-center active">
                                 <div class="pie-chart-key" style="background-color: var(--active)"></div>
-                                <div class="extra-small-text"><span class="chart-value">49</span>%</div>
+                                <div class="extra-small-text">
+                                    <span class="chart-value"><?php echo round($in_progress / $chart_job_total * 100); ?> </span>%
+                                </div>
                             </div>
                             <div class="caption">Active</div>
                         </div>
@@ -33,7 +113,9 @@
                         <div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
                             <div class="d-flex flex-align-center complete">
                                 <div class="pie-chart-key" style="background-color: var(--complete)"></div>
-                                <div class="extra-small-text"><span class="chart-value">18</span>%</div>
+                                <div class="extra-small-text">
+                                    <span class="chart-value"><?php echo round($completed / $chart_job_total * 100); ?> </span>%
+                                </div>
                             </div>
                             <div class="caption">Complete</div>
                         </div>
@@ -41,7 +123,9 @@
                         <div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
                             <div class="d-flex flex-align-center awaiting">
                                 <div class="pie-chart-key" style="background-color: var(--awaiting)"></div>
-                                <div class="extra-small-text"><span class="chart-value">33</span>%</div>
+                                <div class="extra-small-text">
+                                    <span class="chart-value"><?php echo round($awaiting_parts / $chart_job_total * 100); ?> </span>%
+                                </div>
                             </div>
                             <div class="caption">Waiting</div>
                         </div>
@@ -65,7 +149,7 @@
                             <div class="d-flex flex-wrap justified-between">
                                 <div class="label">
                                     <h6 class="wp-block-heading card-heading">Active Jobs</h6>
-                                    <h5>7</h5>
+                                    <h5><?php echo $in_progress; ?></h5>
                                 </div>
                                 <p class="mb-0 extra-small-text">Past 30 Days</p>
                             </div>
@@ -76,23 +160,23 @@
                 <div class="card drafts">
                     <div class="d-flex">
                         <div class="card-icon">
-                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0_4638_36976)">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.07725 2.91211H4.36954C2.48324 2.91211 0.954102 4.25525 0.954102 5.91211V21.6621C0.954102 23.319 2.48324 24.6621 4.36954 24.6621H21.4467C23.333 24.6621 24.8621 23.319 24.8621 21.6621V5.91211C24.8621 4.25525 23.333 2.91211 21.4467 2.91211H19.739V4.41211H21.4467C22.3899 4.41211 23.1544 5.08368 23.1544 5.91211V21.6621C23.1544 22.4905 22.3899 23.1621 21.4467 23.1621H4.36954C3.42639 23.1621 2.66182 22.4905 2.66182 21.6621V5.91211C2.66182 5.08368 3.42639 4.41211 4.36954 4.41211H6.07725V2.91211Z" fill="white"/>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M15.4697 2.16211H10.3465C9.87497 2.16211 9.49269 2.4979 9.49269 2.91211V4.41211C9.49269 4.82632 9.87497 5.16211 10.3465 5.16211H15.4697C15.9413 5.16211 16.3236 4.82632 16.3236 4.41211V2.91211C16.3236 2.4979 15.9413 2.16211 15.4697 2.16211ZM10.3465 0.662109C8.93183 0.662109 7.78497 1.66947 7.78497 2.91211V4.41211C7.78497 5.65475 8.93183 6.66211 10.3465 6.66211H15.4697C16.8844 6.66211 18.0313 5.65475 18.0313 4.41211V2.91211C18.0313 1.66947 16.8844 0.662109 15.4697 0.662109H10.3465Z" fill="white"/>
-                            </g>
-                            <defs>
-                            <clipPath id="clip0_4638_36976">
-                            <rect width="23.908" height="24" fill="white" transform="translate(0.954102 0.662109)"/>
-                            </clipPath>
-                            </defs>
-                        </svg> 
+                            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_4638_36976)">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.07725 2.91211H4.36954C2.48324 2.91211 0.954102 4.25525 0.954102 5.91211V21.6621C0.954102 23.319 2.48324 24.6621 4.36954 24.6621H21.4467C23.333 24.6621 24.8621 23.319 24.8621 21.6621V5.91211C24.8621 4.25525 23.333 2.91211 21.4467 2.91211H19.739V4.41211H21.4467C22.3899 4.41211 23.1544 5.08368 23.1544 5.91211V21.6621C23.1544 22.4905 22.3899 23.1621 21.4467 23.1621H4.36954C3.42639 23.1621 2.66182 22.4905 2.66182 21.6621V5.91211C2.66182 5.08368 3.42639 4.41211 4.36954 4.41211H6.07725V2.91211Z" fill="white"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.4697 2.16211H10.3465C9.87497 2.16211 9.49269 2.4979 9.49269 2.91211V4.41211C9.49269 4.82632 9.87497 5.16211 10.3465 5.16211H15.4697C15.9413 5.16211 16.3236 4.82632 16.3236 4.41211V2.91211C16.3236 2.4979 15.9413 2.16211 15.4697 2.16211ZM10.3465 0.662109C8.93183 0.662109 7.78497 1.66947 7.78497 2.91211V4.41211C7.78497 5.65475 8.93183 6.66211 10.3465 6.66211H15.4697C16.8844 6.66211 18.0313 5.65475 18.0313 4.41211V2.91211C18.0313 1.66947 16.8844 0.662109 15.4697 0.662109H10.3465Z" fill="white"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0_4638_36976">
+                                <rect width="23.908" height="24" fill="white" transform="translate(0.954102 0.662109)"/>
+                                </clipPath>
+                                </defs>
+                            </svg> 
                         </div>
                         <div class="card-text"> 
                             <div class="d-flex flex-wrap justified-between">
                                 <div class="label">
                                     <h6 class="wp-block-heading card-heading">Drafts</h6>
-                                    <h5>8</h5>
+                                    <h5><?php echo $drafts; ?></h5>
                                 </div>
                                 <p class="mb-0 extra-small-text">Past 30 Days</p>
                             </div>
@@ -116,7 +200,7 @@
                             <div class="d-flex flex-wrap justified-between">
                                 <div class="label">
                                     <h6 class="wp-block-heading card-heading">Awaiting Parts</h6>
-                                    <h5>19</h5>
+                                    <h5><?php echo  $awaiting_parts; ?></h5>
                                 </div>
                                 <p class="mb-0 extra-small-text">Past 30 Days</p>
                             </div>
@@ -138,7 +222,7 @@
                             <div class="d-flex flex-wrap justified-between">
                                 <div class="label">
                                     <h6 class="wp-block-heading card-heading">Invoice</h6>
-                                    <h5>3</h5>
+                                    <h5><?php echo $awaiting_payment; ?></h5>
                                 </div>
                                 <p class="mb-0 extra-small-text">Past 30 Days</p>
                             </div>
@@ -163,7 +247,7 @@
                             <div class="d-flex flex-wrap justified-between">
                                 <div class="label">
                                     <h6 class="wp-block-heading card-heading">Complete</h6>
-                                    <h5>11</h5>
+                                    <h5><?php echo $completed; ?></h5>
                                 </div>
                                 <p class="mb-0 extra-small-text">Past 30 Days</p>
                             </div>
@@ -175,21 +259,21 @@
                 <div class="card quotes">
                     <div class="d-flex">
                         <div class="card-icon">
-                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.6211 3.66211H2.62109L1.62109 3.66211C1.62109 3.10982 2.06881 2.66211 2.62109 2.66211H14.6211C15.1734 2.66211 15.6211 3.10982 15.6211 3.66211H14.6211Z" fill="white"/>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M23.0349 8.16211H2.11535V20.1621H23.0349V8.16211ZM2.11535 6.66211C1.29009 6.66211 0.621094 7.33368 0.621094 8.16211V20.1621C0.621094 20.9905 1.29009 21.6621 2.11535 21.6621H23.0349C23.8601 21.6621 24.5291 20.9905 24.5291 20.1621V8.16211C24.5291 7.33368 23.8601 6.66211 23.0349 6.66211H2.11535Z" fill="white"/>
-                            <path d="M20.0464 8.16211C20.0464 9.81896 21.3844 11.1621 23.0349 11.1621V8.16211H20.0464Z" fill="white"/>
-                            <path d="M5.10385 8.16211C5.10385 9.81896 3.76585 11.1621 2.11535 11.1621V8.16211H5.10385Z" fill="white"/>
-                            <path d="M20.0464 20.1621C20.0464 18.5053 21.3844 17.1621 23.0349 17.1621V20.1621H20.0464Z" fill="white"/>
-                            <path d="M5.10385 20.1621C5.10385 18.5053 3.76585 17.1621 2.11535 17.1621V20.1621H5.10385Z" fill="white"/>
-                            <path d="M15.5636 14.1621C15.5636 15.819 14.2256 17.1621 12.5751 17.1621C10.9246 17.1621 9.58661 15.819 9.58661 14.1621C9.58661 12.5053 10.9246 11.1621 12.5751 11.1621C14.2256 11.1621 15.5636 12.5053 15.5636 14.1621Z" fill="white"/>
-                        </svg>  
+                            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14.6211 3.66211H2.62109L1.62109 3.66211C1.62109 3.10982 2.06881 2.66211 2.62109 2.66211H14.6211C15.1734 2.66211 15.6211 3.10982 15.6211 3.66211H14.6211Z" fill="white"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M23.0349 8.16211H2.11535V20.1621H23.0349V8.16211ZM2.11535 6.66211C1.29009 6.66211 0.621094 7.33368 0.621094 8.16211V20.1621C0.621094 20.9905 1.29009 21.6621 2.11535 21.6621H23.0349C23.8601 21.6621 24.5291 20.9905 24.5291 20.1621V8.16211C24.5291 7.33368 23.8601 6.66211 23.0349 6.66211H2.11535Z" fill="white"/>
+                                <path d="M20.0464 8.16211C20.0464 9.81896 21.3844 11.1621 23.0349 11.1621V8.16211H20.0464Z" fill="white"/>
+                                <path d="M5.10385 8.16211C5.10385 9.81896 3.76585 11.1621 2.11535 11.1621V8.16211H5.10385Z" fill="white"/>
+                                <path d="M20.0464 20.1621C20.0464 18.5053 21.3844 17.1621 23.0349 17.1621V20.1621H20.0464Z" fill="white"/>
+                                <path d="M5.10385 20.1621C5.10385 18.5053 3.76585 17.1621 2.11535 17.1621V20.1621H5.10385Z" fill="white"/>
+                                <path d="M15.5636 14.1621C15.5636 15.819 14.2256 17.1621 12.5751 17.1621C10.9246 17.1621 9.58661 15.819 9.58661 14.1621C9.58661 12.5053 10.9246 11.1621 12.5751 11.1621C14.2256 11.1621 15.5636 12.5053 15.5636 14.1621Z" fill="white"/>
+                            </svg>  
                         </div>
                         <div class="card-text"> 
                             <div class="d-flex flex-wrap justified-between">
                                 <div class="label">
                                     <h6 class="wp-block-heading card-heading">Quotes</h6>
-                                    <h5>12</h5>
+                                    <h5><?php echo $quote_sent; ?></h5>
                                 </div>
                                 <p class="mb-0 extra-small-text">Past 30 Days</p>
                             </div>
@@ -202,3 +286,7 @@
         </div> 
     </div>
 </div>
+
+<?php 
+}
+?>

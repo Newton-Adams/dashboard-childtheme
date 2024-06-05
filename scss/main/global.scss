@@ -1,68 +1,71 @@
 html {
     body {
-        //datatables
-        .dt-search {
-            display: none;
+        display: flex;
+        flex-wrap: wrap;
+        #masthead {
+            z-index: 9999;
+            &.admin-bar {
+                top: 32px;
+            }
         }
-        &:not(.um-page-login), &:not(.um-page-register), &:not(.um-page-password-reset) {
-            display: flex;
-            flex-wrap: wrap;
-            #masthead {
-                z-index: 9999;
-                &.admin-bar {
-                    top: 32px;
+        &.menu-closed {
+            #page, .site-footer {
+                @media (min-width: 782px) {
+                    max-width: calc(100vw - 90px);
                 }
-            }
-            &.menu-closed {
-                #page, .site-footer {
-                    @media (min-width: 782px) {
-                        max-width: calc(100vw - 90px);
-                    }
-                }
-                .site-footer {
-                    order: 4;
-                    width: 100vw;
-                }
-            }
-            #page {
-                order: 3;
-                max-width: calc(100vw - 250px);
-                margin: 0 0 0 auto;
-                width: 100vw;
-                transition: max-width 0.3s ease-in-out;
             }
             .site-footer {
                 order: 4;
-                max-width: calc(100vw - 250px);
                 width: 100vw;
-                margin-left: auto;
-                transition: max-width 0.3s ease-in-out;
             }
-            @media only screen and (max-width: 781px) {
-                &.admin-bar {
-                    #masthead {
-                        top: 46px;
-                    }
-                }
-                flex-direction: column;
-                .inside-header {
-                    .header-scroll-content-outer {
-                        width: 100%;
-                        height: 0px;
-                        position: relative;
-                        overflow: hidden;
-                    }
-                }
-                #page {
-                    max-width: 100%;
-                    width: 100%;
-                    margin-top: 56px;
-                }
-                .site-footer {
-                    max-width: 100%;
-                    width: 100%;
-                }
+            #page {
+                margin-left: 90px;
+            }
+            .site-footer {
+                margin-left: 90px;
             }
         }
+        #page {
+            order: 3;
+            max-width: calc(100vw - 250px);
+            margin: 0 0 0 250px;
+            width: 100vw;
+            transition: all 0.3s ease-in-out;
+        }
+        .site-footer {
+            order: 4;
+            max-width: calc(100vw - 250px);
+            width: 100vw;
+            margin-left: 250px;
+            transition: all 0.3s ease-in-out;
+        }
+        @media only screen and (max-width: 781px) {
+            &.admin-bar {
+                #masthead {
+                    top: 46px;
+                }
+            }
+            flex-direction: column;
+            .inside-header {
+                .header-scroll-content-outer {
+                    width: 100%;
+                    height: 0px;
+                    position: relative;
+                    overflow: hidden;
+                }
+            }
+            #page {
+                max-width: 100%;
+                width: 100%;
+                margin-top: 82px;
+                margin-left: auto;
+            }
+            .site-footer {
+                max-width: 100%;
+                width: 100%;
+                margin-left: auto;
+            }
+        }
+        
     }
 }
