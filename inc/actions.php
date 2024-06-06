@@ -14,6 +14,8 @@ function burger_menu() {
 // 
 add_action('generate_after_header_content', 'main_menu'); 
 function main_menu() {
+	echo do_shortcode( '[dark_mode_toggle]' );
+	echo do_shortcode( '[top_bar_account]' );
     echo '<div class="header-scroll-content-outer">';
     echo '<div class="header-scroll-content">';
     echo '<span class="mobile-close">';
@@ -22,10 +24,10 @@ function main_menu() {
     echo wp_nav_menu( array( 'menu' => 'Main Menu' ) );
 	echo '</div>';
 	echo '<span class="mobile-overlay"></span>';
-    echo '</div>';
 	echo '<a class="log-out-link" href="'.get_home_url().'/logout/">';
 	echo '<svg width="16" height="21" viewBox="0 0 16 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7H13V5C13 2.24 10.76 0 8 0C5.24 0 3 2.24 3 5V7H2C0.9 7 0 7.9 0 9V19C0 20.1 0.9 21 2 21H14C15.1 21 16 20.1 16 19V9C16 7.9 15.1 7 14 7ZM8 16C6.9 16 6 15.1 6 14C6 12.9 6.9 12 8 12C9.1 12 10 12.9 10 14C10 15.1 9.1 16 8 16ZM5 7V5C5 3.34 6.34 2 8 2C9.66 2 11 3.34 11 5V7H5Z" fill="#A3D0B0"/></svg>';
 	echo '<p>Log out</p>';
 	echo '</a>';
+    echo '</div>';
     echo '</div>';
 }

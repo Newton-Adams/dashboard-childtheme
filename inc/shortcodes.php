@@ -1,5 +1,18 @@
 <?php
 
+// Dark mode toggle 
+add_shortcode('dark_mode_toggle','dark_mode_toggle_callback');
+function dark_mode_toggle_callback() {
+   ob_start();
+   ?>
+   <button class="light-mode-button" aria-label="Toggle Light Mode">
+        <span></span>
+        <span></span>
+   </button>
+   <?php
+   return ob_get_clean();
+}
+
 //Top Page Title
 add_shortcode('page_title','page_title_callback');
 function page_title_callback() {

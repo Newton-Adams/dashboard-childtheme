@@ -16,9 +16,13 @@
             height: calc(100vh - 32px);
         }
     }
-    #burger-menu svg {
-        cursor: pointer;
-        margin-bottom: 14px;
+    #burger-menu {
+        svg {
+            cursor: pointer;
+            @media (min-width: 782px) { 
+                margin-bottom: 14px;
+            }
+        }
     }
     .inside-header {
         flex-wrap: wrap;
@@ -47,7 +51,6 @@
         .site-logo {
             position: relative;
             z-index: 2; 
-            margin: 0 7px 0 0;
             transition: 0.3s all ease-in-out;
             @media (min-width: 782px) {
                 .menu-closed & {
@@ -58,23 +61,13 @@
                 margin: 0 7px 0 auto;
             }
         }
-        .sub-logo {
-            display: block;
-            position: absolute;
-            z-index: 1;
-            left: 90px;
-            margin-top: 35px;
-            @media (min-width: 782px) {
-                .menu-closed & {
-                    display: none;
-                }
-            }
-        }
         .header-scroll-content-outer {
+            display: flex;
+            flex-direction: column;
             width: 100%;
-            height: calc(100% - 127px);
+            height: calc(100% - 95px);
             position: relative;
-            padding: 30px 0 60px;
+            padding: 30px 0 10px;
             .header-scroll-content {
                 padding-right: 25px;
                 overflow: hidden;
@@ -156,6 +149,14 @@
             transition: all .3s ease-in-out;
         }
     }
+    @media (min-width: 782px) {
+        button.light-mode-button {
+            display: none;
+        }
+        #user-account-avatar {
+            display: none;
+        }
+    }
     @media (max-width: 781px) {
         height: unset;
         max-width: 100%;
@@ -168,94 +169,38 @@
         border: none;
         box-shadow: 0 3px 8px -1px rgba(50,50,71,.05),0 0 1px 0 rgba(12,26,75,.24);
         .inside-header {
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: unset;
             text-align: left;
             padding: 0 18px;
+            #burger-menu {
+                width: unset;
+                min-width: 76px;
+                margin-right: auto; 
+                svg {
+                    cursor: pointer;
+                    margin-bottom: 0;
+                }
+            }
             .site-branding-container {
                 align-items: center;
                 flex-wrap: nowrap;
-                width: 100%;
-                margin-top
-                #burger-menu {
-                    width: unset;
-                    min-width: 76px;
-                    margin-right: auto; 
-                    svg {
-                        cursor: pointer;
-                        margin-bottom: 0;
-                    }
-                }
+                margin: 0 auto; 
+                width: auto;
                 .site-logo {
                     // margin: 0 0 0 auto;
                     .header-image {
                         width: 66px !important;
                     }
                 }
-                .sub-logo {
-                    position: relative;
-                    left: unset;
-                    margin: 0 auto 0 -15px;
-                    img {
-                        height: 42px !important;
-                    }
-                }
                 .site-branding {
                     margin-right: auto;
                 }
-                .main-title {
-                    font-size: 0.869rem;
-                    width: 112px;
-                    text-transform: uppercase;
-                }
-                #user-account-avatar {
-                    display: block;
-                    order: 3;
-                    margin: 0 0 0 auto;
-                    a, p {
-                        margin: 0;
-                        line-height: 0;
-                    }
-                }
-                .mobi-search {
-                    display: block;
-                    order: 2;
-                    margin: 0 0 0 auto;
-                    .mobi-search-icon {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        width: 20px;
-                        height: 20px;
-                        cursor: pointer;
-                        .search-svg {
-                            display: block;
-                        }
-                        .close-svg {
-                            display: none;
-                        }
-                    }
-                    .mobi-search-input {
-                        display: none;
-                        padding: 8px 25px 20px 25px; 
-                        background-color: var(--background-secondary);
-                        position: absolute;
-                        top: 100%;
-                        left: 0;
-                        width: 100%;
-                    }
-                    &.show {
-                        .mobi-search-icon {
-                            .search-svg {
-                                display: none;
-                            }
-                            .close-svg {
-                                display: block;
-                            }
-                        }
-                    }
-                    div[id*="ajaxsearchlite"].asl_m {
-                        width: calc(100% - 35px);
-                    }
-                }
+            }
+            #user-account-avatar {
+                margin-left: 10px;
             }
             .header-scroll-content-outer {
                 display: block; 
@@ -309,25 +254,11 @@
                 }
                 .header-scroll-content {
                     height: calc(100% - 115px);
-                    padding: 30px 0 60px;
-                    #account-checklist {
-                        max-height: unset;
-                    }
-                }
-                .upgrade-account {
-                    margin: 0;
-                    max-width: 100%;
-                    bottom: 30px;
+                    padding: 10px 0 60px;
                 }
             }
-        }
-    }
-    @media (max-width: 480px) {
-        .inside-header {
-            .site-branding-container {
-                #user-account-avatar {
-                    margin: 0 0 0 10px;
-                }
+            button.light-mode-button {
+                margin-left: auto;
             }
         }
     }

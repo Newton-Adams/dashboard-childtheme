@@ -1,0 +1,52 @@
+button.light-mode-button {
+    background: 0;
+    border: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    height: 20px;
+    width: 45px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0);
+    padding: 0;
+    &:focus {
+        outline: none; 
+    }
+    span {
+        &:nth-child(1) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 45px;
+            height: 20px;
+            border-radius: 20px;
+            background-color: #d6d7db;
+            box-shadow: inset 1px 1px 3px 0 rgb(0 0 0 / 40%);
+            transition: 0.3s;
+        }
+        &:nth-child(2) {
+            position: absolute;
+            top: 2.5px;
+            left: 5px;
+            width: 15px;
+            height: 15px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 1px 1px 2px 0 rgb(0 0 0 / 40%);
+            transition: 0.3s;
+        }
+
+    }
+    [data-theme="dark"] & {
+        span {
+            &:nth-child(1) {
+                background-color: #ced4e2;
+                color: #141516;
+            }
+            &:nth-child(2) {
+                left: 25px;
+                background-color: #141516;
+            }
+        }
+    }
+}
+
